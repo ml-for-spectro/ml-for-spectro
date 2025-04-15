@@ -1,6 +1,6 @@
 # ML for Spectro
 
-Welcome to **ml-for-spectro**, a personal project led by Dr. Sufal Swaraj, beamline scientist at Synchrotron SOLEIL, exploring the application of Machine Learning (ML) and AI in the nanoscale characterization of organic and hybrid photovoltaic materials.
+Welcome to **ml-for-spectro**, a personal project led by a beamline scientist at Synchrotron SOLEIL, exploring the application of Machine Learning (ML) and AI in the nanoscale characterization of organic and hybrid photovoltaic materials.
 
 ---
 

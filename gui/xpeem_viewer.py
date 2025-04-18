@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import h5py
 import time
@@ -14,8 +15,9 @@ from PySide6.QtWidgets import (
     QSlider,
     QGridLayout,
     QCheckBox,
+    QRubberBand,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QPoint, QRect, QSize
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.widgets import RectangleSelector
@@ -27,11 +29,14 @@ class HDF5Viewer(QMainWindow):
         self.setWindowTitle("XPEEM HDF5 Viewer")
         self.setGeometry(200, 200, 1200, 700)
 
+        self.last_directory = ""  # Store last used directory
+
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
 
         self.metadata_label = QLabel("No file loaded")
+        self.image_label = QLabel(self)
         self.layout.addWidget(self.metadata_label)
 
         self.button_row = QHBoxLayout()
@@ -48,14 +53,26 @@ class HDF5Viewer(QMainWindow):
         self.mean_button.clicked.connect(self.show_mean_spectrum)
         self.button_row.addWidget(self.mean_button)
 
+        self.crop_button = QPushButton("Crop ROI")
+        self.crop_button.clicked.connect(self.enable_crop_mode)
+        self.button_row.addWidget(self.crop_button)
+
         self.add_plot_checkbox = QCheckBox("Add Plot")
         self.add_plot_checkbox.setChecked(False)
         self.button_row.addWidget(self.add_plot_checkbox)
+
+        self.save_spectrum_button = QPushButton("Save ROI Spectrum")
+        self.save_spectrum_button.clicked.connect(self.save_roi_spectrum)
+        self.button_row.addWidget(self.save_spectrum_button)
 
         self.save_axis_button = QPushButton("Save as axis hdf5")
         self.save_axis_button.clicked.connect(self.save_for_axis)
         self.button_row.addWidget(self.save_axis_button)
         self.save_axis_button.setEnabled(False)
+
+        self.remove_norm_button = QPushButton("Remove Norm image")
+        self.remove_norm_button.clicked.connect(self.remove_norm)
+        self.button_row.addWidget(self.remove_norm_button)
 
         self.exit_button = QPushButton("Exit")
         self.exit_button.clicked.connect(self.close)
@@ -91,6 +108,11 @@ class HDF5Viewer(QMainWindow):
 
         self.layout.addLayout(self.slider_layout)
 
+        self.crop_mode = False
+        self.crop_rect = None
+        self.rubber_band = QRubberBand(QRubberBand.Rectangle, self.image_label)
+        self.origin = QPoint()
+
         self.data = None
         self.energy = None
         self.slice_type = "energy"
@@ -107,10 +129,15 @@ class HDF5Viewer(QMainWindow):
         ]
 
     def load_file(self):
+        self.current_spectrum = None
         self.filename, _ = QFileDialog.getOpenFileName(
-            self, "Open HDF5 File", "", "HDF5 Files (*.h5 *.hdf5 *.nxs)"
+            self,
+            "Open HDF5 File",
+            self.last_directory,
+            "HDF5 Files (*.h5 *.hdf5 *.nxs)",
         )
         if self.filename:
+            self.last_directory = os.path.dirname(self.filename)
             self.save_axis_button.setEnabled(True)
             with h5py.File(self.filename, "r") as f:
                 try:
@@ -136,6 +163,21 @@ class HDF5Viewer(QMainWindow):
                 self.spectrum_canvas.draw()
 
             self.update_image()
+
+    def save_roi_spectrum(self):
+        if self.data is None or self.energy is None:
+            self.metadata_label.setText("No data to save.")
+            return
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Save ROI Spectrum", self.last_directory, "Text Files (*.txt)"
+        )
+        if file_path:
+            self.last_directory = os.path.dirname(self.filename)
+            with open(file_path, "w") as f:
+                f.write("# Energy (eV), Intensity\n")
+                for e, i in zip(self.energy, self.current_spectrum):
+                    f.write(f"{e:.2f}, {i:.6f}\n")
+            self.metadata_label.setText(f"ROI spectrum saved to {file_path}")
 
     def update_image(self):
         idx = self.energy_slider.value()
@@ -189,6 +231,34 @@ class HDF5Viewer(QMainWindow):
         )
         self.canvas.draw()
 
+    def enable_crop_mode(self):
+        self.crop_mode = True
+        self.metadata_label.setText("Draw a rectangle to crop the datacube.")
+
+        def onselect(eclick, erelease):
+            x1, y1 = int(eclick.xdata), int(eclick.ydata)
+            x2, y2 = int(erelease.xdata), int(erelease.ydata)
+            xmin, xmax = sorted([x1, x2])
+            ymin, ymax = sorted([y1, y2])
+            self.crop_rect = (xmin, xmax, ymin, ymax)
+            self.crop_mode = False
+            self.apply_crop()
+
+        if self.roi_selector:
+            self.roi_selector.set_active(False)
+
+        self.roi_selector = RectangleSelector(
+            self.ax_image,
+            onselect,
+            useblit=True,
+            button=[1],
+            minspanx=5,
+            minspany=5,
+            spancoords="pixels",
+            interactive=True,
+        )
+        self.canvas.draw()
+
     def plot_roi_spectrum(self, xmin, xmax, ymin, ymax):
         if self.data is None:
             return
@@ -210,6 +280,8 @@ class HDF5Viewer(QMainWindow):
         self.current_color_index += 1
 
         spectrum = roi_data.mean(axis=(1, 2))
+
+        self.current_spectrum = spectrum
         self.ax_spectrum.plot(
             self.energy, spectrum, label=f"ROI {self.current_color_index}", color=color
         )
@@ -225,6 +297,7 @@ class HDF5Viewer(QMainWindow):
             return
 
         mean_spectrum = self.data.mean(axis=(1, 2))
+        self.current_spectrum = mean_spectrum
 
         if not self.add_plot_checkbox.isChecked():
             self.ax_spectrum.clear()
@@ -245,12 +318,39 @@ class HDF5Viewer(QMainWindow):
         self.spectrum_canvas.draw()
         self.metadata_label.setText("Displayed mean spectrum over full image.")
 
+    def mousePressEvent(self, event):
+        if (
+            self.crop_mode
+            and event.button() == Qt.LeftButton
+            and self.image_label.underMouse()
+        ):
+            self.origin = event.pos()
+            self.rubber_band.setGeometry(QRect(self.origin, QSize()))
+            self.rubber_band.show()
+
+    def mouseMoveEvent(self, event):
+        if self.crop_mode and self.rubber_band.isVisible():
+            rect = QRect(self.origin, event.pos()).normalized()
+            self.rubber_band.setGeometry(rect)
+
+    def mouseReleaseEvent(self, event):
+        if self.crop_mode and self.rubber_band.isVisible():
+            self.crop_mode = False
+            self.rubber_band.hide()
+            rect = self.rubber_band.geometry()
+            self.crop_rect = rect
+            self.apply_crop()
+
     def save_for_axis(self):
 
         if self.filename:
+
             nxsFile = h5py.File(self.filename, "r")
             theEntry = list(nxsFile.keys())[0]
-            theData = nxsFile[theEntry]["scan_data"]["data_02"][()]
+            if self.data is None:
+                theData = nxsFile[theEntry]["scan_data"]["data_02"][()]
+            else:
+                theData = self.data
 
             try:
                 energy = nxsFile[theEntry]["scan_data"]["actuator_1_1"][()]
@@ -323,6 +423,55 @@ class HDF5Viewer(QMainWindow):
                         b"count_time", data=np.linspace(0.1, 0.1, np.shape(theData)[0])
                     )
                     NXfout["entry1"].create_dataset("title", data=[b"XPEEM data"])
+
+    def apply_crop(self):
+        if self.crop_rect and self.data is not None:
+            xmin, xmax, ymin, ymax = self.crop_rect
+            if self.slice_type == "energy":
+                self.data = self.data[:, ymin:ymax, xmin:xmax]
+            elif self.slice_type == "x":
+                self.data = self.data[ymin:ymax, :, xmin:xmax]
+            elif self.slice_type == "y":
+                self.data = self.data[ymin:ymax, xmin:xmax, :]
+
+            # Update sliders and image
+            self.energy_slider.setMaximum(self.data.shape[0] - 1)
+            self.x_slider.setMaximum(self.data.shape[1] - 1)
+            self.y_slider.setMaximum(self.data.shape[2] - 1)
+            self.update_image()
+            self.metadata_label.setText("Data cropped to selected ROI.")
+
+    def remove_norm(self):
+        from PIL import Image  # Only import when needed
+
+        tiff_path, _ = QFileDialog.getOpenFileName(
+            self, "Open TIFF Image", self.last_directory, "TIFF Files (*.tif *.tiff)"
+        )
+        if not tiff_path:
+            return
+
+        try:
+            tiff_image = Image.open(tiff_path)
+            tiff_array = np.array(tiff_image)
+
+            # Ensure the TIFF image matches the spatial dimensions
+            if self.data is None:
+                self.metadata_label.setText("Load an HDF5 file first.")
+                return
+
+            if tiff_array.shape != self.data.shape[1:]:
+                self.metadata_label.setText(
+                    f"TIFF shape {tiff_array.shape} does not match data shape {self.data.shape[1:]}."
+                )
+                return
+
+            # Subtract the TIFF image from each energy slice
+            self.data = self.data - tiff_array[np.newaxis, :, :]
+            self.metadata_label.setText(f"Subtracted TIFF from all slices.")
+            self.update_image()  # Refresh image view
+
+        except Exception as e:
+            self.metadata_label.setText(f"Error loading TIFF: {str(e)}")
 
 
 if __name__ == "__main__":

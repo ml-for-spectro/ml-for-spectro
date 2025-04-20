@@ -76,6 +76,7 @@ class HDF5Viewer(QMainWindow):
 
         self.exit_button = QPushButton("Exit")
         self.exit_button.clicked.connect(self.close)
+        self.exit_button.clicked.connect(QApplication.quit)
         self.button_row.addWidget(self.exit_button)
 
         self.layout.addLayout(self.button_row)

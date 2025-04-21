@@ -22,6 +22,11 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.widgets import RectangleSelector
 
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import umap
+import numpy as np
+
 
 class HDF5Viewer(QMainWindow):
     def __init__(self):
@@ -69,6 +74,12 @@ class HDF5Viewer(QMainWindow):
         self.save_axis_button.clicked.connect(self.save_for_axis)
         self.button_row.addWidget(self.save_axis_button)
         self.save_axis_button.setEnabled(False)
+        self.cluster_button = QPushButton("Cluster Spectral Data")
+        self.cluster_button.clicked.connect(self.run_clustering)
+        self.cluster_button.setEnabled(
+            False
+        )  ## To enable it on computers that can handle
+        self.layout.addWidget(self.cluster_button)
 
         self.remove_norm_button = QPushButton("Remove Norm image")
         self.remove_norm_button.clicked.connect(self.remove_norm)
@@ -473,6 +484,49 @@ class HDF5Viewer(QMainWindow):
 
         except Exception as e:
             self.metadata_label.setText(f"Error loading TIFF: {str(e)}")
+
+    def cluster_cube(self, data_cube, n_clusters=4):
+        E, Y, X = data_cube.shape
+        flat_data = data_cube.reshape(E, -1).T  # shape: (Y*X, E)
+
+        # Normalize
+        scaled = StandardScaler().fit_transform(flat_data)
+
+        # UMAP dimensionality reduction
+        embedding = umap.UMAP(n_neighbors=30, min_dist=0.1).fit_transform(scaled)
+
+        # KMeans clustering
+        labels = KMeans(n_clusters=n_clusters, random_state=42).fit_predict(embedding)
+        label_img = labels.reshape(Y, X)
+
+        # Average spectra per cluster
+        mean_spectra = []
+        for i in range(n_clusters):
+            mean_spectra.append(flat_data[labels == i].mean(axis=0))
+        mean_spectra = np.array(mean_spectra)
+
+        return label_img, mean_spectra
+
+    def run_clustering(self):
+        self.data_cube = self.data
+        if self.data_cube is None:
+            return
+
+        label_img, mean_spectra = self.cluster_cube(self.data, n_clusters=4)
+
+        # Show cluster map
+        self.ax_image.clear()
+        self.ax_image.imshow(label_img, cmap="tab10")
+        self.ax_image.set_title("Cluster Map")
+        self.canvas.draw()
+
+        # Show mean spectra
+        self.ax_spectrum.clear()
+        for i, spectrum in enumerate(mean_spectra):
+            self.ax_spectrum.plot(spectrum, label=f"Cluster {i}")
+        self.ax_spectrum.set_title("Average Spectra")
+        self.ax_spectrum.legend()
+        self.spectrum_canvas.draw()
 
 
 if __name__ == "__main__":

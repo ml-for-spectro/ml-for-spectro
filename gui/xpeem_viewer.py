@@ -155,10 +155,13 @@ class HDF5Viewer(QMainWindow):
                 try:
                     entry = list(f.keys())[0]
                     self.data = f[entry]["scan_data"]["data_02"][()]
-                    self.energy = f[entry]["scan_data"]["actuator_1_1"][()]
-                    self.metadata_label.setText(
-                        f"File loaded: {self.filename}\nShape: {self.data.shape}, Energy range: {self.energy.min():.2f}-{self.energy.max():.2f} eV"
-                    )
+                    try:
+                        self.energy = f[entry]["scan_data"]["actuator_1_1"][()]
+                        self.metadata_label.setText(
+                            f"File loaded: {self.filename}\nShape: {self.data.shape}, Energy range: {self.energy.min():.2f}-{self.energy.max():.2f} eV"
+                        )
+                    except Exception:
+                        self.energy = np.arange(self.data.shape[0])
                 except Exception as e:
                     self.metadata_label.setText(f"Failed to load: {e}")
                     return

@@ -11,6 +11,7 @@ import numpy as np
 
 from utils.plotting import PlotCanvas, be_to_ke, ke_to_be
 from utils.fitting_helpers import build_voigt_model
+from tabs.fit_param_editor import PeakEditor
 
 
 class FitTab(QWidget):
@@ -18,6 +19,7 @@ class FitTab(QWidget):
         super().__init__()
         self.parent = parent
         self.peak_ids = []  # indices user clicked
+        self.amp_guesses = []
         self.fit_result = None
         self._prev_curve = None
 
@@ -27,9 +29,12 @@ class FitTab(QWidget):
         self.fit_btn = QPushButton("Fit")
         self.undo_btn = QPushButton("Undo")
         self.undo_btn.setEnabled(False)
-        self.save_btn = QPushButton("Save")
+        self.save_btn = QPushButton("Save Fit report")
         self.save_btn.setEnabled(False)
-        for b in (self.fit_btn, self.undo_btn, self.save_btn):
+        self.save_curve_btn = QPushButton("Save Curve")
+        self.save_curve_btn.setEnabled(False)
+
+        for b in (self.fit_btn, self.undo_btn, self.save_btn, self.save_curve_btn):
             top.addWidget(b)
         top.addStretch()
 
@@ -45,6 +50,7 @@ class FitTab(QWidget):
         self.fit_btn.clicked.connect(self._begin_pick)
         self.undo_btn.clicked.connect(self._undo_fit)
         self.save_btn.clicked.connect(self._save_fit)
+        self.save_curve_btn.clicked.connect(self._save_curves)
 
     # ---------- called by other tabs ----------
     def refresh(self):
@@ -73,54 +79,77 @@ class FitTab(QWidget):
             QMessageBox.warning(self, "No data", "Load / process a spectrum first")
             return
         self.peak_ids.clear()
+        self.amp_guesses.clear()
         QMessageBox.information(
-            self, "Pick Peaks", "Click initial peak positions (double‑click last one)."
+            self,
+            "Pick Peaks",
+            "Click initial peak positions and height (double‑click last one).",
         )
         self._cid = self.canvas.mpl_connect("button_press_event", self._on_click)
 
     def _on_click(self, ev):
-        if ev.dblclick:  # finish on double‑click
+        # ── 1. Double‑click  = finish peak picking ─────────────────
+        if ev.dblclick:
             self.canvas.mpl_disconnect(self._cid)
-            if len(self.peak_ids) == 0:
+
+            if not self.peak_ids:  # no single‑clicks stored
                 QMessageBox.warning(self, "None", "No peaks picked.")
+                self._plot_curve()  # clear any guide lines
                 return
+
             centers = self.parent.x[self.peak_ids]
-            self._do_fit(centers)
+            amps = np.array(self.amp_guesses)
+
+            # open parameter editor, passing amplitude guesses
+            dlg = PeakEditor(self, self.parent.x, self.parent.y_current, centers, amps)
+            if dlg.exec():  # dialog completed a fit
+                self.undo_btn.setEnabled(True)
+                self.save_btn.setEnabled(True)
+                self.save_curve_btn.setEnabled(True)
+            else:  # dialog canceled
+                self._plot_curve()
+
+        # ── 2. Single‑click  = add a peak guess ───────────────────
         else:
             idx = (np.abs(self.parent.x - ev.xdata)).argmin()
             self.peak_ids.append(idx)
-            # simple visual cue
+            self.amp_guesses.append(self.parent.y_current[idx])  # store amplitude
+
+            # draw a guide line at clicked x‑position
             self.canvas.ax1.axvline(self.parent.x[idx], color="gray", ls=":")
             self.canvas.draw()
 
-    def _do_fit(self, centers):
-        self._prev_curve = self.parent.y_current.copy()
-        model, params = build_voigt_model(self.parent.x, centers)
-        self.fit_result = model.fit(self.parent.y_current, params, x=self.parent.x)
+    # def _do_fit(self, centers):
+    #     self._prev_curve = self.parent.y_current.copy()
+    #     model, params = build_voigt_model(self.parent.x, centers)
+    #     self.fit_result = model.fit(self.parent.y_current, params, x=self.parent.x)
 
-        y_fit = self.fit_result.best_fit
-        self.parent.y_current = y_fit  # pipeline forward
+    #     y_fit = self.fit_result.best_fit
+    #     self.parent.y_current = y_fit  # pipeline forward
 
-        # plot result
-        self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
-        self.canvas.ax1.plot(
-            self.parent.x, self._prev_curve, color="black", label="Input"
-        )
-        self.canvas.ax1.plot(self.parent.x, y_fit, color="red", label="Fit")
+    #     # plot result
+    #     self.canvas.ax1.clear()
+    #     self.canvas.ax2.clear()
+    #     self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
+    #         "top", functions=(be_to_ke, ke_to_be)
+    #     )
+    #     self.canvas.ax1.plot(
+    #         self.parent.x, self._prev_curve, color="black", label="Input"
+    #     )
+    #     self.canvas.ax1.plot(self.parent.x, y_fit, color="red", label="Fit")
 
-        # individual components
-        comps = self.fit_result.eval_components(x=self.parent.x)
-        for name, comp in comps.items():
-            self.canvas.ax1.plot(self.parent.x, comp, ls="--")
+    #     # individual components
+    #     comps = self.fit_result.eval_components(x=self.parent.x)
+    #     for name, comp in comps.items():
+    #         self.canvas.ax1.plot(self.parent.x, comp, ls="--")
 
-        self.canvas.ax1.legend()
-        self.canvas.draw()
-        self.undo_btn.setEnabled(True)
-        self.save_btn.setEnabled(True)
+    #     self.parent()._display_fit(result)
+    #     self.accept()
+
+    #     self.canvas.ax1.legend()
+    #     self.canvas.draw()
+    #     self.undo_btn.setEnabled(True)
+    #     self.save_btn.setEnabled(True)
 
     # ------------- undo and save --------------
     def _undo_fit(self):
@@ -130,6 +159,7 @@ class FitTab(QWidget):
         self.fit_result = None
         self.undo_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
+        self.save_curve_btn.setEnabled(False)
         self._plot_curve()
 
     def _save_fit(self):
@@ -142,3 +172,46 @@ class FitTab(QWidget):
             with open(fn, "w") as f:
                 f.write(self.fit_result.fit_report())
             QMessageBox.information(self, "Saved", fn)
+
+    def _save_curves(self):
+        fn, _ = QFileDialog.getSaveFileName(
+            self, "Save All Curves", "", "CSV files (*.csv)"
+        )
+        if not fn:
+            return
+        raw = self.parent.y_raw
+        smooth = getattr(self.parent, "y_smoothed", np.full_like(raw, np.nan))
+        bg = getattr(self.parent, "bg_used", np.full_like(raw, np.nan))
+        bgsub = getattr(self.parent, "y_bgsub", np.full_like(raw, np.nan))
+        comps = self.fit_result.eval_components(x=self.parent.x)
+        total = self.fit_result.best_fit
+        cols = (
+            [self.parent.x, be_to_ke(self.parent.x), raw, smooth, bg, bgsub]
+            + [comps[k] for k in sorted(comps)]
+            + [total]
+        )
+        array = np.column_stack(cols)
+        header = (
+            ["BE", "KE", "raw", "smooth", "bg", "bgsub"] + sorted(comps) + ["total"]
+        )
+        np.savetxt(fn, array, delimiter=",", header=",".join(header), comments="")
+
+    def _display_fit(self, result):
+        self.fit_result = result
+        y_fit = result.best_fit
+        self._prev_curve = self.parent.y_current.copy()
+        self.parent.y_current = y_fit
+
+        self.canvas.ax1.clear()
+        self.canvas.ax2.clear()
+        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
+            "top", functions=(be_to_ke, ke_to_be)
+        )
+        self.canvas.ax1.plot(
+            self.parent.x, self._prev_curve, color="black", label="Input"
+        )
+        self.canvas.ax1.plot(self.parent.x, y_fit, color="red", label="Fit")
+        for comp in result.eval_components(x=self.parent.x).values():
+            self.canvas.ax1.plot(self.parent.x, comp, ls="--")
+        self.canvas.ax1.legend()
+        self.canvas.draw()

@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QButtonGroup,
     QMessageBox,
+    QDoubleSpinBox,
 )
 from PySide6.QtCore import Qt
 import numpy as np
@@ -36,7 +37,14 @@ class BackgroundTab(QWidget):
 
         self.apply_btn = QPushButton("Apply")
         self.apply_btn.clicked.connect(self._start_selection)
-
+        self.min_be = QDoubleSpinBox()
+        self.max_be = QDoubleSpinBox()
+        self.min_be.setDecimals(2)
+        self.max_be.setDecimals(2)
+        self.min_be.setValue(self.parent.x.min() if self.parent.x is not None else 0)
+        self.max_be.setValue(self.parent.x.max() if self.parent.x is not None else 0)
+        self.crop_btn = QPushButton("Crop")
+        self.crop_btn.clicked.connect(self._apply_crop)
         self.undo_btn = QPushButton("Undo")
         self.undo_btn.clicked.connect(self._undo_bg)
         self.undo_btn.setEnabled(False)
@@ -44,7 +52,16 @@ class BackgroundTab(QWidget):
         self.save_btn.clicked.connect(self._save_bgsub)
         self.save_btn.setEnabled(False)  # only active after subtraction
 
-        for w in (self.r_lin, self.r_shi, self.apply_btn, self.undo_btn, self.save_btn):
+        for w in (
+            self.r_lin,
+            self.r_shi,
+            self.apply_btn,
+            self.undo_btn,
+            self.save_btn,
+            self.min_be,
+            self.max_be,
+            self.crop_btn,
+        ):
             top_bar.addWidget(w)
         top_bar.addStretch()
 
@@ -197,3 +214,35 @@ class BackgroundTab(QWidget):
             data = np.column_stack((self.parent.x, self.parent.y_bgsub))
             np.savetxt(fn, data, delimiter=",", header="X,BG_subtracted_Y", comments="")
             QMessageBox.information(self, "Saved", os.path.basename(fn) + " written.")
+
+    def _apply_crop(self):
+        """Crop spectrum to user‑defined BE window and propagate downstream."""
+        vmin = self.min_be.value()
+        vmax = self.max_be.value()
+        if vmin >= vmax:
+            QMessageBox.warning(self, "Range error", "Min BE must be < Max BE")
+            return
+
+        # Build mask and ensure at least two points remain
+        mask = (self.parent.x >= vmin) & (self.parent.x <= vmax)
+        if mask.sum() < 2:
+            QMessageBox.warning(
+                self, "Range error", "Window must contain at least two data points."
+            )
+            return
+
+        # Apply crop
+        self.parent.x = self.parent.x[mask]
+        self.parent.y_current = self.parent.y_current[mask]
+
+        # If raw / smoothed / bg arrays exist, crop them too (keep lengths equal)
+        if hasattr(self.parent, "y_raw"):
+            self.parent.y_raw = self.parent.y_raw[mask]
+        if hasattr(self.parent, "y_smoothed"):
+            self.parent.y_smoothed = self.parent.y_smoothed[mask]
+        if hasattr(self.parent, "y_bgsub"):
+            self.parent.y_bgsub = self.parent.y_bgsub[mask]
+
+        # Redraw this tab and inform Fit tab (index 3) to refresh
+        self._plot_raw()
+        self.parent.tabs.widget(3).refresh()

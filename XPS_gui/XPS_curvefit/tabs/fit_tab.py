@@ -88,35 +88,49 @@ class FitTab(QWidget):
         self._cid = self.canvas.mpl_connect("button_press_event", self._on_click)
 
     def _on_click(self, ev):
-        # ── 1. Double‑click  = finish peak picking ─────────────────
+        # ── 1. Double‑click = finish peak picking ────────────────────
         if ev.dblclick:
             self.canvas.mpl_disconnect(self._cid)
 
-            if not self.peak_ids:  # no single‑clicks stored
+            if not self.peak_ids:  # nothing stored
                 QMessageBox.warning(self, "None", "No peaks picked.")
-                self._plot_curve()  # clear any guide lines
+                self._plot_curve()  # clear guide lines
                 return
 
             centers = self.parent.x[self.peak_ids]
             amps = np.array(self.amp_guesses)
+            names = [chr(ord("A") + k) for k in range(len(self.peak_ids))]
 
-            # open parameter editor, passing amplitude guesses
-            dlg = PeakEditor(self, self.parent.x, self.parent.y_current, centers, amps)
-            if dlg.exec():  # dialog completed a fit
+            # open parameter editor
+            dlg = PeakEditor(
+                self, self.parent.x, self.parent.y_current, centers, amps, names
+            )
+            if dlg.exec():  # user hit Fit
                 self.undo_btn.setEnabled(True)
                 self.save_btn.setEnabled(True)
                 self.save_curve_btn.setEnabled(True)
-            else:  # dialog canceled
+            else:  # dialog cancelled
                 self._plot_curve()
 
-        # ── 2. Single‑click  = add a peak guess ───────────────────
+            # reset for next session
+            self.peak_ids.clear()
+            self.amp_guesses.clear()
+
+        # ── 2. Single‑click = store a peak position ──────────────────
         else:
             idx = (np.abs(self.parent.x - ev.xdata)).argmin()
             self.peak_ids.append(idx)
-            self.amp_guesses.append(self.parent.y_current[idx])  # store amplitude
+            self.amp_guesses.append(self.parent.y_current[idx])
 
-            # draw a guide line at clicked x‑position
+            label = chr(ord("A") + len(self.peak_ids) - 1)
             self.canvas.ax1.axvline(self.parent.x[idx], color="gray", ls=":")
+            self.canvas.ax1.text(
+                self.parent.x[idx],
+                self.parent.y_current[idx],
+                f" {label}",
+                rotation=90,
+                va="bottom",
+            )
             self.canvas.draw()
 
     # def _do_fit(self, centers):
@@ -202,16 +216,59 @@ class FitTab(QWidget):
         self._prev_curve = self.parent.y_current.copy()
         self.parent.y_current = y_fit
 
-        self.canvas.ax1.clear()
+        ax1 = self.canvas.ax1
+        ax1.clear()
         self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
+        self.canvas.ax2 = ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
+
+        # raw + total fit
+        ax1.plot(self.parent.x, self._prev_curve, color="black", label="Input")
+        ax1.plot(self.parent.x, y_fit, color="red", label="Total fit")
+
+        # ----- plot individual components with names -----
+        comps = result.eval_components(x=self.parent.x)
+        for name, comp in comps.items():  # name like 'A_' or 'B_'
+            ax1.plot(self.parent.x, comp, ls="--")
+            # find peak position for label
+            idx_peak = np.argmax(comp)
+            x_peak = self.parent.x[idx_peak]
+            y_peak = comp[idx_peak]
+            ax1.text(
+                x_peak,
+                y_peak,
+                f" {name.rstrip('_')}",
+                va="bottom",
+                ha="left",
+                fontsize=8,
+            )
+
+        # metrics box (optional)
+        chi2 = result.redchi
+        ax1.text(
+            0.02,
+            0.95,
+            f"χ²_red = {chi2:.3g}",
+            transform=ax1.transAxes,
+            va="top",
+            bbox=dict(boxstyle="round,pad=0.2", fc="w", alpha=0.7),
         )
-        self.canvas.ax1.plot(
-            self.parent.x, self._prev_curve, color="black", label="Input"
-        )
-        self.canvas.ax1.plot(self.parent.x, y_fit, color="red", label="Fit")
-        for comp in result.eval_components(x=self.parent.x).values():
-            self.canvas.ax1.plot(self.parent.x, comp, ls="--")
-        self.canvas.ax1.legend()
+
+        ax1.set_xlabel("Binding Energy (eV)")
+        ax1.set_ylabel("Intensity (a.u.)")
+        ax1.legend()
         self.canvas.draw()
+
+        hits = []
+        for par in self.fit_result.params.values():
+            if par.vary and par.stderr is not None:
+                if np.isclose(par.value, par.min, atol=1e-8):
+                    hits.append(f"{par.name} at lower bound")
+                if np.isclose(par.value, par.max, atol=1e-8):
+                    hits.append(f"{par.name} at upper bound")
+
+        if hits:
+            QMessageBox.warning(
+                self,
+                "Boundary warning",
+                "Some parameters hit bounds:\n" + "\n".join(hits),
+            )

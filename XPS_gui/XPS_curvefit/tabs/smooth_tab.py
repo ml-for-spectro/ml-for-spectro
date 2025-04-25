@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
 )
-from utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
+from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
 from scipy.ndimage import gaussian_filter1d
 import numpy as np
 from PySide6.QtWidgets import QApplication

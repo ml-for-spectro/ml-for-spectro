@@ -5,13 +5,19 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtCore import Qt, QLocale, QSettings, QCoreApplication
 
-from tabs.load_tab import LoadTab
-from tabs.smooth_tab import SmoothTab
-from tabs.background_tab import BackgroundTab
-from tabs.fit_tab import FitTab
-from tabs.general_tab import GeneralUtilityTab
-from config import load_last_dir, save_last_dir
-from utils import plotting
+from XPS_curvefit.tabs.load_tab import LoadTab
+from XPS_curvefit.tabs.smooth_tab import SmoothTab
+from XPS_curvefit.tabs.background_tab import BackgroundTab
+from XPS_curvefit.tabs.fit_tab import FitTab
+from XPS_curvefit.tabs.general_tab import GeneralUtilityTab
+from XPS_curvefit.config import load_last_dir, save_last_dir
+from XPS_curvefit.utils import plotting
+
+
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 
 class XPSAnalysisApp(QMainWindow):
@@ -55,7 +61,7 @@ class XPSAnalysisApp(QMainWindow):
             print("Invalid saved photon energy; using default.")
         plotting.photon_energy_eV = self.photon_energy
         self.load_tab.energy_le.setText(f"{self.photon_energy:.1f}")
-        # Crop values — handle both list and string types
+
         crop = settings.value("crop_values")
         if crop:
             try:
@@ -66,9 +72,6 @@ class XPSAnalysisApp(QMainWindow):
                 self.background_tab.set_crop_values((x1, x2))
             except Exception as e:
                 print("Could not restore crop values:", e)
-
-        # print("Loaded photon energy from settings:", self.photon_energy)
-        # print("plotting.photon_energy_eV =", plotting.photon_energy_eV)
 
     def closeEvent(self, event):
         settings = QSettings()
@@ -85,10 +88,89 @@ class XPSAnalysisApp(QMainWindow):
         super().closeEvent(event)
 
 
-if __name__ == "__main__":
+# ✅ ADD THIS FUNCTION so it works with setup.py entry_points
+def main():
     QLocale.setDefault(QLocale(QLocale.C))
     app = QApplication(sys.argv)
+    app.setStyleSheet(
+        """
+    QWidget {
+        font-family: 'Helvetica Neue', 'Segoe UI', 'Arial';
+        font-size: 12pt;
+        color: #2c2c2c;
+    }
+
+    QPushButton {
+        background-color: #0078d7;
+        color: white;
+        font-weight: bold;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+    }
+
+    QPushButton:hover:!disabled {
+        background-color: #005fa3;
+    }
+
+    QPushButton:disabled {
+        background-color: #cccccc;
+        color: #666666;
+        font-weight: normal;
+    }
+
+    QLineEdit, QDoubleSpinBox {
+        border: 1px solid #999;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: #fcfcfc;
+        font-weight: bold;
+    }
+
+    QLineEdit:disabled, QDoubleSpinBox:disabled {
+        background-color: #f0f0f0;
+        color: #888;
+    }
+
+    QLabel {
+        font-weight: 600;
+    }
+
+    QTabWidget::pane {
+        border: 1px solid #aaa;
+        border-radius: 6px;
+    }
+
+    QTabBar::tab {
+        background: #dcdcdc;
+        font-weight: bold;
+        padding: 8px 16px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+
+    QTabBar::tab:selected {
+        background: #ffffff;
+        border: 1px solid #aaa;
+        border-bottom-color: #ffffff;
+    }
+
+    QToolTip {
+        color: #ffffff;
+        background-color: #2c2c2c;
+        border: none;
+        padding: 5px;
+        font-size: 10pt;
+    }
+"""
+    )
+
     win = XPSAnalysisApp()
     win.resize(1000, 800)
     win.show()
     sys.exit(app.exec())
+
+
+# ⬇️ This is still useful for direct execution
+if __name__ == "__main__":
+    main()

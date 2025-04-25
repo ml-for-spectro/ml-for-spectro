@@ -10,8 +10,12 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QFormLayout,
     QLineEdit,
+    QDialog,
+    QScrollArea,
+    QDialogButtonBox,
 )
-from utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
+
+from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
 from scipy.ndimage import gaussian_filter1d
 import numpy as np
 from PySide6.QtWidgets import QApplication
@@ -79,7 +83,7 @@ class LoadTab(QWidget):
         # self.energy_le.setText(f"{self.parent.photon_energy:.1f}")
 
     def _update_energy(self):
-        from utils import plotting  # avoid circular import
+        from XPS_curvefit.utils import plotting  # avoid circular import
 
         try:
             new_val = float(self.energy_le.text())
@@ -125,14 +129,32 @@ class LoadTab(QWidget):
                 QMessageBox.warning(self, "Error", f"Failed to load file: {e}")
 
     def show_help(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Help")
+        dialog.resize(600, 500)
 
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        help_path = os.path.join(current_dir, "help_text.txt")
+        layout = QVBoxLayout(dialog)
 
+        help_path = os.path.join(os.path.dirname(__file__), "../help_text.txt")
         try:
             with open(help_path, "r") as file:
                 help_content = file.read()
         except FileNotFoundError:
             help_content = "Help file not found."
 
-        QMessageBox.information(self, "Help", help_content)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+
+        label = QLabel(help_content)
+        label.setWordWrap(True)
+        label.setAlignment(Qt.AlignTop)
+        label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+
+        scroll.setWidget(label)
+        layout.addWidget(scroll)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+        buttons.accepted.connect(dialog.accept)
+        layout.addWidget(buttons)
+
+        dialog.exec()

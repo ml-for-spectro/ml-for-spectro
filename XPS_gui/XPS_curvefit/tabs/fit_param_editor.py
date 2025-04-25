@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 import numpy as np
-from utils.fitting_helpers import build_voigt_model
-from utils.plotting import be_to_ke, ke_to_be
+from XPS_curvefit.utils.fitting_helpers import build_voigt_model
+from XPS_curvefit.utils.plotting import be_to_ke, ke_to_be
 from PySide6.QtCore import Qt
 import csv
 

@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QGridLayout,
 )
-from utils.plotting import PlotCanvas, photon_energy_eV, ke_to_be, be_to_ke
+from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, ke_to_be, be_to_ke
 from PySide6.QtCore import QSettings
 
 
@@ -129,7 +129,7 @@ class GeneralUtilityTab(QWidget):
         self.remove_button.setEnabled(len(selected) > 0)
 
     def plot_selected(self, x, y, energy):
-        from utils import plotting
+        from XPS_curvefit.utils import plotting
 
         plotting.photon_energy_eV = energy
         filename = next(
@@ -168,7 +168,7 @@ class GeneralUtilityTab(QWidget):
                 max_y = np.max(y)
                 y = y / max_y if max_y != 0 else y
             label = s["name"]
-            from utils import plotting
+            from XPS_curvefit.utils import plotting
 
             plotting.photon_energy_eV = s["photon_energy"].value()
             self.canvas.ax1.plot(x, y, label=label)
@@ -188,7 +188,7 @@ class GeneralUtilityTab(QWidget):
         self.parent.x = s["x"]
         self.parent.y_raw = s["y"]
         self.parent.y_current = s["y"].copy()
-        from utils import plotting
+        from XPS_curvefit.utils import plotting
 
         plotting.photon_energy_eV = s["photon_energy"].value()
         self.parent.photon_energy = plotting.photon_energy_eV

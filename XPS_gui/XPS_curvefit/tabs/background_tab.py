@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 import numpy as np
 
-from utils.plotting import PlotCanvas, be_to_ke, ke_to_be
-from utils.background import shirley_bg
+from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
+from XPS_curvefit.utils.background import shirley_bg
 
 
 class BackgroundTab(QWidget):

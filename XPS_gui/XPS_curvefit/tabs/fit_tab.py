@@ -9,9 +9,9 @@ from PySide6.QtWidgets import (
 )
 import numpy as np
 
-from utils.plotting import PlotCanvas, be_to_ke, ke_to_be
-from utils.fitting_helpers import build_voigt_model
-from tabs.fit_param_editor import PeakEditor
+from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
+from XPS_curvefit.utils.fitting_helpers import build_voigt_model
+from XPS_curvefit.tabs.fit_param_editor import PeakEditor
 
 
 class FitTab(QWidget):

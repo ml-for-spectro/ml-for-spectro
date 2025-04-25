@@ -1,10 +1,10 @@
 Welcome to the SXFA - Simple XPS Fitting App!
 
-
 DISCLAIMER:
 -----------
-This software was developed with the assistance of publicly available resources and AI tools, including ChatGPT. While care has been taken to ensure functionality, users should employ the tool at their own discretion and risk. You are welcome to use and distribute this tool freely.
-
+This software was developed with the assistance of publicly available resources
+and AI tools, including ChatGPT. While care has been taken to ensure functionality,
+users should employ the tool at their own discretion and risk.
 LICENSE:
 --------
 You are free to use, modify, and distribute this software and its source code for non-commercial or academic purposes, provided proper acknowledgment is given.
@@ -37,6 +37,5 @@ TIPS:
 - Make sure to save your work regularly.
 - Hover over plot areas to see coordinates.
 - Double-check photon energy values before analysis.
-
 
 For more support and more ideas to include or improve, contact sufal.swaraj@synchrotron-soleil.fr

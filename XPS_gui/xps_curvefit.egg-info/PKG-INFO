@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: xps-curvefit
+Version: 0.1
+Summary: A simple XPS analysis tool with smoothing, background, and peak fitting.
+Author: Your Name
+Requires-Dist: PySide6
+Requires-Dist: numpy
+Requires-Dist: matplotlib

@@ -14,7 +14,7 @@ def be_to_ke(be):
 
 
 def on_mouse_move(event, label):
-    if event.inaxes:
+    if event.inaxes and label is not None:
         x, y = event.xdata, event.ydata
         label.setText(f"X: {x:.2f}, Y: {y:.2f}")
 

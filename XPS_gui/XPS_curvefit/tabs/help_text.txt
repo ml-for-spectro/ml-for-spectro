@@ -1,0 +1,42 @@
+Welcome to the SXFA - Simple XPS Fitting App!
+
+
+DISCLAIMER:
+-----------
+This software was developed with the assistance of publicly available resources and AI tools, including ChatGPT. While care has been taken to ensure functionality, users should employ the tool at their own discretion and risk. You are welcome to use and distribute this tool freely.
+
+LICENSE:
+--------
+You are free to use, modify, and distribute this software and its source code for non-commercial or academic purposes, provided proper acknowledgment is given.
+HOW TO USE:
+-----------
+1. Load Tab:
+   - Click "Load Spectrum" to import your XPS data.
+   - Make sure to set the correct photon energy.
+   - You can reload or clear data using the relevant buttons.
+
+2. Smoothing Tab:
+   - Apply optional smoothing filters to clean up noisy spectra.
+
+3. Background Tab:
+   - Select a region for background fitting.
+   - Choose the model (e.g., Shirley or linear) and apply subtraction.
+
+4. Fit Tab:
+   - Add peak components manually.
+   - Fit the spectrum using constraints and visualize results.
+
+5. General Utility Tab:
+   - Load and store up to 6 different spectra.
+   - Add photon energy per file.
+   - Select files to compare (with or without normalization).
+   - Click “Send to Analysis” to push a selected spectrum into the main workflow.
+
+TIPS:
+-----
+- Make sure to save your work regularly.
+- Hover over plot areas to see coordinates.
+- Double-check photon energy values before analysis.
+
+
+For more support and more ideas to include or improve, contact sufal.swaraj@synchrotron-soleil.fr

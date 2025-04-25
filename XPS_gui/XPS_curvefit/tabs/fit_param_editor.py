@@ -206,33 +206,72 @@ class PeakEditor(QDialog):
     # ------------------------------------------------------------------
     def _do_fit(self):
         try:
-            (
-                names,
-                centers,
-                sigmas,
-                gammas,
-                amps,
-                cen_con,
-                sig_con,
-                gam_con,
-                amp_con,
-            ) = self._parse_table()
-        except ValueError as err:
-            QMessageBox.warning(self, "Bad input", str(err))
+            # names is column 0; numeric 1‑4; constraints 5‑8
+            cols = list(
+                zip(
+                    *[
+                        [self.table.item(r, c).text() for c in range(9)]
+                        for r in range(self.table.rowCount())
+                    ]
+                )
+            )
+            names = np.array(cols[0])
+            centers = np.array(list(map(float, cols[1])))
+            sigmas = np.array(list(map(float, cols[2])))
+            gammas = np.array(list(map(float, cols[3])))
+            amps = np.array(list(map(float, cols[4])))
+            cen_con = np.array(cols[5])
+            sig_con = np.array(cols[6])
+            gam_con = np.array(cols[7])
+            amp_con = np.array(cols[8])
+        except ValueError:
+            QMessageBox.warning(
+                self, "Bad input", "Center, Sigma, Gamma, Amplitude must be numeric."
+            )
             return
 
-        prefixes = [f"{n}_" for n in names]
-        model, pars = build_voigt_model(self.x, centers, pref_list=prefixes)
+        # ---- Build model using name prefixes (e.g. 'A_', 'B_') ----------
+        model = None
+        pars = None
+        for pref, cen in zip(names, centers):
+            v, p = build_voigt_model(self.x, [cen], pref_list=[pref + "_"])
+            model = v if model is None else model + v
+            pars = p if pars is None else (pars.update(p), pars)[1]
 
-        for i, pref in enumerate(prefixes):
+        # ---- apply constraints / initial values -------------------------
+        for i, pref in enumerate(names):
+            pref += "_"  # 'A_' etc.
             self._parse_constraint(cen_con[i], pars[pref + "center"], centers[i])
             self._parse_constraint(sig_con[i], pars[pref + "sigma"], sigmas[i])
             self._parse_constraint(gam_con[i], pars[pref + "gamma"], gammas[i])
             self._parse_constraint(amp_con[i], pars[pref + "amplitude"], amps[i])
 
         result = model.fit(self.y, pars, x=self.x)
-        self.parent()._display_fit(result)
-        self.accept()
+        self.parent()._display_fit(result)  # update FitTab
+
+        # ---- Update table with best-fit values -------------------------
+        for i, pref in enumerate(names):
+            pref += "_"
+            self.table.setItem(
+                i, 1, QTableWidgetItem(f"{result.params[pref + 'center'].value:.3f}")
+            )
+            self.table.setItem(
+                i, 2, QTableWidgetItem(f"{result.params[pref + 'sigma'].value:.3f}")
+            )
+            self.table.setItem(
+                i, 3, QTableWidgetItem(f"{result.params[pref + 'gamma'].value:.3f}")
+            )
+            self.table.setItem(
+                i, 4, QTableWidgetItem(f"{result.params[pref + 'amplitude'].value:.3f}")
+            )
+
+        # Optional: notify user
+        QMessageBox.information(
+            self, "Fit Complete", "Fit complete. Table updated with best-fit values."
+        )
+
+        # Don't close the dialog!
+        # self.accept()  ← REMOVE THIS
 
     def _save_params(self):
         fn, _ = QFileDialog.getSaveFileName(self, "Save Params", "", "CSV (*.csv)")

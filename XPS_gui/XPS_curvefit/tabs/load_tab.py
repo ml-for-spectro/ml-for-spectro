@@ -43,13 +43,18 @@ class LoadTab(QWidget):
         self.exit_button = QPushButton("Exit")
         self.load_button.clicked.connect(self.load_spectrum)
         self.exit_button.clicked.connect(QApplication.quit)
+        self.help_button = QPushButton("Help")
 
         self.load_button.setFixedSize(120, 30)
         self.exit_button.setFixedSize(120, 30)
+        self.help_button.setFixedSize(120, 30)
 
         controls_layout.addWidget(self.load_button)
         controls_layout.addWidget(self.exit_button)
+        controls_layout.addWidget(self.help_button)
         controls_layout.addStretch()
+
+        self.help_button.clicked.connect(self.show_help)
 
         # Right side: plot + coordinate label
         right_layout = QVBoxLayout()
@@ -71,21 +76,28 @@ class LoadTab(QWidget):
         main_layout.addLayout(right_layout)
 
         self.setLayout(main_layout)
+        # self.energy_le.setText(f"{self.parent.photon_energy:.1f}")
 
     def _update_energy(self):
-        from utils import plotting  # import inside to avoid circular import
+        from utils import plotting  # avoid circular import
 
         try:
             new_val = float(self.energy_le.text())
             plotting.photon_energy_eV = new_val
-            # refresh current tab’s canvas
+            self.parent.photon_energy = new_val  # ← Save to main app instance!
+
+            # Refresh current tab’s canvas
             if self.parent.x is not None:
-                self.canvas.plot_data(self.parent.x, self.parent.y)
-            # refresh smoothing tab if it’s been plotted already
+                self.canvas.plot_data(self.parent.x, self.parent.y_current)
+
+            # Refresh smoothing tab if it’s been plotted already
             self.parent.tabs.widget(1).refresh()
         except ValueError:
             QMessageBox.warning(self, "Bad value", "Please enter a number (e.g. 350)")
             self.energy_le.setText(f"{plotting.photon_energy_eV:.1f}")
+        # print("User entered photon energy:", new_val)
+        # print("Stored in parent:", self.parent.photon_energy)
+        # print("plotting.photon_energy_eV =", plotting.photon_energy_eV)
 
     def load_spectrum(self):
         initial_dir = self.parent.last_dir if self.parent.last_dir else ""
@@ -108,6 +120,19 @@ class LoadTab(QWidget):
                 self.parent.tabs.widget(1).refresh()
                 # add this immediately after
                 self.parent.tabs.widget(2).refresh()  # Background tab (index 2)
-                self.parent.tabs.widget(3).refresh() 
+                self.parent.tabs.widget(3).refresh()
             except Exception as e:
                 QMessageBox.warning(self, "Error", f"Failed to load file: {e}")
+
+    def show_help(self):
+
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        help_path = os.path.join(current_dir, "help_text.txt")
+
+        try:
+            with open(help_path, "r") as file:
+                help_content = file.read()
+        except FileNotFoundError:
+            help_content = "Help file not found."
+
+        QMessageBox.information(self, "Help", help_content)

@@ -246,3 +246,11 @@ class BackgroundTab(QWidget):
         # Redraw this tab and inform Fit tab (index 3) to refresh
         self._plot_raw()
         self.parent.tabs.widget(3).refresh()
+
+    def get_crop_values(self):
+        return (self.min_be.value(), self.max_be.value())
+
+    def set_crop_values(self, values):
+        vmin, vmax = values
+        self.min_be.setValue(vmin)
+        self.max_be.setValue(vmax)

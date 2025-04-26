@@ -24,7 +24,9 @@ You need **Python 3.8+**.
 ### ⚙️ Local editable install (for development)
 
 git clone https://github.com/yourusername/xps-curvefit.git
+
 cd xps-curvefit
+
 pip install -e .
 
 Then run it:

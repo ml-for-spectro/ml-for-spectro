@@ -19,6 +19,7 @@ class FitTab(QWidget):
         super().__init__()
         self.parent = parent
         self.peak_ids = []  # indices user clicked
+        self.editor = None  # <-- Add this!!
         self.amp_guesses = []
         self.fit_result = None
         self._prev_curve = None
@@ -51,16 +52,29 @@ class FitTab(QWidget):
         self.undo_btn.clicked.connect(self._undo_fit)
         self.save_btn.clicked.connect(self._save_fit)
         self.save_curve_btn.clicked.connect(self._save_curves)
+        # self.editor.fit_done.connect(self._handle_fit_done)
 
     # ---------- called by other tabs ----------
     def refresh(self):
         if self.parent.x is not None and self.parent.y_current is not None:
             self._plot_curve()
+        self.fit_result = None
+        self.undo_btn.setEnabled(False)
+        self.save_btn.setEnabled(False)
+        self.save_curve_btn.setEnabled(False)
 
     # ---------- internal plotting -------------
     def _plot_curve(self):
         self.canvas.ax1.clear()
         self.canvas.ax2.clear()
+
+        if self.parent.x is None or self.parent.y_current is None:
+            self.canvas.draw()
+            return
+        if len(self.parent.x) != len(self.parent.y_current):
+            self.canvas.draw()
+            return
+
         self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
             "top", functions=(be_to_ke, ke_to_be)
         )
@@ -75,9 +89,15 @@ class FitTab(QWidget):
 
     # ------------- pick peaks then fit --------
     def _begin_pick(self):
-        if self.parent.y_current is None:
+        if self.parent.x is None or self.parent.y_current is None:
             QMessageBox.warning(self, "No data", "Load / process a spectrum first")
             return
+        if len(self.parent.x) != len(self.parent.y_current):
+            QMessageBox.warning(
+                self, "Invalid data", "X and Y have mismatched lengths."
+            )
+            return
+
         self.peak_ids.clear()
         self.amp_guesses.clear()
         QMessageBox.information(
@@ -88,13 +108,12 @@ class FitTab(QWidget):
         self._cid = self.canvas.mpl_connect("button_press_event", self._on_click)
 
     def _on_click(self, ev):
-        # ── 1. Double‑click = finish peak picking ────────────────────
         if ev.dblclick:
             self.canvas.mpl_disconnect(self._cid)
 
-            if not self.peak_ids:  # nothing stored
+            if not self.peak_ids:
                 QMessageBox.warning(self, "None", "No peaks picked.")
-                self._plot_curve()  # clear guide lines
+                self._plot_curve()
                 return
 
             centers = self.parent.x[self.peak_ids]
@@ -102,21 +121,16 @@ class FitTab(QWidget):
             names = [chr(ord("A") + k) for k in range(len(self.peak_ids))]
 
             # open parameter editor
-            dlg = PeakEditor(
+            self.editor = PeakEditor(
                 self, self.parent.x, self.parent.y_current, centers, amps, names
             )
-            if dlg.exec():  # user hit Fit
-                self.undo_btn.setEnabled(True)
-                self.save_btn.setEnabled(True)
-                self.save_curve_btn.setEnabled(True)
-            else:  # dialog cancelled
-                self._plot_curve()
+            self.editor.fit_done.connect(self._handle_fit_done)
+            self.editor.exec()
 
-            # reset for next session
+            # reset
             self.peak_ids.clear()
             self.amp_guesses.clear()
 
-        # ── 2. Single‑click = store a peak position ──────────────────
         else:
             idx = (np.abs(self.parent.x - ev.xdata)).argmin()
             self.peak_ids.append(idx)
@@ -171,6 +185,7 @@ class FitTab(QWidget):
             return
         self.parent.y_current = self._prev_curve
         self.fit_result = None
+        self._prev_curve = None  # <--- ADD THIS LINE
         self.undo_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
         self.save_curve_btn.setEnabled(False)
@@ -212,9 +227,8 @@ class FitTab(QWidget):
 
     def _display_fit(self, result):
         self.fit_result = result
-        y_fit = result.best_fit
-        self._prev_curve = self.parent.y_current.copy()
-        self.parent.y_current = y_fit
+        self._y_fit = result.best_fit  # <-- keep best fit separately
+        # DO NOT modify self.parent.y_current!
 
         ax1 = self.canvas.ax1
         ax1.clear()
@@ -222,14 +236,17 @@ class FitTab(QWidget):
         self.canvas.ax2 = ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
 
         # raw + total fit
-        ax1.plot(self.parent.x, self._prev_curve, color="black", label="Input")
-        ax1.plot(self.parent.x, y_fit, color="red", label="Total fit")
+        ax1.plot(
+            self.parent.x, self.parent.y_current, color="black", label="Input"
+        )  # <-- original data
+        ax1.plot(
+            self.parent.x, self._y_fit, color="red", label="Total fit"
+        )  # <-- fit curve
 
-        # ----- plot individual components with names -----
+        # plot individual components
         comps = result.eval_components(x=self.parent.x)
-        for name, comp in comps.items():  # name like 'A_' or 'B_'
+        for name, comp in comps.items():
             ax1.plot(self.parent.x, comp, ls="--")
-            # find peak position for label
             idx_peak = np.argmax(comp)
             x_peak = self.parent.x[idx_peak]
             y_peak = comp[idx_peak]
@@ -242,7 +259,6 @@ class FitTab(QWidget):
                 fontsize=8,
             )
 
-        # metrics box (optional)
         chi2 = result.redchi
         ax1.text(
             0.02,
@@ -272,3 +288,8 @@ class FitTab(QWidget):
                 "Boundary warning",
                 "Some parameters hit bounds:\n" + "\n".join(hits),
             )
+
+    def _handle_fit_done(self, result):
+        self._display_fit(result)
+        self.save_btn.setEnabled(True)
+        self.save_curve_btn.setEnabled(True)

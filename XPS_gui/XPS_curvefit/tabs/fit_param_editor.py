@@ -11,13 +11,16 @@ from PySide6.QtWidgets import (
 import numpy as np
 from XPS_curvefit.utils.fitting_helpers import build_voigt_model
 from XPS_curvefit.utils.plotting import be_to_ke, ke_to_be
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 import csv
 
 
 class PeakEditor(QDialog):
-    def __init__(self, parent, xdata, ydata, centers, amps, names):
-        super().__init__(parent)
+    fit_done = Signal(object)  # send back the fit result object
+
+    def __init__(self, fit_tab, xdata, ydata, centers, amps, names):
+        super().__init__(parent=fit_tab)
+        self.fit_tab = fit_tab
         self.setWindowTitle("Peak parameters")
         self.x, self.y = xdata, ydata
 
@@ -197,11 +200,11 @@ class PeakEditor(QDialog):
 
         preview = model.eval(pars, x=self.x)
 
-        ax = self.parent().canvas.ax1
+        ax = self.fit_tab.canvas.ax1
         [l.remove() for l in ax.lines if l.get_label() == "preview"]
         ax.plot(self.x, preview, ls="--", color="gray", label="preview")
         ax.legend()
-        self.parent().canvas.draw()
+        self.fit_tab.canvas.draw()
 
     # ------------------------------------------------------------------
     def _do_fit(self):
@@ -247,7 +250,9 @@ class PeakEditor(QDialog):
             self._parse_constraint(amp_con[i], pars[pref + "amplitude"], amps[i])
 
         result = model.fit(self.y, pars, x=self.x)
-        self.parent()._display_fit(result)  # update FitTab
+        self.fit_done.emit(result)  # send back the fit result to parent
+        # self.accept()  # now allow closing the dialog
+        # self.fit_tab._display_fit(result)  # update FitTab
 
         # ---- Update table with best-fit values -------------------------
         for i, pref in enumerate(names):
@@ -272,6 +277,10 @@ class PeakEditor(QDialog):
 
         # Don't close the dialog!
         # self.accept()  ← REMOVE THIS
+        self.fit_tab.save_btn.setEnabled(True)
+        self.fit_tab.save_curve_btn.setEnabled(True)
+        self.fit_tab.undo_btn.setEnabled(True)
+        # self.accept()
 
     def _save_params(self):
         fn, _ = QFileDialog.getSaveFileName(self, "Save Params", "", "CSV (*.csv)")

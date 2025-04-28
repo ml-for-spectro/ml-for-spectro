@@ -125,6 +125,7 @@ class LoadTab(QWidget):
                 # add this immediately after
                 self.parent.tabs.widget(2).refresh()  # Background tab (index 2)
                 self.parent.tabs.widget(3).refresh()
+
             except Exception as e:
                 QMessageBox.warning(self, "Error", f"Failed to load file: {e}")
 

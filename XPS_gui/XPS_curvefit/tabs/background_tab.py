@@ -21,6 +21,8 @@ class BackgroundTab(QWidget):
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self._full_x = None  # Store original x for undoing crop
+        self._full_y = None  # Store original y for undoing crop
         self.pt_indices = []  # stores two indices chosen by user
         self.bg_subtracted = False
 
@@ -47,6 +49,9 @@ class BackgroundTab(QWidget):
         self.crop_btn.clicked.connect(self._apply_crop)
         self.undo_btn = QPushButton("Undo")
         self.undo_btn.clicked.connect(self._undo_bg)
+        self.undo_crop_btn = QPushButton("Undo Crop")
+        self.undo_crop_btn.clicked.connect(self._undo_crop)
+        self.undo_crop_btn.setEnabled(False)
         self.undo_btn.setEnabled(False)
         self.save_btn = QPushButton("Save Spectrum")
         self.save_btn.clicked.connect(self._save_bgsub)
@@ -57,6 +62,7 @@ class BackgroundTab(QWidget):
             self.r_shi,
             self.apply_btn,
             self.undo_btn,
+            self.undo_crop_btn,
             self.save_btn,
             self.min_be,
             self.max_be,
@@ -76,7 +82,10 @@ class BackgroundTab(QWidget):
 
     # ---------- Public API called by LoadTab -----------
     def refresh(self):
+        self._full_x = None
+        self._full_y = None
         if self.parent.x is not None and self.parent.y_current is not None:
+            self.reset_crop_spinboxes()
             self._plot_raw()
 
     # ---------- Internal helpers -----------------------
@@ -219,6 +228,7 @@ class BackgroundTab(QWidget):
         """Crop spectrum to user‑defined BE window and propagate downstream."""
         vmin = self.min_be.value()
         vmax = self.max_be.value()
+
         if vmin >= vmax:
             QMessageBox.warning(self, "Range error", "Min BE must be < Max BE")
             return
@@ -231,11 +241,16 @@ class BackgroundTab(QWidget):
             )
             return
 
+        # Save full spectrum only if not already saved
+        if self._full_x is None or self._full_y is None:
+            self._full_x = self.parent.x.copy()
+            self._full_y = self.parent.y_current.copy()
+
         # Apply crop
         self.parent.x = self.parent.x[mask]
         self.parent.y_current = self.parent.y_current[mask]
 
-        # If raw / smoothed / bg arrays exist, crop them too (keep lengths equal)
+        # Crop optional arrays
         if hasattr(self.parent, "y_raw"):
             self.parent.y_raw = self.parent.y_raw[mask]
         if hasattr(self.parent, "y_smoothed"):
@@ -243,7 +258,9 @@ class BackgroundTab(QWidget):
         if hasattr(self.parent, "y_bgsub"):
             self.parent.y_bgsub = self.parent.y_bgsub[mask]
 
-        # Redraw this tab and inform Fit tab (index 3) to refresh
+        # Update spinboxes, redraw, notify fit tab
+        self.undo_crop_btn.setEnabled(True)
+        self.reset_crop_spinboxes()
         self._plot_raw()
         self.parent.tabs.widget(3).refresh()
 
@@ -254,3 +271,42 @@ class BackgroundTab(QWidget):
         vmin, vmax = values
         self.min_be.setValue(vmin)
         self.max_be.setValue(vmax)
+
+    def reset_crop_spinboxes(self):
+        """Reset crop spinboxes intelligently: preserve values if still valid, otherwise reset."""
+        if self.parent.x is None:
+            return
+        x_min = self.parent.x.min()
+        x_max = self.parent.x.max()
+
+        # Update min/max range of spinboxes
+        self.min_be.setMinimum(x_min)
+        self.min_be.setMaximum(x_max)
+        self.max_be.setMinimum(x_min)
+        self.max_be.setMaximum(x_max)
+
+        # Only reset values if old ones are invalid
+        if not (x_min <= self.min_be.value() <= x_max):
+            self.min_be.setValue(x_min)
+        if not (x_min <= self.max_be.value() <= x_max):
+            self.max_be.setValue(x_max)
+
+    def _undo_crop(self):
+        if self._full_x is not None and self._full_y is not None:
+            self.parent.x = self._full_x.copy()
+            self.parent.y_current = self._full_y.copy()
+
+            # Clear any smoothed or bgsub arrays because they are no longer valid
+            if hasattr(self.parent, "y_raw"):
+                del self.parent.y_raw
+            if hasattr(self.parent, "y_smoothed"):
+                del self.parent.y_smoothed
+            if hasattr(self.parent, "y_bgsub"):
+                del self.parent.y_bgsub
+
+            self._full_x = None
+            self._full_y = None
+            self.reset_crop_spinboxes()
+            self._plot_raw()
+            self.undo_crop_btn.setEnabled(False)
+            self.parent.tabs.widget(3).refresh()

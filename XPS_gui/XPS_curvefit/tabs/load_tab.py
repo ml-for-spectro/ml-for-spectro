@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QScrollArea,
     QDialogButtonBox,
+    QInputDialog,
 )
 
 from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
@@ -111,19 +112,45 @@ class LoadTab(QWidget):
         if path:
             try:
                 data = np.genfromtxt(path, delimiter=",", skip_header=1)
-                self.parent.x = data[:, 0]
-                self.parent.y_raw = data[:, 1]
-                self.parent.y_current = self.parent.y_raw.copy()
+                x = data[:, 0]
+                y_all = data[:, 1:]  # could be 1 or more columns
+
+                if y_all.shape[1] == 1:
+                    # Only one Y column
+                    y_raw = y_all[:, 0]
+                else:
+                    # Multiple Y columns -> ask user which one to pick
+                    options = [f"Column {i+1}" for i in range(y_all.shape[1])]
+                    item, ok = QInputDialog.getItem(
+                        self,
+                        "Select Y column",
+                        "Choose Y data column:",
+                        options,
+                        0,
+                        False,
+                    )
+                    if ok and item:
+                        idx = options.index(item)
+                        y_raw = y_all[:, idx]
+                    else:
+                        # User cancelled
+                        return
+
+                # Store in parent
+                self.parent.x = x
+                self.parent.y_raw = y_raw
+                self.parent.y_current = y_raw.copy()
                 self.path_label.setText(path)
                 self.canvas.plot_data(self.parent.x, self.parent.y_current)
+
                 # Store directory for next time
                 dir_path = os.path.dirname(path)
                 self.parent.last_dir = dir_path
                 self.parent.save_last_dir(dir_path)
+
                 # Update smoothing tab
                 self.parent.tabs.widget(1).refresh()
-                # add this immediately after
-                self.parent.tabs.widget(2).refresh()  # Background tab (index 2)
+                self.parent.tabs.widget(2).refresh()
                 self.parent.tabs.widget(3).refresh()
 
             except Exception as e:

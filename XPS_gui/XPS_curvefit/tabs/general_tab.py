@@ -12,9 +12,11 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QGroupBox,
     QGridLayout,
+    QInputDialog,
 )
 from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, ke_to_be, be_to_ke
 from PySide6.QtCore import QSettings
+import pandas as pd
 
 
 class GeneralUtilityTab(QWidget):
@@ -76,8 +78,28 @@ class GeneralUtilityTab(QWidget):
         self.settings.setValue("general_tab/last_dir", os.path.dirname(path))
 
         try:
-            data = np.genfromtxt(path, delimiter=",", skip_header=1)
-            x, y = data[:, 0], data[:, 1]
+            df = pd.read_csv(path)  # <-- use pandas to load
+
+            x = df.iloc[:, 0].values
+            y_all = df.iloc[:, 1:]
+
+            if y_all.shape[1] == 1:
+                y = y_all.iloc[:, 0].values
+            else:
+                options = list(y_all.columns)
+                item, ok = QInputDialog.getItem(
+                    self,
+                    "Select Y column",
+                    f"Choose Y data column ({len(options)} available):",
+                    options,
+                    0,
+                    False,
+                )
+                if ok and item:
+                    y = y_all[item].values
+                else:
+                    return
+
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Could not load file:\n{e}")
             return

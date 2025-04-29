@@ -124,10 +124,18 @@ class BackgroundTab(QWidget):
     def _on_click(self, event):
         if event.inaxes != self.canvas.ax1:
             return
-        # find nearest data index
+
+        # Find nearest data index
         idx = (np.abs(self.parent.x - event.xdata)).argmin()
         self.pt_indices.append(idx)
-        if len(self.pt_indices) == 2:
+
+        # Optionally populate y1_input and y2_input widgets
+        if len(self.pt_indices) == 1:
+            if hasattr(self, "y1_input"):
+                self.y1_input.setValue(self.parent.y_current[idx])
+        elif len(self.pt_indices) == 2:
+            if hasattr(self, "y2_input"):
+                self.y2_input.setValue(self.parent.y_current[idx])
             self.canvas.mpl_disconnect(self._click_cid)
             self.pt_indices.sort()
             self._apply_background()
@@ -225,7 +233,7 @@ class BackgroundTab(QWidget):
             QMessageBox.information(self, "Saved", os.path.basename(fn) + " written.")
 
     def _apply_crop(self):
-        """Crop spectrum to user‑defined BE window and propagate downstream."""
+        """Crop spectrum to user-defined BE window and propagate downstream."""
         vmin = self.min_be.value()
         vmax = self.max_be.value()
 
@@ -233,22 +241,22 @@ class BackgroundTab(QWidget):
             QMessageBox.warning(self, "Range error", "Min BE must be < Max BE")
             return
 
-        # Build mask and ensure at least two points remain
-        mask = (self.parent.x >= vmin) & (self.parent.x <= vmax)
+        # Save full spectrum only if not already saved
+        if self._full_x is None or self._full_y is None:
+            self._full_x = self.parent.x.copy()
+            self._full_y = self.parent.y_current.copy()
+
+        # Build mask based on full x
+        mask = (self._full_x >= vmin) & (self._full_x <= vmax)
         if mask.sum() < 2:
             QMessageBox.warning(
                 self, "Range error", "Window must contain at least two data points."
             )
             return
 
-        # Save full spectrum only if not already saved
-        if self._full_x is None or self._full_y is None:
-            self._full_x = self.parent.x.copy()
-            self._full_y = self.parent.y_current.copy()
-
-        # Apply crop
-        self.parent.x = self.parent.x[mask]
-        self.parent.y_current = self.parent.y_current[mask]
+        # Apply crop using _full_x and _full_y
+        self.parent.x = self._full_x[mask]
+        self.parent.y_current = self._full_y[mask]
 
         # Crop optional arrays
         if hasattr(self.parent, "y_raw"):

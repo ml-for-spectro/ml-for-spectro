@@ -67,8 +67,8 @@ class FitTab(QWidget):
     def _plot_curve(self):
         self.canvas.ax1.clear()
         self.canvas.ax2.clear()
-        print(self.parent.x)
-        print(self.parent.y_current)
+        # print(self.parent.x)
+        # print(self.parent.y_current)
 
         if self.parent.x is None or self.parent.y_current is None:
             self.canvas.draw()

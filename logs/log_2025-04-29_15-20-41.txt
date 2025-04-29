@@ -1,0 +1,21 @@
+2025-04-29 15:20:50,105 - New file loaded
+2025-04-29 15:20:50,106 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_bgdremoved.csv
+2025-04-29 15:21:23,826 - Loaded parameters from 171_no1_param.csv.
+2025-04-29 15:23:13,816 - Fitting was done.
+2025-04-29 15:24:07,248 - Fitting was done.
+2025-04-29 15:24:21,185 - Saved pameters to 171_no1_param.csv.
+2025-04-29 15:24:32,691 - Fitting was done.
+2025-04-29 15:25:44,748 - Fitting was done.
+2025-04-29 15:26:19,822 - Fitting was done.
+2025-04-29 15:26:56,989 - Fitting was done.
+2025-04-29 15:27:24,093 - Fitting was done.
+2025-04-29 15:27:59,769 - Fitting was done.
+2025-04-29 15:28:36,538 - Fitting was done.
+2025-04-29 15:29:17,549 - Fitting was done.
+2025-04-29 15:30:01,321 - Fitting was done.
+2025-04-29 15:31:16,213 - Saved pameters to 171_no1_4Peakparam.csv.
+2025-04-29 15:31:55,516 - Fitting was done.
+2025-04-29 15:35:44,115 - Fitting was done.
+2025-04-29 15:36:30,710 - Saved pameters to 171_no1_6Peakparam.csv.
+2025-04-29 15:38:15,547 - Loaded parameters from 171_no1_5Peakparam.csv.
+2025-04-29 15:38:23,686 - Fitting was done.

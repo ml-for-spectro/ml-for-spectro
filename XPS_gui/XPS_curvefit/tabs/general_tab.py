@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import logging
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -85,6 +86,8 @@ class GeneralUtilityTab(QWidget):
 
             if y_all.shape[1] == 1:
                 y = y_all.iloc[:, 0].values
+                logging.info("New file loaded")
+                logging.info(f"{path}")
             else:
                 options = list(y_all.columns)
                 item, ok = QInputDialog.getItem(
@@ -97,7 +100,10 @@ class GeneralUtilityTab(QWidget):
                 )
                 if ok and item:
                     y = y_all[item].values
+                    logging.info("The following column loaded:")
+                    logging.info(f"Column {item}")
                 else:
+                    logging.info("Loading Cancelled")
                     return
 
         except Exception as e:
@@ -149,6 +155,7 @@ class GeneralUtilityTab(QWidget):
         selected = [s for s in self.spectra if s["checkbox"].isChecked()]
         self.send_button.setEnabled(len(selected) == 1)
         self.remove_button.setEnabled(len(selected) > 0)
+        logging.info("File send for analysis")
 
     def plot_selected(self, x, y, energy):
         from XPS_curvefit.utils import plotting

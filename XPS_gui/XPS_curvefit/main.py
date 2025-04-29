@@ -1,6 +1,8 @@
 import sys
 import os
 import ast
+import logging
+from datetime import datetime
 from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtCore import Qt, QLocale, QSettings, QCoreApplication
@@ -10,8 +12,10 @@ from XPS_curvefit.tabs.smooth_tab import SmoothTab
 from XPS_curvefit.tabs.background_tab import BackgroundTab
 from XPS_curvefit.tabs.fit_tab import FitTab
 from XPS_curvefit.tabs.general_tab import GeneralUtilityTab
+from XPS_curvefit.tabs.log_tab import LogTab
 from XPS_curvefit.config import load_last_dir, save_last_dir
 from XPS_curvefit.utils import plotting
+from XPS_curvefit.utils import logging_utils
 
 
 def resource_path(relative_path):
@@ -41,12 +45,14 @@ class XPSAnalysisApp(QMainWindow):
         self.background_tab = BackgroundTab(self)
         self.fit_tab = FitTab(self)
         self.general_tab = GeneralUtilityTab(self)
+        self.log_tab = LogTab(self)
 
         self.tabs.addTab(self.load_tab, "Load Data")
         self.tabs.addTab(self.smooth_tab, "Smoothing")
         self.tabs.addTab(self.background_tab, "Background")
         self.tabs.addTab(self.fit_tab, "Voigt Fitting")
         self.tabs.addTab(self.general_tab, "General Utility")
+        self.tabs.addTab(self.log_tab, "Log")
 
         self.setCentralWidget(self.tabs)
 
@@ -61,6 +67,13 @@ class XPSAnalysisApp(QMainWindow):
             print("Invalid saved photon energy; using default.")
         plotting.photon_energy_eV = self.photon_energy
         self.load_tab.energy_le.setText(f"{self.photon_energy:.1f}")
+
+        # Setup logging
+        # Initialize LogTab and store a reference to its QTextEdit
+
+        self.text_edit = self.log_tab.text_edit
+        # self.setup_logger()
+        self.setup_logger(self.log_tab.text_edit)
 
         crop = settings.value("crop_values")
         if crop:
@@ -86,6 +99,23 @@ class XPSAnalysisApp(QMainWindow):
             print("Error saving crop values:", e)
         print("Saving photon energy:", self.photon_energy)
         super().closeEvent(event)
+
+    def setup_logger(self, text_edit_widget):
+        log_dir = "logs"
+        os.makedirs(log_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        self.log_path = os.path.join(log_dir, f"log_{timestamp}.txt")
+
+        file_handler = logging.FileHandler(self.log_path)
+        file_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+        logger.addHandler(file_handler)
+
+        # Attach QTextEdit logger to the GUI
+        gui_handler = logging_utils.QTextEditLogger(text_edit_widget)
+        logger.addHandler(gui_handler)
 
 
 # ✅ ADD THIS FUNCTION so it works with setup.py entry_points

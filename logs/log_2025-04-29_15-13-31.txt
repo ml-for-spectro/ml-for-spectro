@@ -1,0 +1,11 @@
+2025-04-29 15:13:39,583 - New file loaded
+2025-04-29 15:13:39,583 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_smooth.csv
+2025-04-29 15:13:45,845 - Cropping was done.
+2025-04-29 15:13:50,118 - SClicking for bgnd was done
+2025-04-29 15:13:50,118 - X =59.60443022257392)
+2025-04-29 15:13:50,118 - Y =1.0195849096704563)
+2025-04-29 15:13:52,012 - SClicking for bgnd was done
+2025-04-29 15:13:52,012 - X =65.21616228365545)
+2025-04-29 15:13:52,013 - Y =1.002680926320132)
+2025-04-29 15:13:53,515 - Background was removed.
+2025-04-29 15:20:09,010 - Saved pameters to 171_no1_param.csv.

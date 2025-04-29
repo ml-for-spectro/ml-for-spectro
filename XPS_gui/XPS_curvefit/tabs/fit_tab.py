@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 import numpy as np
-
+import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
 from XPS_curvefit.utils.fitting_helpers import build_voigt_model
 from XPS_curvefit.tabs.fit_param_editor import PeakEditor
@@ -296,3 +296,4 @@ class FitTab(QWidget):
         self._display_fit(result)
         self.save_btn.setEnabled(True)
         self.save_curve_btn.setEnabled(True)
+        logging.info(f"Fitting was done.")

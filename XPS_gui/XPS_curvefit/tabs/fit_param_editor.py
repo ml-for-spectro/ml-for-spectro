@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 import numpy as np
+import os
+import logging
 from XPS_curvefit.utils.fitting_helpers import build_voigt_model
 from XPS_curvefit.utils.plotting import be_to_ke, ke_to_be
 from PySide6.QtCore import Qt, Signal
@@ -295,6 +297,7 @@ class PeakEditor(QDialog):
                     for c in range(self.table.columnCount())
                 ]
                 writer.writerow(row)
+        logging.info(f"Saved pameters to {os.path.basename(fn)}.")
 
     def _load_params(self):
         fn, _ = QFileDialog.getOpenFileName(self, "Load Params", "", "CSV (*.csv)")
@@ -305,6 +308,7 @@ class PeakEditor(QDialog):
             with open(fn, newline="") as f:
                 reader = csv.reader(f)
                 data = list(reader)
+            logging.info(f"Loaded parameters from {os.path.basename(fn)}.")
         except Exception as e:
             QMessageBox.warning(self, "Load Failed", f"Could not read file:\n{e}")
             return

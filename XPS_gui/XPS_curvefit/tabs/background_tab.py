@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 import numpy as np
-
+import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
 from XPS_curvefit.utils.background import shirley_bg
 
@@ -127,6 +127,9 @@ class BackgroundTab(QWidget):
 
         x_clicked = event.xdata
         y_clicked = event.ydata
+        logging.info("SClicking for bgnd was done")
+        logging.info(f"X ={event.xdata})")
+        logging.info(f"Y ={event.ydata})")
         idx = (np.abs(self.parent.x - x_clicked)).argmin()
 
         self.pt_indices.append(idx)
@@ -156,6 +159,7 @@ class BackgroundTab(QWidget):
         # --- Safety checks ---
         if not hasattr(self, "pt_coords") or not hasattr(self, "pt_indices"):
             QMessageBox.warning(self, "Error", "You must select two points first.")
+            logging.info("Error in selecting the points.")
             return
         if len(self.pt_coords) != 2 or len(self.pt_indices) != 2:
             QMessageBox.warning(self, "Error", "You must select exactly two points.")
@@ -209,6 +213,7 @@ class BackgroundTab(QWidget):
         if self.bg_subtracted and self._prev_curve is not None:
             self.parent.y_current = self._prev_curve.copy()
             self._plot_raw()
+            logging.info("Background removal undone.")
             self.bg_subtracted = False
             self.save_btn.setEnabled(False)
             self.undo_btn.setEnabled(False)
@@ -259,6 +264,7 @@ class BackgroundTab(QWidget):
             self.parent.y_bgsub = self.parent.y_current - bg
             self.parent.y_current = self.parent.y_bgsub
             self._plot_bg_subtracted(bg)
+            logging.info("Background was removed.")
             self.bg_subtracted = True
             self.undo_btn.setEnabled(True)
             self.save_btn.setEnabled(True)
@@ -292,6 +298,7 @@ class BackgroundTab(QWidget):
             data = np.column_stack((self.parent.x, self.parent.y_bgsub))
             np.savetxt(fn, data, delimiter=",", header="X,BG_subtracted_Y", comments="")
             QMessageBox.information(self, "Saved", os.path.basename(fn) + " written.")
+            logging.info(f"Saved {os.path.basename(fn)} written.")
 
     def _apply_crop(self):
         """Crop spectrum to user-defined BE window and propagate downstream."""
@@ -326,7 +333,7 @@ class BackgroundTab(QWidget):
             self.parent.y_smoothed = self.parent.y_smoothed[mask]
         if hasattr(self.parent, "y_bgsub"):
             self.parent.y_bgsub = self.parent.y_bgsub[mask]
-
+        logging.info("Cropping was done.")
         # Update spinboxes, redraw, notify fit tab
         self.undo_crop_btn.setEnabled(True)
         self.reset_crop_spinboxes()
@@ -388,3 +395,4 @@ class BackgroundTab(QWidget):
                 self.undo_btn.setEnabled(True)
 
             self.parent.tabs.widget(3).refresh()
+            logging.info("Cropping was undone.")

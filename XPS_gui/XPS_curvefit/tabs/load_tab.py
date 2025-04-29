@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
     QDialogButtonBox,
     QInputDialog,
 )
-
+import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
 from scipy.ndimage import gaussian_filter1d
 import numpy as np
@@ -88,6 +88,8 @@ class LoadTab(QWidget):
 
         try:
             new_val = float(self.energy_le.text())
+            logging.info("New Photon energy value")
+            logging.info(f"{new_val} eV")
             plotting.photon_energy_eV = new_val
             self.parent.photon_energy = new_val  # ← Save to main app instance!
 
@@ -100,6 +102,8 @@ class LoadTab(QWidget):
         except ValueError:
             QMessageBox.warning(self, "Bad value", "Please enter a number (e.g. 350)")
             self.energy_le.setText(f"{plotting.photon_energy_eV:.1f}")
+            logging.info("Bad Photon energy value")
+
         # print("User entered photon energy:", new_val)
         # print("Stored in parent:", self.parent.photon_energy)
         # print("plotting.photon_energy_eV =", plotting.photon_energy_eV)
@@ -114,7 +118,8 @@ class LoadTab(QWidget):
                 data = np.genfromtxt(path, delimiter=",", skip_header=1)
                 x = data[:, 0]
                 y_all = data[:, 1:]  # could be 1 or more columns
-
+                logging.info("New file loaded")
+                logging.info(f"{path}")
                 if y_all.shape[1] == 1:
                     # Only one Y column
                     y_raw = y_all[:, 0]
@@ -132,8 +137,12 @@ class LoadTab(QWidget):
                     if ok and item:
                         idx = options.index(item)
                         y_raw = y_all[:, idx]
+                        logging.info("The following column loaded:")
+                        logging.info(f"Column {item}")
                     else:
                         # User cancelled
+                        logging.info("Loading Cancelled")
+
                         return
 
                 # Store in parent
@@ -155,6 +164,7 @@ class LoadTab(QWidget):
 
             except Exception as e:
                 QMessageBox.warning(self, "Error", f"Failed to load file: {e}")
+                logging.info("Failed to load file.")
 
     def show_help(self):
         dialog = QDialog(self)
@@ -167,8 +177,11 @@ class LoadTab(QWidget):
         try:
             with open(help_path, "r") as file:
                 help_content = file.read()
+                logging.info("Help file loaded")
+
         except FileNotFoundError:
             help_content = "Help file not found."
+            logging.info("Help file missing.")
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)

@@ -1,0 +1,45 @@
+2025-04-29 14:13:27,639 - New file loaded
+2025-04-29 14:13:27,640 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_smooth.csv
+2025-04-29 14:14:00,744 - New Photon energy value
+2025-04-29 14:14:00,745 - 350.0 eV
+2025-04-29 14:15:45,092 - SClicking for bgnd was done
+2025-04-29 14:15:45,092 - X =59.59192748669944)
+2025-04-29 14:15:45,093 - Y =1.0193287050773103)
+2025-04-29 14:15:47,488 - SClicking for bgnd was done
+2025-04-29 14:15:47,489 - X =65.24670642804229)
+2025-04-29 14:15:47,489 - Y =1.0025985052699293)
+2025-04-29 14:15:49,172 - Background was removed.
+2025-04-29 14:16:10,816 - Cropping was done.
+2025-04-29 14:16:28,528 - Loaded parameters from 171_no1_param.csv.
+2025-04-29 14:16:35,766 - Fitting was done.
+2025-04-29 15:06:59,050 - New Photon energy value
+2025-04-29 15:06:59,051 - 353.0 eV
+2025-04-29 15:07:21,777 - New Photon energy value
+2025-04-29 15:07:21,779 - 347.0 eV
+2025-04-29 15:07:32,550 - Bad Photon energy value
+2025-04-29 15:07:38,244 - New Photon energy value
+2025-04-29 15:07:38,244 - 346.5 eV
+2025-04-29 15:07:45,126 - New Photon energy value
+2025-04-29 15:07:45,126 - 347.0 eV
+2025-04-29 15:07:54,559 - New Photon energy value
+2025-04-29 15:07:54,561 - 347.5 eV
+2025-04-29 15:07:58,360 - New Photon energy value
+2025-04-29 15:07:58,360 - 347.3 eV
+2025-04-29 15:08:11,907 - New Photon energy value
+2025-04-29 15:08:11,909 - 347.5 eV
+2025-04-29 15:08:14,720 - New Photon energy value
+2025-04-29 15:08:14,722 - 347.6 eV
+2025-04-29 15:08:19,193 - New Photon energy value
+2025-04-29 15:08:19,193 - 347.7 eV
+2025-04-29 15:08:25,519 - New Photon energy value
+2025-04-29 15:08:25,519 - 347.8 eV
+2025-04-29 15:08:31,730 - New Photon energy value
+2025-04-29 15:08:31,732 - 347.9 eV
+2025-04-29 15:08:39,989 - New Photon energy value
+2025-04-29 15:08:39,991 - 348.0 eV
+2025-04-29 15:08:45,564 - New Photon energy value
+2025-04-29 15:08:45,564 - 348.1 eV
+2025-04-29 15:09:12,473 - New Photon energy value
+2025-04-29 15:09:12,474 - 348.0 eV
+2025-04-29 15:09:28,308 - New file loaded
+2025-04-29 15:09:28,308 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_smooth.csv

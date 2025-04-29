@@ -1,4 +1,5 @@
 import os
+import logging
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -108,6 +109,8 @@ class SmoothTab(QWidget):
         self.canvas.draw()
         self.parent.tabs.widget(2).refresh()
         self.parent.tabs.widget(3).refresh()
+        logging.info("Smoothing was applied by:")
+        logging.info(f"Smoothed (σ={sigma:.1f})")
 
     def undo_smoothing(self):
         if self._prev_curve is not None:
@@ -117,6 +120,7 @@ class SmoothTab(QWidget):
 
             self.plot_raw_data()
             self.parent.tabs.widget(3).refresh()  # update Fit tab if needed
+            logging.info("Smoothing undone")
 
     def save_smoothed_spectrum(self):
         if not hasattr(self.parent, "y_smoothed") or self.parent.y_smoothed is None:
@@ -135,5 +139,7 @@ class SmoothTab(QWidget):
                 QMessageBox.information(
                     self, "Saved", f"Smoothed spectrum saved to:\n{path}"
                 )
+                logging.info(f"Smoothed spectrum saved to:\n{path}")
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Failed to save file: {e}")
+                logging.info(f"Failed to save file")

@@ -42,6 +42,11 @@ class SmoothTab(QWidget):
         control_layout.addWidget(QLabel("Smoothing width:"))
         control_layout.addWidget(self.sigma_input)
         control_layout.addWidget(self.apply_button)
+        self.undo_button = QPushButton("Undo Smoothing")
+        self.undo_button.setEnabled(False)
+        self.undo_button.clicked.connect(self.undo_smoothing)
+        control_layout.addWidget(self.undo_button)
+        self._prev_curve = None  # to store previous y_current
 
         # Plot
         self.coord_label = QLabel("X: -, Y: -")
@@ -77,11 +82,12 @@ class SmoothTab(QWidget):
         if self.parent.x is None or self.parent.y_current is None:
             QMessageBox.warning(self, "No Data", "Please load a spectrum first.")
             return
-
+        self._prev_curve = self.parent.y_current.copy()
         sigma = self.sigma_input.value()
         y_smoothed = gaussian_filter1d(self.parent.y_current, sigma)
         self.parent.y_smoothed = y_smoothed
         self.parent.y_current = y_smoothed
+        self.undo_button.setEnabled(True)
 
         # Overplot the smoothed spectrum
         self.canvas.ax1.clear()

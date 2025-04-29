@@ -109,6 +109,15 @@ class SmoothTab(QWidget):
         self.parent.tabs.widget(2).refresh()
         self.parent.tabs.widget(3).refresh()
 
+    def undo_smoothing(self):
+        if self._prev_curve is not None:
+            self.parent.y_current = self._prev_curve
+            self._prev_curve = None
+            self.undo_button.setEnabled(False)
+
+            self.plot_raw_data()
+            self.parent.tabs.widget(3).refresh()  # update Fit tab if needed
+
     def save_smoothed_spectrum(self):
         if not hasattr(self.parent, "y_smoothed") or self.parent.y_smoothed is None:
             QMessageBox.warning(self, "No Data", "You need to apply smoothing first.")

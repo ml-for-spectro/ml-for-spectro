@@ -125,30 +125,66 @@ class BackgroundTab(QWidget):
         if event.inaxes != self.canvas.ax1:
             return
 
-        # Find nearest data index
-        idx = (np.abs(self.parent.x - event.xdata)).argmin()
+        x_clicked = event.xdata
+        y_clicked = event.ydata
+        idx = (np.abs(self.parent.x - x_clicked)).argmin()
+
         self.pt_indices.append(idx)
 
-        # Optionally populate y1_input and y2_input widgets
-        if len(self.pt_indices) == 1:
+        if not hasattr(self, "pt_coords"):
+            self.pt_coords = []
+        if not hasattr(self, "pt_ys"):
+            self.pt_ys = []
+
+        self.pt_coords.append(x_clicked)
+        self.pt_ys.append(y_clicked)
+
+        # print("Clicked X:", self.pt_coords)
+        # print("Clicked Y:", self.pt_ys)
+
+        if len(self.pt_coords) == 1:
             if hasattr(self, "y1_input"):
-                self.y1_input.setValue(self.parent.y_current[idx])
-        elif len(self.pt_indices) == 2:
+                self.y1_input.setValue(y_clicked)
+        elif len(self.pt_coords) == 2:
             if hasattr(self, "y2_input"):
-                self.y2_input.setValue(self.parent.y_current[idx])
+                self.y2_input.setValue(y_clicked)
             self.canvas.mpl_disconnect(self._click_cid)
-            self.pt_indices.sort()
             self._apply_background()
 
     # ---------------- Apply / Undo ----------------------
     def _apply_background(self):
+        # --- Safety checks ---
+        if not hasattr(self, "pt_coords") or not hasattr(self, "pt_indices"):
+            QMessageBox.warning(self, "Error", "You must select two points first.")
+            return
+        if len(self.pt_coords) != 2 or len(self.pt_indices) != 2:
+            QMessageBox.warning(self, "Error", "You must select exactly two points.")
+            return
+
+        # Extract coordinates and indices
+        x1, x2 = self.pt_coords
         i1, i2 = self.pt_indices
         x, y = self.parent.x, self.parent.y_current
 
-        if self.r_lin.isChecked():
-            slope = (y[i2] - y[i1]) / (x[i2] - x[i1])
-            bg = y[i1] + slope * (x - x[i1])
+        # Use manually entered Y values if available, else fallback to clicked Ys
+        if hasattr(self, "pt_ys") and len(self.pt_ys) == 2:
+            y1_clicked, y2_clicked = self.pt_ys
         else:
+            y1_clicked, y2_clicked = y[i1], y[i2]
+
+        y1 = self.y1_input.value() if hasattr(self, "y1_input") else y1_clicked
+        y2 = self.y2_input.value() if hasattr(self, "y2_input") else y2_clicked
+
+        # --- Background calculation ---
+        if self.r_lin.isChecked():
+            try:
+                slope = (y2 - y1) / (x2 - x1)
+            except ZeroDivisionError:
+                QMessageBox.warning(self, "Error", "X values must be distinct.")
+                return
+            bg = y1 + slope * (x - x1)
+        else:
+            # Shirley still relies on index range
             bg = shirley_bg(x, y, i1, i2)
 
         self._preview_background(bg)
@@ -171,11 +207,25 @@ class BackgroundTab(QWidget):
 
     def _undo_bg(self):
         if self.bg_subtracted and self._prev_curve is not None:
-            self.parent.y_current = self._prev_curve
+            self.parent.y_current = self._prev_curve.copy()
             self._plot_raw()
             self.bg_subtracted = False
             self.save_btn.setEnabled(False)
             self.undo_btn.setEnabled(False)
+
+            # Re-enable crop undo if needed
+            if self._full_x is not None and self._full_y is not None:
+                self.undo_crop_btn.setEnabled(True)
+
+            # Reset interaction state
+            self.pt_indices = []
+            self.pt_coords = []
+            self.pt_ys = []
+
+            self._click_cid = self.canvas.mpl_connect(
+                "button_press_event", self._on_click
+            )
+
             self.parent.tabs.widget(3).refresh()
 
     def _preview_background(self, bg):
@@ -214,7 +264,18 @@ class BackgroundTab(QWidget):
             self.save_btn.setEnabled(True)
             self.parent.tabs.widget(3).refresh()
         else:
+            # Reset interaction state so user can click again
+            self.pt_indices = []
+            self.pt_coords = []
+            self.pt_ys = []
+            # Reconnect click handler
+            if hasattr(self, "_click_cid"):
+                self.canvas.mpl_disconnect(self._click_cid)
+            self._click_cid = self.canvas.mpl_connect(
+                "button_press_event", self._on_click
+            )
             self._plot_raw()
+            self.parent.tabs.widget(3).refresh()
 
     def _save_bgsub(self):
         if not hasattr(self.parent, "y_bgsub"):
@@ -304,17 +365,26 @@ class BackgroundTab(QWidget):
             self.parent.x = self._full_x.copy()
             self.parent.y_current = self._full_y.copy()
 
-            # Clear any smoothed or bgsub arrays because they are no longer valid
-            if hasattr(self.parent, "y_raw"):
-                del self.parent.y_raw
-            if hasattr(self.parent, "y_smoothed"):
-                del self.parent.y_smoothed
-            if hasattr(self.parent, "y_bgsub"):
-                del self.parent.y_bgsub
+            # Do NOT delete _prev_curve; it's needed for undo_bg
+            for attr in ["y_raw", "y_smoothed", "y_bgsub"]:
+                if hasattr(self.parent, attr):
+                    delattr(self.parent, attr)
 
             self._full_x = None
             self._full_y = None
             self.reset_crop_spinboxes()
             self._plot_raw()
             self.undo_crop_btn.setEnabled(False)
+
+            # Reconnect click handler
+            if hasattr(self, "_click_cid"):
+                self.canvas.mpl_disconnect(self._click_cid)
+            self._click_cid = self.canvas.mpl_connect(
+                "button_press_event", self._on_click
+            )
+
+            # Enable background undo button if background was subtracted earlier
+            if self.bg_subtracted and self._prev_curve is not None:
+                self.undo_btn.setEnabled(True)
+
             self.parent.tabs.widget(3).refresh()

@@ -95,7 +95,7 @@ def main():
     app.setStyleSheet(
         """
     QWidget {
-        font-family: 'Helvetica Neue', 'Segoe UI', 'Arial';
+        font-family: 'Helvetica Neue', 'Arial';
         font-size: 12pt;
         color: #2c2c2c;
     }

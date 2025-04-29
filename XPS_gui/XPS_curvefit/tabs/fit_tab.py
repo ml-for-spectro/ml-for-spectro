@@ -67,6 +67,8 @@ class FitTab(QWidget):
     def _plot_curve(self):
         self.canvas.ax1.clear()
         self.canvas.ax2.clear()
+        print(self.parent.x)
+        print(self.parent.y_current)
 
         if self.parent.x is None or self.parent.y_current is None:
             self.canvas.draw()
@@ -119,7 +121,7 @@ class FitTab(QWidget):
             centers = self.parent.x[self.peak_ids]
             amps = np.array(self.amp_guesses)
             names = [chr(ord("A") + k) for k in range(len(self.peak_ids))]
-
+            self._prev_curve = self.parent.y_current
             # open parameter editor
             self.editor = PeakEditor(
                 self, self.parent.x, self.parent.y_current, centers, amps, names
@@ -189,6 +191,7 @@ class FitTab(QWidget):
         self.undo_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
         self.save_curve_btn.setEnabled(False)
+        print("here")
         self._plot_curve()
 
     def _save_fit(self):

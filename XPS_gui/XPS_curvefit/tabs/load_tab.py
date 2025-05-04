@@ -21,7 +21,7 @@ from scipy.ndimage import gaussian_filter1d
 import numpy as np
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont, QColor
-from PySide6.QtCore import Qt, QLocale, QLibraryInfo
+from PySide6.QtCore import Qt, QLocale, QLibraryInfo, QSettings
 
 
 class LoadTab(QWidget):

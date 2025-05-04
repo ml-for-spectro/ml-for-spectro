@@ -15,7 +15,7 @@ from scipy.ndimage import gaussian_filter1d
 import numpy as np
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont, QColor
-from PySide6.QtCore import Qt, QLocale, QLibraryInfo
+from PySide6.QtCore import Qt, QLocale, QLibraryInfo, QSettings
 
 
 class SmoothTab(QWidget):
@@ -62,6 +62,7 @@ class SmoothTab(QWidget):
         """Force update when new data is loaded."""
         if self.parent.x is not None and self.parent.y_current is not None:
             self.plot_raw_data()
+        self.load_smoothing_settings()
 
     def plot_raw_data(self):
         """Plot just the raw data."""
@@ -105,6 +106,7 @@ class SmoothTab(QWidget):
         )
         self.canvas.ax1.invert_xaxis()
         self.canvas.draw()
+        self.save_smoothing_settings()
         self.parent.tabs.widget(2).refresh()
         self.parent.tabs.widget(3).refresh()
         logging.info("Smoothing was applied by:")
@@ -141,3 +143,13 @@ class SmoothTab(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Failed to save file: {e}")
                 logging.info(f"Failed to save file")
+
+    def save_smoothing_settings(self):
+        settings = QSettings()
+        settings.setValue("smoothing_sigma", self.sigma_input.value())
+        # settings.setValue("smoothing_method", self.method_combo.currentText())
+
+    def load_smoothing_settings(self):
+        settings = QSettings()
+        sigma = settings.value("smoothing_sigma", 2.0, type=float)
+        self.sigma_input.setValue(sigma)

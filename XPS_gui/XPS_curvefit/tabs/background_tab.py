@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QDoubleSpinBox,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSettings
 import numpy as np
 import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
@@ -43,6 +43,8 @@ class BackgroundTab(QWidget):
         self.max_be = QDoubleSpinBox()
         self.min_be.setDecimals(2)
         self.max_be.setDecimals(2)
+        self.min_be.setMaximum(1000.0)
+        self.max_be.setMaximum(1000.0)
         self.min_be.setValue(self.parent.x.min() if self.parent.x is not None else 0)
         self.max_be.setValue(self.parent.x.max() if self.parent.x is not None else 0)
         self.crop_btn = QPushButton("Crop")
@@ -84,8 +86,9 @@ class BackgroundTab(QWidget):
     def refresh(self):
         self._full_x = None
         self._full_y = None
+
         if self.parent.x is not None and self.parent.y_current is not None:
-            self.reset_crop_spinboxes()
+            self.load_crop_settings()  # <-- Load saved crop values instead of reset
             self._plot_raw()
 
     # ---------- Internal helpers -----------------------
@@ -301,6 +304,7 @@ class BackgroundTab(QWidget):
         """Crop spectrum to user-defined BE window and propagate downstream."""
         vmin = self.min_be.value()
         vmax = self.max_be.value()
+        self.save_crop_values(vmin, vmax)
 
         if vmin >= vmax:
             QMessageBox.warning(self, "Range error", "Min BE must be < Max BE")
@@ -393,3 +397,19 @@ class BackgroundTab(QWidget):
 
             self.parent.tabs.widget(3).refresh()
             logging.info("Cropping was undone.")
+
+    def save_crop_values(self, x1, x2):
+        settings = QSettings()
+        settings.setValue("crop_x1", x1)
+        settings.setValue("crop_x2", x2)
+
+    def load_crop_settings(self):
+        settings = QSettings()
+        x1 = settings.value("crop_x1", None, type=float)
+        x2 = settings.value("crop_x2", None, type=float)
+
+        if x1 is not None and x2 is not None:
+            self.min_be.setValue(x1)
+            self.max_be.setValue(x2)
+        else:
+            self.reset_crop_spinboxes()

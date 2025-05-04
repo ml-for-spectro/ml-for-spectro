@@ -78,6 +78,7 @@ class XPSAnalysisApp(QMainWindow):
         self.setup_logger(self.log_tab.text_edit)
 
         crop = settings.value("crop_values")
+        # print(crop)
         if crop:
             try:
                 if isinstance(crop, str):
@@ -103,8 +104,11 @@ class XPSAnalysisApp(QMainWindow):
         super().closeEvent(event)
 
     def setup_logger(self, text_edit_widget):
-        log_dir = "logs"
+        # Go one level up from the current file's directory
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        log_dir = os.path.join(base_dir, "logs")
         os.makedirs(log_dir, exist_ok=True)
+
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         self.log_path = os.path.join(log_dir, f"log_{timestamp}.txt")
 

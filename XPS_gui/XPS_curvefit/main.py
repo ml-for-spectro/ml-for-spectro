@@ -29,6 +29,8 @@ class XPSAnalysisApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("XPS Analysis Tool")
 
+        log_path = os.path.join(os.getcwd(), "app.log")  # <--- Step 1
+
         QCoreApplication.setOrganizationName("Synchrotron SOLEIL")
         QCoreApplication.setApplicationName("SXFA - Simple XPS fitting app")
 
@@ -45,7 +47,7 @@ class XPSAnalysisApp(QMainWindow):
         self.background_tab = BackgroundTab(self)
         self.fit_tab = FitTab(self)
         self.general_tab = GeneralUtilityTab(self)
-        self.log_tab = LogTab(self)
+        self.log_tab = LogTab(self, log_path)  # <--- Step 2
 
         self.tabs.addTab(self.load_tab, "Load Data")
         self.tabs.addTab(self.smooth_tab, "Smoothing")

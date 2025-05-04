@@ -1,0 +1,6 @@
+2025-05-02 22:04:17,962 - New file loaded
+2025-05-02 22:04:17,962 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-02 22:04:18,956 - The following column loaded:
+2025-05-02 22:04:18,956 - Column Column 1
+2025-05-02 22:04:19,049 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-02 22:07:46,978 - Failed to load file.

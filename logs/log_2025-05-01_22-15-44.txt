@@ -1,0 +1,9 @@
+2025-05-01 22:15:51,344 - New file loaded
+2025-05-01 22:15:51,344 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-01 22:15:52,719 - The following column loaded:
+2025-05-01 22:15:52,719 - Column Column 1
+2025-05-01 22:16:00,728 - Background subtracted.
+2025-05-01 22:16:05,025 - History stack size before undo: 1
+2025-05-01 22:16:05,026 - Top of stack: ['x', 'y_current', 'y_raw', 'y_smoothed', 'y_bgsub']
+2025-05-01 22:16:05,072 - tab was refreshed
+2025-05-01 22:16:05,072 - Undo applied in BackgroundTab.

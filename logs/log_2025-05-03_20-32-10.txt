@@ -1,0 +1,11 @@
+2025-05-03 20:32:14,870 - New file loaded
+2025-05-03 20:32:14,870 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-03 20:32:16,089 - The following column loaded:
+2025-05-03 20:32:16,090 - Column Column 1
+2025-05-03 20:32:16,182 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-03 20:32:18,949 - Plotting y_current[:5]: [1.02581189 1.02575542 1.02554724 1.02512461 1.02457519]
+2025-05-03 20:32:19,054 - Smoothing applied.
+2025-05-03 20:32:19,054 - Smoothed (σ=2.0)
+2025-05-03 20:32:24,553 - Background subtracted.
+2025-05-03 20:32:25,691 - Plotting y_current[:5]: [0.00242567 0.00324402 0.00435247 0.00545106 0.00635703]
+2025-05-03 20:32:25,794 - Cropping applied.

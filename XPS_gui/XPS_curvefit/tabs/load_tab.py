@@ -116,7 +116,8 @@ class LoadTab(QWidget):
         if path:
             try:
                 data = np.genfromtxt(path, delimiter=",", skip_header=1)
-                x = data[:, 0]
+                x = ke_to_be(data[:, 0])
+                # print(type(x))
                 y_all = data[:, 1:]  # could be 1 or more columns
                 logging.info("New file loaded")
                 logging.info(f"{path}")
@@ -147,6 +148,7 @@ class LoadTab(QWidget):
 
                 # Store in parent
                 self.parent.x = x
+                # print(type(self.parent.x))
                 self.parent.y_raw = y_raw
                 self.parent.y_current = y_raw.copy()
                 self.path_label.setText(path)

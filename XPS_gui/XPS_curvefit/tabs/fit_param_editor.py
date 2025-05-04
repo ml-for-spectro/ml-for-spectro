@@ -191,6 +191,8 @@ class PeakEditor(QDialog):
 
         # --- build model with custom prefixes --------------------------
         prefixes = [f"{n}_" for n in names]  # ['A_','B_',...]
+        # print("Im here")
+        # print(centers)
         model, pars = build_voigt_model(self.x, centers, pref_list=prefixes)
 
         # --- apply constraints / guesses -------------------------------
@@ -199,6 +201,12 @@ class PeakEditor(QDialog):
             self._parse_constraint(sig_con[i], pars[pref + "sigma"], sigmas[i])
             self._parse_constraint(gam_con[i], pars[pref + "gamma"], gammas[i])
             self._parse_constraint(amp_con[i], pars[pref + "amplitude"], amps[i])
+        if isinstance(self.x, np.ndarray) and self.x.ndim > 0:
+            x_sample = self.x[:5]
+        else:
+            x_sample = self.x
+
+        # print(f"x type: {type(self.x)}, x sample: {x_sample}")
 
         preview = model.eval(pars, x=self.x)
 
@@ -254,7 +262,7 @@ class PeakEditor(QDialog):
         result = model.fit(self.y, pars, x=self.x)
         self.fit_done.emit(result)  # send back the fit result to parent
         # self.accept()  # now allow closing the dialog
-        # self.fit_tab._display_fit(result)  # update FitTab
+        self.fit_tab._display_fit(result)  # update FitTab
 
         # ---- Update table with best-fit values -------------------------
         for i, pref in enumerate(names):
@@ -299,19 +307,22 @@ class PeakEditor(QDialog):
                 writer.writerow(row)
         logging.info(f"Saved pameters to {os.path.basename(fn)}.")
 
-    def _load_params(self):
-        fn, _ = QFileDialog.getOpenFileName(self, "Load Params", "", "CSV (*.csv)")
-        if not fn:
-            return
+    def _load_params(self, filepath=None):
+        if not filepath:
+            filepath, _ = QFileDialog.getOpenFileName(
+                self, "Load Params", "", "CSV (*.csv)"
+            )
+        if not filepath:
+            return False  # return False instead of nothing
 
         try:
-            with open(fn, newline="") as f:
+            with open(filepath, newline="") as f:
                 reader = csv.reader(f)
                 data = list(reader)
-            logging.info(f"Loaded parameters from {os.path.basename(fn)}.")
+            logging.info(f"Loaded parameters from {os.path.basename(filepath)}.")
         except Exception as e:
             QMessageBox.warning(self, "Load Failed", f"Could not read file:\n{e}")
-            return
+            return False
 
         expected_cols = self.table.columnCount()
         for i, row in enumerate(data):
@@ -321,14 +332,13 @@ class PeakEditor(QDialog):
                     "Wrong format",
                     f"Row {i+1} has {len(row)} columns, expected {expected_cols}.",
                 )
-                return
+                return False
 
         self.table.setRowCount(len(data))
         for r, row in enumerate(data):
             for c, val in enumerate(row):
-                clean_val = (
-                    val.strip() if val.strip() else ""
-                )  # make sure blanks are "" not None
+                clean_val = val.strip() if val.strip() else ""
                 self.table.setItem(r, c, QTableWidgetItem(clean_val))
 
         self._preview()
+        return True

@@ -1,0 +1,14 @@
+2025-05-04 09:55:29,276 - New file loaded
+2025-05-04 09:55:29,277 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-04 09:55:30,527 - The following column loaded:
+2025-05-04 09:55:30,527 - Column Column 1
+2025-05-04 09:55:32,559 - Smoothing was applied by:
+2025-05-04 09:55:32,559 - Smoothed (σ=2.0)
+2025-05-04 09:55:38,141 - SClicking for bgnd was done
+2025-05-04 09:55:38,141 - X =292.2718743686444)
+2025-05-04 09:55:38,141 - Y =1.0252365431188333)
+2025-05-04 09:55:39,148 - SClicking for bgnd was done
+2025-05-04 09:55:39,148 - X =277.166227523739)
+2025-05-04 09:55:39,148 - Y =0.9985152070537512)
+2025-05-04 09:55:40,145 - Background was removed.
+2025-05-04 09:55:51,769 - Cropping was done.

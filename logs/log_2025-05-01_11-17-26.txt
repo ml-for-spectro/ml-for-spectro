@@ -1,0 +1,5 @@
+2025-05-01 11:17:31,102 - New file loaded
+2025-05-01 11:17:31,103 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-01 11:17:32,158 - The following column loaded:
+2025-05-01 11:17:32,158 - Column Column 1
+2025-05-01 11:17:33,749 - Failed to load file.

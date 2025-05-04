@@ -91,17 +91,16 @@ class BackgroundTab(QWidget):
     # ---------- Internal helpers -----------------------
     def _plot_raw(self):
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_current, color="black", label="Raw"
         )
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
         self.canvas.ax1.legend()
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        self.canvas.ax1.invert_xaxis()
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
         self.bg_subtracted = False
         self.undo_btn.setEnabled(False)
@@ -196,17 +195,16 @@ class BackgroundTab(QWidget):
 
     def _plot_bg_subtracted(self, bg):
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_bgsub, label="BG‑subtracted", color="red"
         )
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
+        self.canvas.ax1.invert_xaxis()
         self.canvas.ax1.legend()
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 
     def _undo_bg(self):
@@ -235,10 +233,8 @@ class BackgroundTab(QWidget):
 
     def _preview_background(self, bg):
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_current, color="black", label="Raw"
         )
@@ -246,9 +242,10 @@ class BackgroundTab(QWidget):
             self.parent.x, bg, color="gray", linestyle="--", label="Proposed BG"
         )
         self.canvas.ax1.legend()
+        self.canvas.ax1.invert_xaxis()
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 
     def _confirm_background(self, bg):

@@ -2,9 +2,9 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QPlainTextEdit
 
 
 class LogTab(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, log_path):  # <-- accept log_path here
         super().__init__()
-        # self.log_path = log_path
+        self.log_path = log_path  # <-- now this works
 
         layout = QVBoxLayout()
         self.text_edit = QPlainTextEdit()

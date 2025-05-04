@@ -1,0 +1,26 @@
+2025-05-02 18:53:11,511 - New file loaded
+2025-05-02 18:53:11,511 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-02 18:53:12,992 - The following column loaded:
+2025-05-02 18:53:12,993 - Column Column 1
+2025-05-02 18:53:13,085 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-02 18:53:16,204 - Plotting y_current[:5]: [1.02581189 1.02575542 1.02554724 1.02512461 1.02457519]
+2025-05-02 18:53:16,309 - Smoothing applied.
+2025-05-02 18:53:16,309 - Smoothed (σ=2.0)
+2025-05-02 18:53:17,130 - Popped from history. Stack size: 1
+2025-05-02 18:53:17,175 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-02 18:53:17,309 - SmoothTab: state restored.
+2025-05-02 18:53:17,351 - Smoothing undone via history.
+2025-05-02 18:53:20,427 - Plotting y_current[:5]: [1.02581189 1.02575542 1.02554724 1.02512461 1.02457519]
+2025-05-02 18:53:20,534 - Smoothing applied.
+2025-05-02 18:53:20,534 - Smoothed (σ=2.0)
+2025-05-02 18:53:23,886 - Popped from history. Stack size: 1
+2025-05-02 18:53:23,929 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-02 18:53:24,038 - SmoothTab: state restored.
+2025-05-02 18:53:24,080 - Smoothing undone via history.
+2025-05-02 18:53:28,824 - Plotting y_current[:5]: [1.02581189 1.02575542 1.02554724 1.02512461 1.02457519]
+2025-05-02 18:53:28,961 - Smoothing applied.
+2025-05-02 18:53:28,962 - Smoothed (σ=2.0)
+2025-05-02 18:53:32,982 - Popped from history. Stack size: 1
+2025-05-02 18:53:33,025 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-02 18:53:33,137 - SmoothTab: state restored.
+2025-05-02 18:53:33,181 - Smoothing undone via history.

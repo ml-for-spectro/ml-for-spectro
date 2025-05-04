@@ -22,6 +22,9 @@ def build_voigt_model(x, peak_centers, pref_list=None):
     model, params = None, None
 
     for cen, pref in zip(peak_centers, pref_list):
+        # print(cen)
+        # print(type(cen))
+        # print(pref)
         v = VoigtModel(prefix=pref)
 
         # add component to composite model

@@ -25,7 +25,7 @@ class PlotCanvas(FigureCanvas):
         super().__init__(self.fig)
         self.setParent(parent)
 
-        self.ax2 = self.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
+        # self.ax2 = self.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.coord_label = coord_label
 
         self.mpl_connect(
@@ -34,12 +34,13 @@ class PlotCanvas(FigureCanvas):
 
     def plot_data(self, x, y, label="Spectrum", color="black"):
         self.ax1.clear()
-        self.ax2.clear()  # Also clear secondary axis
-        self.ax2 = self.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
+        # self.ax2.clear()  # Also clear secondary axis
+        # self.ax2 = self.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.ax1.plot(x, y, label=label, color=color)
+        self.ax1.invert_xaxis()
         self.ax1.set_xlabel("Binding Energy (eV)")
         self.ax1.set_ylabel("Intensity (a.u.)")
         self.ax1.legend()
 
-        self.ax2.set_xlabel("Kinetic Energy (eV)")
+        # self.ax2.set_xlabel("Kinetic Energy (eV)")
         self.draw()

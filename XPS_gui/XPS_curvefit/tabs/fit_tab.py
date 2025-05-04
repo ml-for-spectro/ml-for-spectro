@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 import numpy as np
+import csv
 import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, be_to_ke, ke_to_be
 from XPS_curvefit.utils.fitting_helpers import build_voigt_model
@@ -27,15 +28,23 @@ class FitTab(QWidget):
         # ----- UI -----
         layout = QVBoxLayout()
         top = QHBoxLayout()
-        self.fit_btn = QPushButton("Fit")
+        self.fit_btn = QPushButton("Pick peaks")
         self.undo_btn = QPushButton("Undo")
         self.undo_btn.setEnabled(False)
         self.save_btn = QPushButton("Save Fit report")
         self.save_btn.setEnabled(False)
         self.save_curve_btn = QPushButton("Save Curve")
         self.save_curve_btn.setEnabled(False)
+        self.load_params_button = QPushButton("Load Parameters")
+        # layout.addWidget(self.load_params_button)
 
-        for b in (self.fit_btn, self.undo_btn, self.save_btn, self.save_curve_btn):
+        for b in (
+            self.fit_btn,
+            self.undo_btn,
+            self.save_btn,
+            self.save_curve_btn,
+            self.load_params_button,
+        ):
             top.addWidget(b)
         top.addStretch()
 
@@ -52,6 +61,7 @@ class FitTab(QWidget):
         self.undo_btn.clicked.connect(self._undo_fit)
         self.save_btn.clicked.connect(self._save_fit)
         self.save_curve_btn.clicked.connect(self._save_curves)
+        self.load_params_button.clicked.connect(self.load_parameters_via_dialog)
         # self.editor.fit_done.connect(self._handle_fit_done)
 
     # ---------- called by other tabs ----------
@@ -66,7 +76,7 @@ class FitTab(QWidget):
     # ---------- internal plotting -------------
     def _plot_curve(self):
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
+        # self.canvas.ax2.clear()
         # print(self.parent.x)
         # print(self.parent.y_current)
 
@@ -77,16 +87,15 @@ class FitTab(QWidget):
             self.canvas.draw()
             return
 
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_current, color="black", label="Spectrum"
         )
         self.canvas.ax1.legend()
+        self.canvas.ax1.invert_xaxis()
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 
     # ------------- pick peaks then fit --------
@@ -191,7 +200,7 @@ class FitTab(QWidget):
         self.undo_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
         self.save_curve_btn.setEnabled(False)
-        print("here")
+        # print("here")
         self._plot_curve()
 
     def _save_fit(self):
@@ -230,30 +239,32 @@ class FitTab(QWidget):
 
     def _display_fit(self, result):
         self.fit_result = result
-        self._y_fit = result.best_fit  # <-- keep best fit separately
+        self._y_fit = result.best_fit
+        # print(result)  # <-- keep best fit separately
         # DO NOT modify self.parent.y_current!
 
-        ax1 = self.canvas.ax1
-        ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
+        # ax1 = self.canvas.ax1
+        self.canvas.ax1.clear()
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
 
         # raw + total fit
-        ax1.plot(
+        # print("I am plotting in display_fit")
+        self.canvas.ax1.plot(
             self.parent.x, self.parent.y_current, color="black", label="Input"
         )  # <-- original data
-        ax1.plot(
+        self.canvas.ax1.plot(
             self.parent.x, self._y_fit, color="red", label="Total fit"
         )  # <-- fit curve
 
         # plot individual components
         comps = result.eval_components(x=self.parent.x)
         for name, comp in comps.items():
-            ax1.plot(self.parent.x, comp, ls="--")
+            self.canvas.ax1.plot(self.parent.x, comp, ls="--")
             idx_peak = np.argmax(comp)
             x_peak = self.parent.x[idx_peak]
             y_peak = comp[idx_peak]
-            ax1.text(
+            self.canvas.ax1.text(
                 x_peak,
                 y_peak,
                 f" {name.rstrip('_')}",
@@ -263,18 +274,19 @@ class FitTab(QWidget):
             )
 
         chi2 = result.redchi
-        ax1.text(
+        self.canvas.ax1.text(
             0.02,
             0.95,
             f"χ²_red = {chi2:.3g}",
-            transform=ax1.transAxes,
+            transform=self.canvas.ax1.transAxes,
             va="top",
             bbox=dict(boxstyle="round,pad=0.2", fc="w", alpha=0.7),
         )
 
-        ax1.set_xlabel("Binding Energy (eV)")
-        ax1.set_ylabel("Intensity (a.u.)")
-        ax1.legend()
+        self.canvas.ax1.set_xlabel("Binding Energy (eV)")
+        self.canvas.ax1.set_ylabel("Intensity (a.u.)")
+        self.canvas.ax1.legend()
+        self.canvas.ax1.invert_xaxis()
         self.canvas.draw()
 
         hits = []
@@ -297,3 +309,43 @@ class FitTab(QWidget):
         self.save_btn.setEnabled(True)
         self.save_curve_btn.setEnabled(True)
         logging.info(f"Fitting was done.")
+
+    def load_parameters_via_dialog(self):
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Open Parameter File", "", "CSV Files (*.csv)"
+        )
+        if not path:
+            return
+
+        # Parse CSV file to get names, centers, amps
+        try:
+            with open(path, newline="") as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+
+            names = [row[0] for row in rows]
+            centers = [float(row[1]) for row in rows]
+            amps = [float(row[4]) for row in rows]
+            # print(f"Center value: {centers}, type: {type(centers)}")
+
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"Failed to read parameter file:\n{e}")
+            return
+
+        # Ensure x and y data exist
+        try:
+            x = self.parent.x
+            # print("cheking in load_parameter_via_dialog")
+            y = self.parent.y_current
+        except AttributeError:
+            QMessageBox.warning(self, "Error", "X or Y data not defined in FitTab.")
+            return
+
+        # Create PeakEditor and load the file
+        self.parameter_editor = PeakEditor(self, x, y, centers, amps, names)
+        success = self.parameter_editor._load_params(path)
+
+        if success:
+            self.parameter_editor.show()
+        else:
+            QMessageBox.warning(self, "Error", "Failed to load parameters from file.")

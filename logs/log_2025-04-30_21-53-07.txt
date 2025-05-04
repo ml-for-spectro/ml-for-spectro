@@ -1,0 +1,6 @@
+2025-04-30 21:53:13,169 - New file loaded
+2025-04-30 21:53:13,170 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-04-30 21:53:14,810 - The following column loaded:
+2025-04-30 21:53:14,810 - Column Column 1
+2025-04-30 21:53:19,901 - Smoothing applied.
+2025-04-30 21:53:19,901 - Smoothed (σ=2.0)

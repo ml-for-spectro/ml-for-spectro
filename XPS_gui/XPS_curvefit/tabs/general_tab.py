@@ -151,6 +151,9 @@ class GeneralUtilityTab(QWidget):
             lambda _: self.plot_selected(x, y, energy_input.value())
         )
 
+    # def ke_to_be_local(ke, photon_energy):
+    #   return photon_energy - ke
+
     def _update_send_button(self):
         selected = [s for s in self.spectra if s["checkbox"].isChecked()]
         self.send_button.setEnabled(len(selected) == 1)
@@ -209,12 +212,17 @@ class GeneralUtilityTab(QWidget):
         self.canvas.draw()
 
     def send_selected_to_analysis(self):
+        def ke_to_be_local(ke, photon_energy):
+            return photon_energy - ke
+
         selected = [s for s in self.spectra if s["checkbox"].isChecked()]
         if len(selected) != 1:
             return
 
         s = selected[0]
-        self.parent.x = s["x"]
+        x_be = ke_to_be_local(s["x"], s["photon_energy"].value())
+        self.parent.x = x_be
+        # self.parent.x = s["x"]
         self.parent.y_raw = s["y"]
         self.parent.y_current = s["y"].copy()
         from XPS_curvefit.utils import plotting

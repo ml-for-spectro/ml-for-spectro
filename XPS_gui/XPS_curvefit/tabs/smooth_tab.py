@@ -66,17 +66,16 @@ class SmoothTab(QWidget):
     def plot_raw_data(self):
         """Plot just the raw data."""
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_current, label="Raw Spectrum", color="black"
         )
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
         self.canvas.ax1.legend()
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        self.canvas.ax1.invert_xaxis()
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 
     def apply_smoothing(self):
@@ -92,10 +91,8 @@ class SmoothTab(QWidget):
 
         # Overplot the smoothed spectrum
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
         self.canvas.ax1.plot(
             self.parent.x, self.parent.y_raw, label="Raw Spectrum", color="black"
         )
@@ -106,6 +103,7 @@ class SmoothTab(QWidget):
         self.canvas.ax1.plot(
             self.parent.x, y_smoothed, label=f"Smoothed (σ={sigma:.1f})", color="red"
         )
+        self.canvas.ax1.invert_xaxis()
         self.canvas.draw()
         self.parent.tabs.widget(2).refresh()
         self.parent.tabs.widget(3).refresh()

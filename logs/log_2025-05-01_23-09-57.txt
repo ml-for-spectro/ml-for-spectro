@@ -1,0 +1,13 @@
+2025-05-01 23:10:02,422 - New file loaded
+2025-05-01 23:10:02,422 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-01 23:10:03,642 - The following column loaded:
+2025-05-01 23:10:03,642 - Column Column 1
+2025-05-01 23:10:03,736 - Plotting y_current[:5]: [1.023482 1.030593 1.021593 1.030036 1.022999]
+2025-05-01 23:10:06,208 - Plotting y_current[:5]: [1.02581189 1.02575542 1.02554724 1.02512461 1.02457519]
+2025-05-01 23:10:06,313 - Smoothing applied.
+2025-05-01 23:10:06,313 - Smoothed (σ=2.0)
+2025-05-01 23:10:12,096 - Background subtracted.
+2025-05-01 23:10:13,685 - History stack size before undo: 1
+2025-05-01 23:10:13,686 - Top of stack: ['x', 'y_current', 'y_raw', 'y_smoothed', 'y_bgsub']
+2025-05-01 23:10:13,733 - Tab was refreshed after undo.
+2025-05-01 23:10:13,733 - Undo applied in BackgroundTab.

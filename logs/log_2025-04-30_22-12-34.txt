@@ -1,0 +1,4 @@
+2025-04-30 22:12:40,443 - New file loaded
+2025-04-30 22:12:40,443 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-04-30 22:12:41,578 - The following column loaded:
+2025-04-30 22:12:41,579 - Column Column 1

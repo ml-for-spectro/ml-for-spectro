@@ -1,0 +1,6 @@
+2025-05-01 21:44:09,523 - New file loaded
+2025-05-01 21:44:09,524 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-01 21:44:11,092 - The following column loaded:
+2025-05-01 21:44:11,092 - Column Column 1
+2025-05-01 21:44:19,265 - Background subtracted.
+2025-05-01 21:44:25,164 - Undo applied.

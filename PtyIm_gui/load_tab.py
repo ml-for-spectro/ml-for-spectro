@@ -32,15 +32,20 @@ from utils import (
     save_settings,
 )
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 
 class LoadTab(QWidget):
     def __init__(self, viewer):
         super().__init__()
         self.viewer = viewer
-        self.layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
         load_settings(self)
 
-        self.setup_ui()
+        self.setup_ui(main_layout)
+        # self.init_preview_canvas(main_layout)
 
         self.images = []
         self.filenames = []
@@ -48,73 +53,119 @@ class LoadTab(QWidget):
         self.energy_inputs = []
         self.order_inputs = []
 
-        self.setLayout(self.layout)
+        # self.setLayout(main_layout)
+        # self.init_preview_canvas(main_layout)
 
-    def setup_ui(self):
-        # === Group 1: Loading ===
-        load_group = QGroupBox("Load Images")
-        load_layout = QHBoxLayout()
+    def setup_ui(self, layout):
+        # Create horizontal layout to split into left (controls) and right (preview)
+        split_layout = QHBoxLayout()
+        layout.addLayout(split_layout)
+
+        # === LEFT: Control Panel ===
+        control_layout = QVBoxLayout()
+        split_layout.addLayout(control_layout, 1)  # 1 = stretch factor
+
+        # === GROUP 1: Load / Save Batch ===
+        batch_group = QGroupBox("Image File Batch")
+        batch_layout = QGridLayout()
         self.load_btn = QPushButton("Load Images")
         self.load_btn.clicked.connect(self.load_images)
         self.load_batch_btn = QPushButton("Load Batch")
         self.load_batch_btn.clicked.connect(self.load_batch)
         self.save_btn = QPushButton("Save Batch")
         self.save_btn.clicked.connect(self.save_batch)
-        load_layout.addWidget(self.load_btn)
-        load_layout.addWidget(self.load_batch_btn)
-        load_layout.addWidget(self.save_btn)
-        load_group.setLayout(load_layout)
+        batch_layout.addWidget(self.load_btn, 0, 0, 1, 2)
+        batch_layout.addWidget(self.load_batch_btn, 1, 0)
+        batch_layout.addWidget(self.save_btn, 1, 1)
+        batch_group.setLayout(batch_layout)
 
-        # === Group 2: Pixel Correction ===
-        pixel_group = QGroupBox("Pixel Correction")
+        # === GROUP 2: Pixel Correction ===
+        pixel_group = QGroupBox("Pixel Size Correction")
         pixel_layout = QHBoxLayout()
         self.correct_btn = QPushButton("Correct Pixel Sizes")
         self.correct_btn.clicked.connect(self.correct_pixel_sizes)
         pixel_layout.addWidget(self.correct_btn)
         pixel_group.setLayout(pixel_layout)
 
-        # === Group 3: Cropping ===
-        crop_group = QGroupBox("Cropping")
+        # === GROUP 3: Cropping ===
+        crop_group = QGroupBox("Crop to Center Region")
         crop_layout = QHBoxLayout()
         self.crop_btn = QPushButton("Crop Images")
         self.crop_btn.clicked.connect(self.crop_images)
         crop_layout.addWidget(self.crop_btn)
         crop_group.setLayout(crop_layout)
 
-        # === Group 4: Registration ===
-        reg_group = QGroupBox("Registration")
-        reg_layout = QHBoxLayout()
+        # === GROUP 4: Registration ===
+        reg_group = QGroupBox("Register Image Stack")
+        reg_layout = QGridLayout()
         self.register_btn = QPushButton("Register Images")
         self.register_btn.clicked.connect(self.register_images)
         self.save_reg_btn = QPushButton("Save Registration")
         self.save_reg_btn.clicked.connect(self.save_registration)
         self.load_reg_btn = QPushButton("Apply Registration")
         self.load_reg_btn.clicked.connect(self.apply_registration)
-        reg_layout.addWidget(self.register_btn)
-        reg_layout.addWidget(self.save_reg_btn)
-        reg_layout.addWidget(self.load_reg_btn)
+        reg_layout.addWidget(self.register_btn, 0, 0)
+        reg_layout.addWidget(self.save_reg_btn, 0, 1)
+        reg_layout.addWidget(self.load_reg_btn, 1, 0, 1, 2)
         reg_group.setLayout(reg_layout)
 
-        # === Group 5: Export / Save ===
-        save_group = QGroupBox("Save to HDF5")
-        save_layout = QHBoxLayout()
-
+        # === GROUP 5: Save to HDF5 ===
+        hdf5_group = QGroupBox("Export")
+        hdf5_layout = QHBoxLayout()
         self.save_hdf5_btn = QPushButton("Save HDF5 for Axis2000")
         self.save_hdf5_btn.clicked.connect(self.save_hdf5_for_axis2000)
+        hdf5_layout.addWidget(self.save_hdf5_btn)
+        hdf5_group.setLayout(hdf5_layout)
 
-        save_layout.addWidget(self.save_hdf5_btn)
-        save_group.setLayout(save_layout)
+        # === GROUP 6: Exit Button ===
+        exit_group = QGroupBox()
+        exit_layout = QHBoxLayout()
+        self.exit_btn = QPushButton("Exit")
+        self.exit_btn.clicked.connect(self.close_application)
+        exit_layout.addStretch()
+        exit_layout.addWidget(self.exit_btn)
+        exit_layout.addStretch()
+        exit_group.setLayout(exit_layout)
 
-        self.layout.addWidget(save_group)
-        # Add groups to main layout
-        self.layout.addWidget(load_group)
-        self.layout.addWidget(pixel_group)
-        self.layout.addWidget(crop_group)
-        self.layout.addWidget(reg_group)
+        # === Add all groups to control layout ===
+        for group in [
+            batch_group,
+            pixel_group,
+            crop_group,
+            reg_group,
+            hdf5_group,
+            exit_group,
+        ]:
+            control_layout.addWidget(group)
 
-        # Input field grid
+        # === Input grid (for pixel/energy/order fields) ===
         self.input_grid = QGridLayout()
-        self.layout.addLayout(self.input_grid)
+        control_layout.addLayout(self.input_grid)
+
+        # === RIGHT: Preview plot ===
+        preview_layout = QVBoxLayout()
+        split_layout.addLayout(preview_layout, 2)  # 2 = wider than left
+
+        self.preview_fig = Figure(figsize=(5, 5))
+        self.preview_canvas = FigureCanvas(self.preview_fig)
+        self.preview_ax = self.preview_fig.add_subplot(111)
+        preview_layout.addWidget(QLabel("Preview (First Image):"))
+        preview_layout.addWidget(self.preview_canvas)
+
+    def init_preview_canvas(self, layout):
+        self.preview_fig = Figure(figsize=(3, 3))
+        self.preview_ax = self.preview_fig.add_subplot(111)
+        self.preview_canvas = FigureCanvas(self.preview_fig)
+        layout.addWidget(QLabel("Preview (First Image):"))
+        layout.addWidget(self.preview_canvas)
+
+    def update_preview(self):
+        if hasattr(self, "image_current") and len(self.image_current) > 0:
+            self.preview_ax.clear()
+            self.preview_ax.imshow(self.image_current[0], cmap="gray")
+            self.preview_ax.set_title("First Image Preview")
+            self.preview_ax.axis("off")
+            self.preview_canvas.draw()
 
     def load_images(self):
         count, ok = QInputDialog.getInt(
@@ -169,8 +220,25 @@ class LoadTab(QWidget):
             self.order_inputs.append(order_box)
 
         self.image_stack = np.stack(cropped)
+        # Sort images and metadata by order
+        orders = [sb.value() for sb in self.order_inputs]
+        sorted_indices = np.argsort(orders)
+
+        self.images = [self.images[i] for i in sorted_indices]
+        self.filenames = [self.filenames[i] for i in sorted_indices]
+        self.pixel_inputs = [self.pixel_inputs[i] for i in sorted_indices]
+        self.energy_inputs = [self.energy_inputs[i] for i in sorted_indices]
+        self.order_inputs = [self.order_inputs[i] for i in sorted_indices]
+
+        energies = [float(e.text()) for e in self.energy_inputs]
+        self.viewer.set_energies(energies)
+        # Update image stack
+        self.image_stack = self.images
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)
+        self.update_preview()
+        # print("Here in Load_image")
+        # print(self.image_current)
 
     def correct_pixel_sizes(self):
         try:
@@ -201,6 +269,9 @@ class LoadTab(QWidget):
         self.image_stack = np.stack(cropped)
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)
+        # print("Here in crop_image")
+        # print(self.image_current)
+        self.update_preview()
 
     def crop_images(self):
         if not hasattr(self, "image_stack"):
@@ -214,6 +285,7 @@ class LoadTab(QWidget):
         self.image_stack = crop_center_stack(self.image_stack, crop_size)
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)
+        self.update_preview()
 
     def register_images(self):
         if not hasattr(self, "image_stack"):
@@ -224,6 +296,8 @@ class LoadTab(QWidget):
         self.image_stack = register_images(self.image_stack)
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)
+        # print("Here in register_image")
+        # print(self.image_current)
 
     def save_batch(self):
         path, _ = QFileDialog.getSaveFileName(
@@ -290,6 +364,24 @@ class LoadTab(QWidget):
             self.energy_inputs.append(energy_box)
             self.order_inputs.append(order_box)
 
+        # Sort images and metadata by order
+        orders = [sb.value() for sb in self.order_inputs]
+        sorted_indices = np.argsort(orders)
+
+        self.images = [self.images[i] for i in sorted_indices]
+        self.filenames = [self.filenames[i] for i in sorted_indices]
+        self.pixel_inputs = [self.pixel_inputs[i] for i in sorted_indices]
+        self.energy_inputs = [self.energy_inputs[i] for i in sorted_indices]
+        self.order_inputs = [self.order_inputs[i] for i in sorted_indices]
+
+        energies = [float(e.text()) for e in self.energy_inputs]
+        self.viewer.set_energies(energies)
+        # Update image stack
+        self.image_stack = self.images
+        self.image_current = self.image_stack.copy()
+        self.viewer.set_stack(self.image_current)
+        self.update_preview()
+
     def save_registration(self):
         if not hasattr(self, "image_stack"):
             QMessageBox.warning(self, "Error", "No registered image stack to save.")
@@ -315,7 +407,11 @@ class LoadTab(QWidget):
         else:
             QMessageBox.warning(self, "Error", "Registration stack shape mismatch.")
 
+        self.update_preview()
+
     def save_hdf5_for_axis2000(self):
+        # print("entered save hdf5")
+        # print(self.image_current)
         if not hasattr(self, "image_stack") or not hasattr(self, "energy_inputs"):
             QMessageBox.warning(self, "Error", "No stack or energy values to save.")
             return
@@ -335,11 +431,13 @@ class LoadTab(QWidget):
             return
         sorted_indices = np.argsort(energies)
         energy = np.array(energies)[sorted_indices]
-        sorted_stack = self.image_current[sorted_indices]
+        theData = self.image_current[sorted_indices]
 
-        theData = np.stack(sorted_stack).astype(np.uint16)  # shape: (N, Y, X)
+        # theData = sorted_stack # shape: (N, Y, X)
         sampleX = np.arange(theData.shape[2])
         sampleY = np.arange(theData.shape[1])
+        # print("here in save hdf5")
+        # print(theData)
         # Save to HDF5
         try:
             # === WRITE HDF5 ===
@@ -380,3 +478,6 @@ class LoadTab(QWidget):
             print(f"\n HDF5 file written to: {filepath}")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to save HDF5: {e}")
+
+    def close_application(self):
+        self.window().close()

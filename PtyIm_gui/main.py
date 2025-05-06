@@ -14,6 +14,38 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.viewer, "View Stack")
         self.setCentralWidget(self.tabs)
 
+        self.setStyleSheet(
+            """
+        QPushButton {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+        QPushButton:hover {
+            background-color: #45a049;
+        }
+        QGroupBox {
+            font-weight: bold;
+            border: 1px solid gray;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 10px;
+            padding: 0 3px 0 3px;
+        }
+        QLabel {
+            padding: 2px;
+        }
+        QLineEdit, QSpinBox {
+            padding: 2px;
+            min-width: 80px;
+        }
+    """
+        )
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

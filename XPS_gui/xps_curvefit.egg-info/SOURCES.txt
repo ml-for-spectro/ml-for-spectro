@@ -12,6 +12,7 @@ XPS_curvefit/tabs/fit_param_editor.py
 XPS_curvefit/tabs/fit_tab.py
 XPS_curvefit/tabs/general_tab.py
 XPS_curvefit/tabs/load_tab.py
+XPS_curvefit/tabs/log_tab.py
 XPS_curvefit/tabs/smooth_tab.py
 XPS_curvefit/tabs/__pycache__/background_tab.cpython-310.pyc
 XPS_curvefit/tabs/__pycache__/fit_param_editor.cpython-310.pyc
@@ -22,6 +23,9 @@ XPS_curvefit/tabs/__pycache__/smooth_tab.cpython-310.pyc
 XPS_curvefit/utils/__init__.py
 XPS_curvefit/utils/background.py
 XPS_curvefit/utils/fitting_helpers.py
+XPS_curvefit/utils/history.py
+XPS_curvefit/utils/loading.py
+XPS_curvefit/utils/logging_utils.py
 XPS_curvefit/utils/plotting.py
 XPS_curvefit/utils/__pycache__/background.cpython-310.pyc
 XPS_curvefit/utils/__pycache__/fitting_helpers.cpython-310.pyc

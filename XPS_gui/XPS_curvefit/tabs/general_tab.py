@@ -188,10 +188,8 @@ class GeneralUtilityTab(QWidget):
         )
 
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
-        self.canvas.ax2 = self.canvas.ax1.secondary_xaxis(
-            "top", functions=(be_to_ke, ke_to_be)
-        )
+        # self.canvas.ax2.clear()
+        # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
 
         for s in selected:
             x = s["x"]
@@ -208,7 +206,7 @@ class GeneralUtilityTab(QWidget):
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
         self.canvas.ax1.legend()
-        self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
+        # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 
     def send_selected_to_analysis(self):
@@ -249,7 +247,7 @@ class GeneralUtilityTab(QWidget):
 
         # Clear the plot
         self.canvas.ax1.clear()
-        self.canvas.ax2.clear()
+        # self.canvas.ax2.clear()
         self.canvas.draw()
 
         self._update_send_button()

@@ -1,0 +1,13 @@
+2025-05-05 06:29:24,184 - New file loaded
+2025-05-05 06:29:24,185 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-05 06:29:25,523 - The following column loaded:
+2025-05-05 06:29:25,523 - Column Column 1
+2025-05-05 06:29:34,704 - The following column loaded:
+2025-05-05 06:29:34,704 - Column  Clustered_Spectra_1
+2025-05-05 06:29:45,136 - The following column loaded:
+2025-05-05 06:29:45,138 - Column  Clustered_Spectra_2
+2025-05-05 06:30:22,929 - The following column loaded:
+2025-05-05 06:30:22,930 - Column  ...
+2025-05-05 06:30:41,003 - File send for analysis
+2025-05-05 06:30:43,074 - File send for analysis
+2025-05-05 06:30:44,407 - File send for analysis

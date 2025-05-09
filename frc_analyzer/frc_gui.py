@@ -1,3 +1,4 @@
+# Initial FRC code frm Corentin RIEB
 import os
 import numpy as np
 import matplotlib.pyplot as plt

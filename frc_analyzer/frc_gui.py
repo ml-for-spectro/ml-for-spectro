@@ -701,7 +701,7 @@ class FRCViewer(QMainWindow):
         help_text = """
         <b>FRC Analyzer Help</b><br><br>
         <u>Step-by-step:</u><br>
-        1. Load a TIFF or TXT image.<br>
+        1. Load a TIFF or TXT image. Always square images.<br>
         2. Set the pixel size (nm), standard deviation limit, iterations, and increment.<br>
         3. Click 'Calculate FRC' to run analysis.<br>
         4. The plot shows mean FRC and thresholds.<br>

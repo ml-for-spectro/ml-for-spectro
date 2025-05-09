@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QSpinBox,
     QDoubleSpinBox,
     QFormLayout,
+    QMessageBox,
 )
 from PySide6.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -22,7 +23,7 @@ from PIL import Image
 from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLabel
 from matplotlib.figure import Figure
 from PySide6.QtCore import QLocale, QSettings, QFileInfo
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QCloseEvent
 
 # import pyqtgraph as pg
 
@@ -34,12 +35,15 @@ class FRCViewer(QMainWindow):
         self.resize(1000, 800)
         QLocale.setDefault(QLocale.c())
         self.settings = QSettings("Synchrotron SOLEIL", "FRCAnalyzer")
+
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
         main_layout = QVBoxLayout(main_widget)
 
         # --- Top row: Load and Exit buttons ---
         top_row = QHBoxLayout()
+        self.help_button = QPushButton("Help")
+        self.help_button.clicked.connect(self.show_help)
         self.load_button = QPushButton("Load Image")
         self.exit_button = QPushButton("Exit")
         self.spin0 = QDoubleSpinBox()
@@ -51,12 +55,14 @@ class FRCViewer(QMainWindow):
         top_row.addWidget(self.load_button)
         top_row.addWidget(self.exit_button)
         top_row.addWidget(self.spin0)
+        top_row.addWidget(self.help_button)
         main_layout.addLayout(top_row)
 
         # --- Second row: FRC, Reset, and three spinboxes ---
         second_row = QHBoxLayout()
         self.frc_button = QPushButton("FRC")
         self.save_button = QPushButton("Save Screengrab")
+        self.export_button = QPushButton("Export CSV")
 
         # Input fields
         self.spin1 = QDoubleSpinBox()
@@ -76,6 +82,7 @@ class FRCViewer(QMainWindow):
 
         second_row.addWidget(self.frc_button)
         second_row.addWidget(self.save_button)
+        second_row.addWidget(self.export_button)
         second_row.addWidget(self.spin1)
         second_row.addWidget(self.spin2)
         second_row.addWidget(self.spin3)
@@ -101,6 +108,7 @@ class FRCViewer(QMainWindow):
         self.load_button.clicked.connect(self.load_image)
         self.frc_button.clicked.connect(self.calculation_with_iterations)
         self.save_button.clicked.connect(self.save_screengrab)
+        self.export_button.clicked.connect(self.export_frc)
 
         # Enable status
         self.spin0.setEnabled(False)
@@ -109,6 +117,8 @@ class FRCViewer(QMainWindow):
         self.spin3.setEnabled(False)
         self.frc_button.setEnabled(False)
         self.save_button.setEnabled(False)
+        self.export_button.setEnabled(False)
+        self.load_settings()
 
     def read_image(self, path):
         if path.endswith(".txt"):
@@ -475,7 +485,7 @@ class FRCViewer(QMainWindow):
         self.x_snr = x_snr
         self.SNR_good = SNR_good
         # self.lim_freq = lim_freq
-
+        self.export_button.setEnabled(True)
         # Now plot using the external method
         self.plot_the_results()
 
@@ -664,17 +674,90 @@ class FRCViewer(QMainWindow):
 
     def save_screengrab(self):
         # Prompt user for file path
+        last_dir = self.settings.value("screenshot_directory", "")
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Save Screenshot",
+            last_dir,
             "screenshot.png",
             "PNG Image (*.png);;JPEG Image (*.jpg *.jpeg)",
         )
 
         if file_path:
-            # Grab the entire main window (or replace `self` with a specific widget)
+            self.settings.setValue(
+                "screenshot_directory", QFileInfo(file_path).absolutePath()
+            )
             screenshot = self.grab()
             screenshot.save(file_path)
+
+    def load_settings(self):
+        # Restore the previous state of the SpinBoxes (if available)
+        self.spin0.setValue(self.settings.value("pixel_size", 0))
+        self.spin1.setValue(self.settings.value("max_std_dev", 0))
+        self.spin2.setValue(self.settings.value("iterations", 0))
+        self.spin3.setValue(self.settings.value("increment", 0))
+
+    def show_help(self):
+        help_text = """
+        <b>FRC Analyzer Help</b><br><br>
+        <u>Step-by-step:</u><br>
+        1. Load a TIFF or TXT image.<br>
+        2. Set the pixel size (nm), standard deviation limit, iterations, and increment.<br>
+        3. Click 'Calculate FRC' to run analysis.<br>
+        4. The plot shows mean FRC and thresholds.<br>
+        5. Results are annotated with spatial resolution estimates.<br><br>
+        <u>Buttons:</u><br>
+        - 'Save Screenshot': Save current view.<br>
+        - 'Export Data': Save FRC results as CSV.<br>
+        """
+
+        QMessageBox.information(self, "FRC Analyzer Help", help_text)
+
+    def export_frc(self):
+        if not hasattr(self, "mean_FRC") or self.mean_FRC is None:
+            QMessageBox.warning(
+                self, "No Data", "Please calculate FRC before exporting."
+            )
+            return
+
+        last_dir = self.settings.value("export_directory", "")
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Export FRC Data", last_dir, "CSV Files (*.csv)"
+        )
+
+        if not file_path:
+            return
+
+        self.settings.setValue("export_directory", QFileInfo(file_path).absolutePath())
+
+        # Prepare data
+        freqs = self.freqs
+        mean_frc = self.mean_FRC
+        snr = (
+            self.snr_mean_frc if hasattr(self, "snr_mean_frc") else [None] * len(freqs)
+        )
+        half_bit = self.half_bit if hasattr(self, "half_bit") else [None] * len(freqs)
+
+        # Write to CSV
+        with open(file_path, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                ["Frequency (1/nm)", "FRC", "SNR Threshold", "Half-bit Threshold"]
+            )
+            for f, frc_val, snr_val, hb_val in zip(freqs, mean_frc, snr, half_bit):
+                writer.writerow([f, frc_val, snr_val, hb_val])
+
+        QMessageBox.information(
+            self, "Export Complete", f"FRC data exported to:\n{file_path}"
+        )
+
+    def closeEvent(self, event: QCloseEvent):
+        # print("closeEvent triggered!")  # Check if the event is triggered
+        self.settings.setValue("pixel_size", self.spin0.value())
+        self.settings.setValue("max_std_dev", self.spin1.value())
+        self.settings.setValue("iterations", self.spin2.value())
+        self.settings.setValue("increment", self.spin3.value())
+        event.accept()
 
 
 # ------------------ Main ------------------

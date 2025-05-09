@@ -24,6 +24,8 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLabel
 from matplotlib.figure import Figure
 from PySide6.QtCore import QLocale, QSettings, QFileInfo
 from PySide6.QtGui import QPixmap, QCloseEvent
+import csv
+
 
 # import pyqtgraph as pg
 
@@ -761,6 +763,14 @@ class FRCViewer(QMainWindow):
 
 
 # ------------------ Main ------------------
+def main():
+    import sys
+
+    app = QApplication(sys.argv)
+    viewer = FRCViewer()
+    viewer.show()
+    sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     import sys

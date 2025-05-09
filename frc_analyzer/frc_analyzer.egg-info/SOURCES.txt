@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+frc_analyzer/__init__.py
+frc_analyzer/main.py
+frc_analyzer.egg-info/PKG-INFO
+frc_analyzer.egg-info/SOURCES.txt
+frc_analyzer.egg-info/dependency_links.txt
+frc_analyzer.egg-info/entry_points.txt
+frc_analyzer.egg-info/requires.txt
+frc_analyzer.egg-info/top_level.txt

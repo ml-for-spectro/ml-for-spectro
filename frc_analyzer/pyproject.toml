@@ -1,0 +1,17 @@
+[project]
+name = "frc-analyzer"
+version = "0.1.0"
+description = "A PySide6 GUI for Fourier Ring Correlation (FRC) image analysis"
+authors = [{name = "Sufal SWARAJ"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "pillow",
+    "PySide6"
+]
+
+[project.scripts]
+frc-analyzer = "frc_analyzer.main:main"

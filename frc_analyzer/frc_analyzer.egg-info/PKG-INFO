@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: frc-analyzer
+Version: 0.1.0
+Summary: A PySide6 GUI for Fourier Ring Correlation (FRC) image analysis
+Author: Sufal SWARAJ
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: pillow
+Requires-Dist: PySide6
+
+# FRC Analyzer
+
+A PySide6-based GUI tool for estimating spatial resolution of microscopy images (STXM, Ptychography, etc.) using Fourier Ring Correlation (FRC).
+
+Supports:
+- Image loading from TIFF or text files
+- Interactive FRC calculation
+- Dual-axis plotting (spatial frequency and resolution)
+- Half-bit and SNR-based resolution thresholds
+- Save results and figures
+
+## 🔧 Installation
+
+1. Clone this repository:
+
+```bash
+git clone https://github.com/ml-for-spectro/frc-analyzer.git
+cd frc-analyzer
+
+2. pip install .
+
+3. Launch using frc-analyzer

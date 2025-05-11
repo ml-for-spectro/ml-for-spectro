@@ -25,6 +25,7 @@ from matplotlib.figure import Figure
 from PySide6.QtCore import QLocale, QSettings, QFileInfo
 from PySide6.QtGui import QPixmap, QCloseEvent
 import csv
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 # import pyqtgraph as pg
@@ -70,16 +71,22 @@ class FRCViewer(QMainWindow):
         self.spin1 = QDoubleSpinBox()
         self.spin1.setPrefix("Max std: ")
         self.spin1.setValue(40)
+        self.spin1.setDecimals(1)
         self.spin1.setLocale(QLocale(QLocale.C))
 
         self.spin2 = QDoubleSpinBox()
         self.spin2.setPrefix("Iterations: ")
         self.spin2.setValue(100)
+        self.spin2.setMaximum(10000)
+        self.spin2.setSingleStep(1)
+        self.spin2.setDecimals(0)
         self.spin2.setLocale(QLocale(QLocale.C))
 
         self.spin3 = QDoubleSpinBox()
         self.spin3.setPrefix("Increment: ")
-        self.spin3.setValue(0.01)
+        self.spin3.setValue(0.001)
+        self.spin3.setMinimum(0.001)
+        self.spin3.setDecimals(3)
         self.spin3.setLocale(QLocale(QLocale.C))
 
         second_row.addWidget(self.frc_button)
@@ -97,7 +104,8 @@ class FRCViewer(QMainWindow):
         self.image_canvas = FigureCanvas(self.image_figure)
         self.image_ax = self.image_figure.add_subplot(111)
         bottom_row.addWidget(self.image_canvas)
-
+        self.image_colorbar = None
+        self.image_colorbar_ax = None
         self.frc_figure = Figure()
         self.frc_canvas = FigureCanvas(self.frc_figure)
         self.frc_ax = self.frc_figure.add_subplot(111)
@@ -149,14 +157,34 @@ class FRCViewer(QMainWindow):
 
     def display_image(self, img, path):
         self.image_ax.clear()
-        self.image_ax.imshow(img, cmap="gray")
+
+        # Remove previous colorbar safely
+        if hasattr(self, "image_colorbar_ax") and self.image_colorbar_ax:
+            self.image_colorbar_ax.remove()
+            self.image_colorbar_ax = None
+            self.image_colorbar = None
+
+        # Show image
+        im = self.image_ax.imshow(img, cmap="gray")
+
+        # Create and attach new colorbar with a known axes
+        divider = make_axes_locatable(self.image_ax)
+        cax = divider.append_axes("right", size="5%", pad=0.05)
+        self.image_colorbar = self.image_figure.colorbar(im, cax=cax)
+        self.image_colorbar.set_label("Intensity")
+        self.image_colorbar_ax = cax  # Save the colorbar axes for future removal
+
+        # Title and draw
         self.image_ax.set_title(path)
         self.image_canvas.draw()
-        self.frc_figure.delaxes(self.frc_twin_ax)  # remove old twin axis
+
+        # Reset FRC plot
+        self.frc_figure.delaxes(self.frc_twin_ax)
         self.frc_ax.clear()
         self.frc_twin_ax = self.frc_ax.twiny()
         self.frc_canvas.draw()
 
+        # Enable buttons
         self.spin0.setEnabled(True)
         self.spin1.setEnabled(True)
         self.spin2.setEnabled(True)
@@ -414,7 +442,7 @@ class FRCViewer(QMainWindow):
         SNR_good = []
 
         for k in range(iteration):
-            std_dev = 1
+            std_dev = 0.00
             found_intersections = False
             inner_counter = 0
 
@@ -496,12 +524,12 @@ class FRCViewer(QMainWindow):
     def plot_the_results(self):
         plt.rcParams.update(
             {
-                "font.size": 8,
-                "axes.titlesize": 8,
-                "axes.labelsize": 8,
-                "xtick.labelsize": 8,
-                "ytick.labelsize": 8,
-                "legend.fontsize": 8,
+                "font.size": 12,
+                "axes.titlesize": 10,
+                "axes.labelsize": 10,
+                "xtick.labelsize": 10,
+                "ytick.labelsize": 10,
+                "legend.fontsize": 12,
             }
         )
 
@@ -612,7 +640,7 @@ class FRCViewer(QMainWindow):
             resolution_x_h = 1 / self.x_h if self.x_h != 0 else np.nan
             frc_twin_ax.annotate(
                 f" {resolution_x_h:.1f}±{max_uncertainty_x_h:.1f}nm ",
-                (self.x_h, 0.95),
+                (self.x_h, 0.85),
                 textcoords="offset points",
                 xytext=(0, 10),
                 va="top",
@@ -664,7 +692,7 @@ class FRCViewer(QMainWindow):
             resolution_x_snr = 1 / self.x_snr if self.x_snr != 0 else np.nan
             frc_twin_ax.annotate(
                 f" {resolution_x_snr:.1f}±{max_uncertainty_x_snr:.1f}nm ",
-                (self.x_snr, 0.95),
+                (self.x_snr, 0.65),
                 textcoords="offset points",
                 xytext=(0, 10),
                 va="top",
@@ -777,6 +805,6 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     gui = FRCViewer()
-    gui.resize(1000, 600)
+    gui.resize(1300, 600)
     gui.show()
     sys.exit(app.exec())

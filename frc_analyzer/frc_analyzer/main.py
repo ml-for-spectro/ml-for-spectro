@@ -14,8 +14,9 @@ from PySide6.QtWidgets import (
     QDoubleSpinBox,
     QFormLayout,
     QMessageBox,
+    QProgressBar,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QCoreApplication
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.signal import savgol_filter
 from numpy import fft
@@ -114,6 +115,13 @@ class FRCViewer(QMainWindow):
 
         main_layout.addLayout(bottom_row)
 
+        # --- Bottommost row: progress bar ---
+        bottommost_row = QHBoxLayout()
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 100)
+        self.progress_bar.setValue(0)
+        bottommost_row.addWidget(self.progress_bar)
+        main_layout.addLayout(bottommost_row)
         # Connections
         self.load_button.clicked.connect(self.load_image)
         self.frc_button.clicked.connect(self.calculation_with_iterations)
@@ -154,6 +162,8 @@ class FRCViewer(QMainWindow):
             self.image_current = img
 
             self.display_image(self.image_current, file_path.split("/")[-1])
+
+        self.progress_bar.setValue(0)
 
     def display_image(self, img, path):
         self.image_ax.clear()
@@ -442,6 +452,8 @@ class FRCViewer(QMainWindow):
         SNR_good = []
 
         for k in range(iteration):
+            self.progress_bar.setValue(int((k + 1) / iteration * 100))
+            QCoreApplication.processEvents()  # This keeps the GUI responsive
             std_dev = 0.00
             found_intersections = False
             inner_counter = 0

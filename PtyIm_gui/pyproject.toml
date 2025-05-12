@@ -1,0 +1,22 @@
+[project]
+name = "PtyIm_gui"
+version = "0.1.0"
+description = "A PySide6 GUI for ptychography image analysis"
+authors = [{ name="Sufal SWARAJ"}]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "PySide6",
+    "numpy",
+    "matplotlib",
+    "scipy",     # Add any other packages you use
+    "tifffile"
+]
+
+[project.scripts]
+ptyim-gui = "PtyIm_gui.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

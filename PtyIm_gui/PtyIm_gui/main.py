@@ -47,9 +47,13 @@ class MainWindow(QMainWindow):
         )
 
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     win = MainWindow()
     win.resize(900, 700)
     win.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

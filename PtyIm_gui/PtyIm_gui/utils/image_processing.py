@@ -13,6 +13,7 @@ def rescale_image(image, pixel_size, reference_pixel_size):
 
 
 def crop_center_stack(stack, crop_size):
+    # print(type(stack))
     h, w = stack.shape[1:]
     sx = (w - crop_size) // 2
     sy = (h - crop_size) // 2

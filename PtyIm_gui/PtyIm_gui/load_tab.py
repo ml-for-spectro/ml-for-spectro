@@ -141,6 +141,10 @@ class LoadTab(QWidget):
         # === Input grid (for pixel/energy/order fields) ===
         self.input_grid = QGridLayout()
         control_layout.addLayout(self.input_grid)
+        self.input_grid.addWidget(QLabel("Filename"), 0, 0)
+        self.input_grid.addWidget(QLabel("Pixel Size"), 0, 1)
+        self.input_grid.addWidget(QLabel("Energy (eV)"), 0, 2)
+        self.input_grid.addWidget(QLabel("Order"), 0, 3)
 
         # === RIGHT: Preview plot ===
         preview_layout = QVBoxLayout()
@@ -219,7 +223,7 @@ class LoadTab(QWidget):
             self.energy_inputs.append(energy_box)
             self.order_inputs.append(order_box)
 
-        self.image_stack = np.stack(cropped)
+        # self.image_stack = np.stack(cropped)
         # Sort images and metadata by order
         orders = [sb.value() for sb in self.order_inputs]
         sorted_indices = np.argsort(orders)
@@ -282,7 +286,17 @@ class LoadTab(QWidget):
         )
         if not ok:
             return
-        self.image_stack = crop_center_stack(self.image_stack, crop_size)
+            # Ensure image_current is a NumPy array stack
+        if isinstance(self.image_current, list):
+            try:
+                self.image_current = np.stack(self.image_current)
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"Failed to stack image list: {e}")
+                return
+
+        # print(type(self.image_current))
+
+        self.image_stack = crop_center_stack(self.image_current, crop_size)
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)
         self.update_preview()
@@ -330,41 +344,54 @@ class LoadTab(QWidget):
             rows = list(reader)
 
         self.filenames = [row["Filename"] for row in rows]
-        # self.images = [normalize_image(load_text_image(f)) for f in self.filenames]
         self.images = [load_text_image(f) for f in self.filenames]
         self.previous_dir = os.path.dirname(self.filenames[0])
         self.last_file_count = len(self.filenames)
         save_settings(self)
 
+        # Clear existing grid
         for i in reversed(range(self.input_grid.count())):
             widget = self.input_grid.itemAt(i).widget()
             if widget:
                 widget.setParent(None)
 
+        # Add headers
+        self.input_grid.addWidget(QLabel("Filename"), 0, 0)
+        self.input_grid.addWidget(QLabel("Pixel Size"), 0, 1)
+        self.input_grid.addWidget(QLabel("Energy (eV)"), 0, 2)
+        self.input_grid.addWidget(QLabel("Order"), 0, 3)
+
         self.pixel_inputs = []
         self.energy_inputs = []
         self.order_inputs = []
 
-        for i, row in enumerate(rows):
-            label = QLabel(os.path.basename(row["Filename"]))
+        for i, f in enumerate(self.filenames):
+            row = i + 1
+            label = QLabel(os.path.basename(f))
             pixel_box = QLineEdit()
-            pixel_box.setText(row["PixelSize"])
             energy_box = QLineEdit()
-            energy_box.setText(row["Energy"])
             order_box = QSpinBox()
-            order_box.setRange(1, len(rows))
-            order_box.setValue(int(row.get("Order", i + 1)))
+            order_box.setRange(1, self.last_file_count)
 
-            self.input_grid.addWidget(label, i, 0)
-            self.input_grid.addWidget(pixel_box, i, 1)
-            self.input_grid.addWidget(energy_box, i, 2)
-            self.input_grid.addWidget(order_box, i, 3)
+            # Pre-fill if available
+            pixel_box.setText(rows[i].get("PixelSize", ""))
+            energy_box.setText(rows[i].get("Energy", ""))
+            try:
+                order_value = int(rows[i].get("Order", i + 1))
+            except (ValueError, TypeError):
+                order_value = i + 1
+            order_box.setValue(order_value)
+
+            self.input_grid.addWidget(label, row, 0)
+            self.input_grid.addWidget(pixel_box, row, 1)
+            self.input_grid.addWidget(energy_box, row, 2)
+            self.input_grid.addWidget(order_box, row, 3)
 
             self.pixel_inputs.append(pixel_box)
             self.energy_inputs.append(energy_box)
             self.order_inputs.append(order_box)
 
-        # Sort images and metadata by order
+        # Sort based on order
         orders = [sb.value() for sb in self.order_inputs]
         sorted_indices = np.argsort(orders)
 
@@ -374,9 +401,18 @@ class LoadTab(QWidget):
         self.energy_inputs = [self.energy_inputs[i] for i in sorted_indices]
         self.order_inputs = [self.order_inputs[i] for i in sorted_indices]
 
-        energies = [float(e.text()) for e in self.energy_inputs]
+        # Convert and validate energies
+        try:
+            energies = [float(e.text()) for e in self.energy_inputs]
+        except ValueError as ve:
+            QMessageBox.warning(
+                self,
+                "Invalid Input",
+                "One or more energy fields are not valid numbers.",
+            )
+            return
+
         self.viewer.set_energies(energies)
-        # Update image stack
         self.image_stack = self.images
         self.image_current = self.image_stack.copy()
         self.viewer.set_stack(self.image_current)

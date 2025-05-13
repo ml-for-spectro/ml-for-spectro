@@ -1,0 +1,24 @@
+2025-05-13 06:42:06,680 - New file loaded
+2025-05-13 06:42:06,680 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-13 06:42:07,621 - The following column loaded:
+2025-05-13 06:42:07,622 - Column Column 1
+2025-05-13 06:42:09,552 - Smoothing was applied by:
+2025-05-13 06:42:09,552 - Smoothed (σ=1.0)
+2025-05-13 06:42:17,835 - SClicking for bgnd was done
+2025-05-13 06:42:17,835 - X =289.46465208094827)
+2025-05-13 06:42:17,836 - Y =1.0218897040009733)
+2025-05-13 06:42:18,412 - SClicking for bgnd was done
+2025-05-13 06:42:18,412 - X =280.45027190383195)
+2025-05-13 06:42:18,412 - Y =1.004737106784795)
+2025-05-13 06:42:19,818 - Background was removed.
+2025-05-13 06:42:25,352 - Background removal undone.
+2025-05-13 06:42:30,452 - New file loaded
+2025-05-13 06:42:30,452 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175_3clusters.txt
+2025-05-13 06:42:31,696 - The following column loaded:
+2025-05-13 06:42:31,696 - Column Column 1
+2025-05-13 06:42:41,107 - SClicking for bgnd was done
+2025-05-13 06:42:41,108 - X =289.5843360664018)
+2025-05-13 06:42:41,108 - Y =0.9862209700660344)
+2025-05-13 06:42:41,716 - SClicking for bgnd was done
+2025-05-13 06:42:41,716 - X =281.30796855007077)
+2025-05-13 06:42:41,716 - Y =0.9808404301664808)

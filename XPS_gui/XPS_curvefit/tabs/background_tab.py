@@ -87,8 +87,25 @@ class BackgroundTab(QWidget):
         self._full_x = None
         self._full_y = None
 
+        # Reset all internal state
+        self.pt_indices = []
+        self.pt_coords = []
+        self.pt_ys = []
+        self.bg_subtracted = False
+        self._prev_curve = None
+
+        if hasattr(self, "_click_cid"):
+            try:
+                self.canvas.mpl_disconnect(self._click_cid)
+            except Exception:
+                pass
+            del self._click_cid
+
+        self.undo_btn.setEnabled(False)
+        self.save_btn.setEnabled(False)
+
         if self.parent.x is not None and self.parent.y_current is not None:
-            self.load_crop_settings()  # <-- Load saved crop values instead of reset
+            self.load_crop_settings()
             self._plot_raw()
 
     # ---------- Internal helpers -----------------------

@@ -66,12 +66,19 @@ class FitTab(QWidget):
 
     # ---------- called by other tabs ----------
     def refresh(self):
-        if self.parent.x is not None and self.parent.y_current is not None:
-            self._plot_curve()
         self.fit_result = None
+        self._prev_curve = None
+        self.peak_ids.clear()
+        self.amp_guesses.clear()
         self.undo_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
         self.save_curve_btn.setEnabled(False)
+
+        self.canvas.ax1.clear()
+        self.canvas.draw()
+
+        if self.parent.x is not None and self.parent.y_current is not None:
+            self._plot_curve()
 
     # ---------- internal plotting -------------
     def _plot_curve(self):

@@ -119,7 +119,9 @@ class SmoothTab(QWidget):
             self.undo_button.setEnabled(False)
 
             self.plot_raw_data()
+            self.parent.tabs.widget(2).refresh()  # update Background tab if needed
             self.parent.tabs.widget(3).refresh()  # update Fit tab if needed
+
             logging.info("Smoothing undone")
 
     def save_smoothed_spectrum(self):

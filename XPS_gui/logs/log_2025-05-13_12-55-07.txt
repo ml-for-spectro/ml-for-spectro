@@ -1,0 +1,8 @@
+2025-05-13 12:56:36,672 - New file loaded
+2025-05-13 12:56:36,672 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-20/PTQ10_C.txt
+2025-05-13 12:56:50,970 - New file loaded
+2025-05-13 12:56:50,971 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-20/PTQ10_C.txt
+2025-05-13 12:56:58,093 - New file loaded
+2025-05-13 12:56:58,093 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-20/itic-4F_C.txt
+2025-05-13 12:57:13,320 - File send for analysis
+2025-05-13 12:57:15,180 - File send for analysis

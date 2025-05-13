@@ -1,0 +1,17 @@
+2025-05-12 22:48:43,573 - New file loaded
+2025-05-12 22:48:43,573 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175_3clusters.txt
+2025-05-12 22:48:45,045 - The following column loaded:
+2025-05-12 22:48:45,045 - Column Column 1
+2025-05-12 22:48:51,733 - Smoothing was applied by:
+2025-05-12 22:48:51,733 - Smoothed (σ=1.0)
+2025-05-12 22:48:59,080 - SClicking for bgnd was done
+2025-05-12 22:48:59,080 - X =288.68161323994883)
+2025-05-12 22:48:59,081 - Y =0.98618624896505)
+2025-05-12 22:49:00,208 - SClicking for bgnd was done
+2025-05-12 22:49:00,208 - X =282.24657342245274)
+2025-05-12 22:49:00,208 - Y =0.9817253093295538)
+2025-05-12 22:49:01,392 - Background was removed.
+2025-05-12 22:49:03,147 - Cropping was done.
+2025-05-12 22:49:32,950 - Saved 175_no1_bgd_rem.csv written.
+2025-05-12 22:49:42,872 - Loaded parameters from 217_no1_5fit_param.csv.
+2025-05-12 22:52:54,931 - Loaded parameters from 237_no1_5fit_param.csv.

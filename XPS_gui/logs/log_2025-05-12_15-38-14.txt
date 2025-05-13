@@ -1,0 +1,40 @@
+2025-05-12 15:40:27,149 - New file loaded
+2025-05-12 15:40:27,150 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-12 15:40:31,909 - The following column loaded:
+2025-05-12 15:40:31,909 - Column Column 1
+2025-05-12 15:40:45,129 - Smoothing was applied by:
+2025-05-12 15:40:45,129 - Smoothed (σ=1.0)
+2025-05-12 15:41:10,092 - SClicking for bgnd was done
+2025-05-12 15:41:10,093 - X =289.8662725604418)
+2025-05-12 15:41:10,093 - Y =1.0220605517333932)
+2025-05-12 15:41:11,514 - SClicking for bgnd was done
+2025-05-12 15:41:11,515 - X =280.06352910970435)
+2025-05-12 15:41:11,515 - Y =0.9988381380940518)
+2025-05-12 15:41:12,979 - Background was removed.
+2025-05-12 15:41:15,375 - Cropping was done.
+2025-05-12 15:41:35,536 - Saved 171_no1_bgdremoved.csv written.
+2025-05-12 15:41:58,462 - Loaded parameters from 171_no1_5Peakparam.csv.
+2025-05-12 15:42:13,343 - Loaded parameters from 171_no1_4Peakparam_curves.csv.
+2025-05-12 15:42:35,568 - Loaded parameters from 171_no1_4Peakparam.csv.
+2025-05-12 15:42:44,481 - Loaded parameters from 171_no1_6Peakparam.csv.
+2025-05-12 15:43:55,921 - New file loaded
+2025-05-12 15:43:55,921 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-12 15:43:57,438 - The following column loaded:
+2025-05-12 15:43:57,438 - Column Column 1
+2025-05-12 15:43:59,826 - Smoothing was applied by:
+2025-05-12 15:43:59,826 - Smoothed (σ=1.0)
+2025-05-12 15:44:08,157 - SClicking for bgnd was done
+2025-05-12 15:44:08,158 - X =288.46004360563)
+2025-05-12 15:44:08,158 - Y =1.019744234235558)
+2025-05-12 15:44:09,986 - SClicking for bgnd was done
+2025-05-12 15:44:09,986 - X =282.77702202168496)
+2025-05-12 15:44:09,986 - Y =1.0029238886397143)
+2025-05-12 15:44:15,396 - SClicking for bgnd was done
+2025-05-12 15:44:15,396 - X =288.417795390262)
+2025-05-12 15:44:15,396 - Y =1.0192995150124748)
+2025-05-12 15:44:16,934 - SClicking for bgnd was done
+2025-05-12 15:44:16,934 - X =282.82123796215234)
+2025-05-12 15:44:16,934 - Y =1.0023332190924532)
+2025-05-12 15:44:18,200 - SClicking for bgnd was done
+2025-05-12 15:44:18,200 - X =282.83153958179)
+2025-05-12 15:44:18,201 - Y =1.004941437238644)

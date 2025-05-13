@@ -161,7 +161,9 @@ class LoadTab(QWidget):
 
                 # Update smoothing tab
                 self.parent.tabs.widget(1).refresh()
+                # Update background tab
                 self.parent.tabs.widget(2).refresh()
+                # Update fit tab
                 self.parent.tabs.widget(3).refresh()
 
             except Exception as e:

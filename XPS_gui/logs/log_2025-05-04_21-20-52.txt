@@ -1,3 +1,0 @@
-2025-05-04 21:21:19,022 - The following column loaded:
-2025-05-04 21:21:19,022 - Column  Clustered_Spectra_1
-2025-05-04 21:21:20,796 - File send for analysis

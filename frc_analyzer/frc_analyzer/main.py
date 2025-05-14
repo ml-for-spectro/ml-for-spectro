@@ -52,7 +52,9 @@ class FRCViewer(QMainWindow):
         self.exit_button = QPushButton("Exit")
         self.spin0 = QDoubleSpinBox()
         self.spin0.setPrefix("Pixel size (nm): ")
-        self.spin0.setValue(10)
+        # self.spin0.setValue(10)
+        valeur = float(self.settings.value("pixel_size", 0))
+        self.spin0.setValue(valeur)
         self.spin0.setLocale(QLocale(QLocale.C))
 
         self.exit_button.clicked.connect(self.close)
@@ -734,10 +736,14 @@ class FRCViewer(QMainWindow):
 
     def load_settings(self):
         # Restore the previous state of the SpinBoxes (if available)
-        self.spin0.setValue(self.settings.value("pixel_size", 0))
+        """self.spin0.setValue(self.settings.value("pixel_size", 0))
         self.spin1.setValue(self.settings.value("max_std_dev", 0))
         self.spin2.setValue(self.settings.value("iterations", 0))
-        self.spin3.setValue(self.settings.value("increment", 0))
+        self.spin3.setValue(self.settings.value("increment", 0))"""
+        self.spin0.setValue(float(self.settings.value("pixel_size", 0)))
+        self.spin1.setValue(float(self.settings.value("max_std_dev", 0)))
+        self.spin2.setValue(float(self.settings.value("iterations", 0)))
+        self.spin3.setValue(float(self.settings.value("increment", 0)))
 
     def show_help(self):
         help_text = """

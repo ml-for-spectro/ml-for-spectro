@@ -1,0 +1,46 @@
+2025-05-14 09:43:40,980 - New file loaded
+2025-05-14 09:43:40,980 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 09:43:42,661 - The following column loaded:
+2025-05-14 09:43:42,661 - Column Column 1
+2025-05-14 09:43:45,395 - Smoothing was applied by:
+2025-05-14 09:43:45,395 - Smoothed (σ=1.0)
+2025-05-14 09:43:49,474 - SClicking for bgnd was done
+2025-05-14 09:43:49,474 - X =287.92887209021205)
+2025-05-14 09:43:49,475 - Y =0.040078763833169294)
+2025-05-14 09:43:50,649 - SClicking for bgnd was done
+2025-05-14 09:43:50,649 - X =283.43046513435104)
+2025-05-14 09:43:50,649 - Y =0.0396926607397773)
+2025-05-14 09:43:51,748 - Background was removed.
+2025-05-14 09:43:52,935 - Cropping was done.
+2025-05-14 09:44:04,283 - Loaded parameters from 237_1_fit_parameterA.csv.
+2025-05-14 09:46:34,492 - Saved pameters to 243_1_fit_paramsA.csv.
+2025-05-14 09:48:28,341 - Loaded parameters from 243_1_fit_paramsA.csv.
+2025-05-14 10:00:10,079 - Loaded parameters from 243_1_fit_paramsA.csv.
+2025-05-14 10:03:51,830 - Saved pameters to 243_1_fit_paramsB.csv.
+2025-05-14 10:06:11,644 - New file loaded
+2025-05-14 10:06:11,645 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 10:06:12,887 - The following column loaded:
+2025-05-14 10:06:12,887 - Column Column 1
+2025-05-14 10:06:15,206 - Smoothing was applied by:
+2025-05-14 10:06:15,207 - Smoothed (σ=1.0)
+2025-05-14 10:06:19,442 - SClicking for bgnd was done
+2025-05-14 10:06:19,443 - X =288.22235485597844)
+2025-05-14 10:06:19,443 - Y =0.04004239467418403)
+2025-05-14 10:06:20,416 - SClicking for bgnd was done
+2025-05-14 10:06:20,417 - X =283.41645584375215)
+2025-05-14 10:06:20,417 - Y =0.03968618826233077)
+2025-05-14 10:06:21,545 - Background was removed.
+2025-05-14 10:06:34,616 - Cropping was done.
+2025-05-14 10:07:14,844 - Fitting was done.
+2025-05-14 10:07:18,793 - Fitting was done.
+2025-05-14 10:07:59,286 - Fitting was done.
+2025-05-14 10:08:26,366 - Fitting was done.
+2025-05-14 10:08:37,334 - Fitting was done.
+2025-05-14 10:09:13,568 - Fitting was done.
+2025-05-14 10:10:05,564 - Fitting was done.
+2025-05-14 10:10:34,946 - Fitting was done.
+2025-05-14 10:11:07,916 - Fitting was done.
+2025-05-14 10:12:03,117 - Fitting was done.
+2025-05-14 10:12:17,151 - Fitting was done.
+2025-05-14 10:18:57,004 - Loaded parameters from 243_1_fit_paramsB.csv.
+2025-05-14 10:19:14,336 - Loaded parameters from 243_1_fit_paramsB.csv.

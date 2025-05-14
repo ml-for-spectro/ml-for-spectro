@@ -1,0 +1,55 @@
+2025-05-14 06:21:19,046 - New Photon energy value
+2025-05-14 06:21:19,047 - 348.0 eV
+2025-05-14 06:21:23,914 - New file loaded
+2025-05-14 06:21:23,915 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_3clusters.txt
+2025-05-14 06:21:30,296 - The following column loaded:
+2025-05-14 06:21:30,296 - Column Column 1
+2025-05-14 06:21:40,342 - Smoothing was applied by:
+2025-05-14 06:21:40,343 - Smoothed (σ=1.0)
+2025-05-14 06:26:23,645 - SClicking for bgnd was done
+2025-05-14 06:26:23,646 - X =289.2111970712164)
+2025-05-14 06:26:23,646 - Y =1.003366850098372)
+2025-05-14 06:26:25,351 - SClicking for bgnd was done
+2025-05-14 06:26:25,351 - X =283.16915624784144)
+2025-05-14 06:26:25,351 - Y =0.9915798591976129)
+2025-05-14 06:26:30,272 - Background was removed.
+2025-05-14 06:26:35,643 - Cropping was done.
+2025-05-14 06:27:23,342 - Saved 237_1_bgd_removed.csv written.
+2025-05-14 06:27:36,086 - Loaded parameters from ptq10_C_5param.csv.
+2025-05-14 06:31:38,847 - Cropping was undone.
+2025-05-14 06:31:42,673 - Cropping was done.
+2025-05-14 06:31:52,060 - Loaded parameters from 171_no1_param_C.csv.
+2025-05-14 06:32:03,325 - Loaded parameters from ptq10_C_5param.csv.
+2025-05-14 09:20:00,406 - Saved pameters to 237_1_fit_parameterA.csv.
+2025-05-14 09:21:12,880 - New file loaded
+2025-05-14 09:21:12,880 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 09:21:14,226 - The following column loaded:
+2025-05-14 09:21:14,226 - Column Column 1
+2025-05-14 09:21:20,223 - Smoothing was applied by:
+2025-05-14 09:21:20,224 - Smoothed (σ=1.0)
+2025-05-14 09:21:27,613 - SClicking for bgnd was done
+2025-05-14 09:21:27,613 - X =288.40518797057405)
+2025-05-14 09:21:27,613 - Y =0.04005666054284169)
+2025-05-14 09:21:28,912 - SClicking for bgnd was done
+2025-05-14 09:21:28,913 - X =283.32776991089315)
+2025-05-14 09:21:28,913 - Y =0.03967755829240206)
+2025-05-14 09:21:30,085 - Background was removed.
+2025-05-14 09:21:31,644 - Cropping was done.
+2025-05-14 09:21:50,278 - Saved 243_1_bgd_removed.csv written.
+2025-05-14 09:22:05,413 - Loaded parameters from 237_1_fit_parameterA.csv.
+2025-05-14 09:23:50,040 - New file loaded
+2025-05-14 09:23:50,040 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 09:23:51,097 - The following column loaded:
+2025-05-14 09:23:51,097 - Column Column 1
+2025-05-14 09:23:53,315 - Smoothing was applied by:
+2025-05-14 09:23:53,315 - Smoothed (σ=1.0)
+2025-05-14 09:24:12,055 - SClicking for bgnd was done
+2025-05-14 09:24:12,056 - X =288.21855572632455)
+2025-05-14 09:24:12,056 - Y =0.04004952760851286)
+2025-05-14 09:24:13,172 - SClicking for bgnd was done
+2025-05-14 09:24:13,173 - X =283.33287499136566)
+2025-05-14 09:24:13,173 - Y =0.03966113493126223)
+2025-05-14 09:24:14,308 - Background was removed.
+2025-05-14 09:24:16,603 - Cropping was done.
+2025-05-14 09:24:24,097 - Saved 243_1_bgd_removed.csv written.
+2025-05-14 09:24:30,632 - Loaded parameters from 237_1_fit_parameterA.csv.

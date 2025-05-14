@@ -1,0 +1,62 @@
+2025-05-14 10:21:13,704 - New file loaded
+2025-05-14 10:21:13,704 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 10:21:15,681 - The following column loaded:
+2025-05-14 10:21:15,681 - Column Column 1
+2025-05-14 10:21:18,347 - Smoothing was applied by:
+2025-05-14 10:21:18,348 - Smoothed (σ=1.0)
+2025-05-14 10:21:19,468 - Smoothing undone
+2025-05-14 10:21:20,716 - Smoothing was applied by:
+2025-05-14 10:21:20,717 - Smoothed (σ=1.0)
+2025-05-14 10:21:25,393 - SClicking for bgnd was done
+2025-05-14 10:21:25,393 - X =288.42893253091114)
+2025-05-14 10:21:25,394 - Y =0.04005525156815945)
+2025-05-14 10:21:26,654 - SClicking for bgnd was done
+2025-05-14 10:21:26,655 - X =283.3993597603095)
+2025-05-14 10:21:26,655 - Y =0.03966263196686211)
+2025-05-14 10:21:27,745 - Background was removed.
+2025-05-14 10:21:29,482 - Cropping was done.
+2025-05-14 10:21:43,587 - Loaded parameters from 243_1_fit_paramsB.csv.
+2025-05-14 10:21:58,411 - Loaded parameters from 243_1_fit_paramsA.csv.
+2025-05-14 10:22:24,800 - New file loaded
+2025-05-14 10:22:24,801 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-14 10:22:26,235 - The following column loaded:
+2025-05-14 10:22:26,236 - Column Column 1
+2025-05-14 10:22:28,737 - Smoothing was applied by:
+2025-05-14 10:22:28,737 - Smoothed (σ=1.0)
+2025-05-14 10:22:33,352 - SClicking for bgnd was done
+2025-05-14 10:22:33,352 - X =288.333479398356)
+2025-05-14 10:22:33,353 - Y =0.040044464105748565)
+2025-05-14 10:22:34,533 - SClicking for bgnd was done
+2025-05-14 10:22:34,533 - X =283.3658799302342)
+2025-05-14 10:22:34,533 - Y =0.0396564236721685)
+2025-05-14 10:22:35,578 - Background was removed.
+2025-05-14 10:22:37,793 - Cropping was done.
+2025-05-14 10:26:08,755 - Fitting was done.
+2025-05-14 10:28:15,648 - Fitting was done.
+2025-05-14 10:28:47,789 - Fitting was done.
+2025-05-14 10:29:20,338 - Saved pameters to 243_1_fit_paramsC.csv.
+2025-05-14 10:37:44,718 - Saved 243_1_bgd_removed.csv written.
+2025-05-14 10:37:52,825 - New file loaded
+2025-05-14 10:37:52,825 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_1_bgd_removed.csv
+2025-05-14 10:37:54,119 - Failed to load file.
+2025-05-14 10:38:01,799 - New file loaded
+2025-05-14 10:38:01,799 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_3clusters.txt
+2025-05-14 10:38:02,943 - The following column loaded:
+2025-05-14 10:38:02,943 - Column Column 1
+2025-05-14 10:38:05,535 - Smoothing was applied by:
+2025-05-14 10:38:05,535 - Smoothed (σ=1.0)
+2025-05-14 10:38:10,243 - SClicking for bgnd was done
+2025-05-14 10:38:10,243 - X =289.08641940664506)
+2025-05-14 10:38:10,243 - Y =1.0036190017373492)
+2025-05-14 10:38:11,438 - SClicking for bgnd was done
+2025-05-14 10:38:11,438 - X =282.9499939559301)
+2025-05-14 10:38:11,438 - Y =0.9917450316998001)
+2025-05-14 10:38:12,546 - Background was removed.
+2025-05-14 10:38:14,091 - Cropping was done.
+2025-05-14 10:38:25,057 - Loaded parameters from 237_1_fit_parameterA.csv.
+2025-05-14 10:53:35,073 - Saved pameters to 237_1_fit_parameterB.csv.
+2025-05-14 11:01:20,944 - Saved pameters to 237_1_fit_parameterC.csv.
+2025-05-14 11:05:11,942 - Saved pameters to 237_1_fit_parameterC.csv.
+2025-05-14 11:08:29,727 - Saved pameters to 237_1_fit_parameterC.csv.
+2025-05-14 11:10:26,308 - Loaded parameters from 237_1_fit_parameterC.csv.
+2025-05-14 11:11:10,152 - Loaded parameters from 237_1_fit_parameterC.csv.

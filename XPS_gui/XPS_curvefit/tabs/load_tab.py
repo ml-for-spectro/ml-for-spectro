@@ -159,6 +159,11 @@ class LoadTab(QWidget):
                 self.parent.last_dir = dir_path
                 self.parent.save_last_dir(dir_path)
 
+                self.parent.filename_label.setText(
+                    f"Loaded: {os.path.basename(path)} and Column: {item}"
+                )
+                self.parent.filename_label.setToolTip(path)
+
                 # Update smoothing tab
                 self.parent.tabs.widget(1).refresh()
                 # Update background tab

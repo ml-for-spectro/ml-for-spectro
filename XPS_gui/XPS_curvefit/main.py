@@ -3,7 +3,14 @@ import os
 import ast
 import logging
 from datetime import datetime
-from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QTabWidget,
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+)
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtCore import Qt, QLocale, QSettings, QCoreApplication
 
@@ -56,7 +63,23 @@ class XPSAnalysisApp(QMainWindow):
         self.tabs.addTab(self.general_tab, "General Utility")
         self.tabs.addTab(self.log_tab, "Log")
 
-        self.setCentralWidget(self.tabs)
+        # Create a container widget and layout
+        central_widget = QWidget()
+        main_layout = QVBoxLayout(central_widget)
+
+        # Create the filename label
+        self.filename_label = QLabel("No file loaded")
+        self.filename_label.setAlignment(Qt.AlignCenter)
+        self.filename_label.setStyleSheet(
+            "font-weight: bold; color: #555; padding: 4px;"
+        )
+        main_layout.addWidget(self.filename_label)
+
+        # Add the tab widget below
+        main_layout.addWidget(self.tabs)
+
+        # Set this container as the central widget
+        self.setCentralWidget(central_widget)
 
         settings = QSettings()
         photon_energy = settings.value("photon_energy")

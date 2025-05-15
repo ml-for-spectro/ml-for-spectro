@@ -206,6 +206,7 @@ class GeneralUtilityTab(QWidget):
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
         self.canvas.ax1.legend()
+        self.canvas.ax1.invert_xaxis()
         # self.canvas.ax2.set_xlabel("Kinetic Energy (eV)")
         self.canvas.draw()
 

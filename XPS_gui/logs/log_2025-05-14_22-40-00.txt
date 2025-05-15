@@ -1,0 +1,80 @@
+2025-05-14 22:40:34,519 - New file loaded
+2025-05-14 22:40:34,520 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-14 22:40:35,825 - The following column loaded:
+2025-05-14 22:40:35,825 - Column Column 1
+2025-05-14 22:40:40,880 - Smoothing was applied by:
+2025-05-14 22:40:40,880 - Smoothed (σ=1.0)
+2025-05-14 22:40:52,663 - SClicking for bgnd was done
+2025-05-14 22:40:52,664 - X =289.89230978448575)
+2025-05-14 22:40:52,664 - Y =1.0217549145839384)
+2025-05-14 22:40:53,894 - SClicking for bgnd was done
+2025-05-14 22:40:53,894 - X =282.87484242246325)
+2025-05-14 22:40:53,894 - Y =1.0030904437155408)
+2025-05-14 22:40:55,297 - Background was removed.
+2025-05-14 22:40:57,086 - Cropping was done.
+2025-05-14 22:44:10,114 - Loaded parameters from 237_1_fit_parameterA.csv.
+2025-05-14 23:01:35,979 - Loaded parameters from test.csv.
+2025-05-14 23:03:11,163 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:03:41,815 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:06:58,426 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:09:12,424 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:10:30,479 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:11:59,289 - Loaded parameters from Combined_paramsA.csv.
+2025-05-14 23:19:45,916 - Saved pameters to 171_no1_combinedPeaksParamsA.csv.
+2025-05-14 23:20:51,162 - Loaded parameters from 171_no1_combinedPeaksParamsA.csv.
+2025-05-14 23:22:17,053 - New file loaded
+2025-05-14 23:22:17,053 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175_3clusters.txt
+2025-05-14 23:22:18,461 - The following column loaded:
+2025-05-14 23:22:18,461 - Column Column 1
+2025-05-14 23:22:21,394 - Smoothing was applied by:
+2025-05-14 23:22:21,394 - Smoothed (σ=1.0)
+2025-05-14 23:22:26,107 - SClicking for bgnd was done
+2025-05-14 23:22:26,108 - X =289.3118740070457)
+2025-05-14 23:22:26,108 - Y =0.986199982956913)
+2025-05-14 23:22:27,133 - SClicking for bgnd was done
+2025-05-14 23:22:27,133 - X =282.5776792498446)
+2025-05-14 23:22:27,133 - Y =0.9816044849707593)
+2025-05-14 23:22:28,070 - Background was removed.
+2025-05-14 23:22:29,223 - Cropping was done.
+2025-05-14 23:22:37,278 - Loaded parameters from 171_no1_combinedPeaksParamsA.csv.
+2025-05-15 04:21:14,157 - The following column loaded:
+2025-05-15 04:21:14,159 - Column  Clustered_Spectra_1
+2025-05-15 04:21:36,837 - The following column loaded:
+2025-05-15 04:21:36,837 - Column  Clustered_Spectra_1
+2025-05-15 04:21:47,800 - File send for analysis
+2025-05-15 04:21:50,391 - File send for analysis
+2025-05-15 04:22:29,901 - File send for analysis
+2025-05-15 04:22:31,364 - File send for analysis
+2025-05-15 04:22:53,271 - New file loaded
+2025-05-15 04:22:53,271 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_bgdremoved.csv
+2025-05-15 04:23:09,014 - New file loaded
+2025-05-15 04:23:09,015 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175/175_no1_bgd_rem.csv
+2025-05-15 04:23:10,846 - File send for analysis
+2025-05-15 04:23:12,623 - File send for analysis
+2025-05-15 04:25:10,992 - New Photon energy value
+2025-05-15 04:25:10,993 - 348.0 eV
+2025-05-15 04:25:49,342 - Saved 175_no1_bgd_remA.csv written.
+2025-05-15 04:25:58,563 - New file loaded
+2025-05-15 04:25:58,563 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-15 04:25:59,885 - The following column loaded:
+2025-05-15 04:25:59,885 - Column Column 1
+2025-05-15 04:26:03,428 - Smoothing was applied by:
+2025-05-15 04:26:03,428 - Smoothed (σ=1.0)
+2025-05-15 04:26:10,162 - SClicking for bgnd was done
+2025-05-15 04:26:10,162 - X =288.84339383159494)
+2025-05-15 04:26:10,162 - Y =1.0202335970872134)
+2025-05-15 04:26:11,258 - SClicking for bgnd was done
+2025-05-15 04:26:11,258 - X =282.7749965462458)
+2025-05-15 04:26:11,259 - Y =1.0024980571056423)
+2025-05-15 04:26:12,358 - Background was removed.
+2025-05-15 04:26:15,953 - Cropping was done.
+2025-05-15 04:26:51,118 - Saved 171_no1_bgdremovedA.csv written.
+2025-05-15 04:27:02,070 - File send for analysis
+2025-05-15 04:27:03,396 - File send for analysis
+2025-05-15 04:27:05,845 - File send for analysis
+2025-05-15 04:27:12,201 - New file loaded
+2025-05-15 04:27:12,202 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_bgdremovedA.csv
+2025-05-15 04:27:18,573 - New file loaded
+2025-05-15 04:27:18,573 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175/175_no1_bgd_remA.csv
+2025-05-15 04:27:20,442 - File send for analysis
+2025-05-15 04:27:21,754 - File send for analysis

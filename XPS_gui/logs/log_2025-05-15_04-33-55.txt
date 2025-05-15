@@ -1,0 +1,45 @@
+2025-05-15 04:34:12,253 - New file loaded
+2025-05-15 04:34:12,253 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175/175_no1_bgd_remA.csv
+2025-05-15 04:34:29,528 - New file loaded
+2025-05-15 04:34:29,528 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_bgdremovedA.csv
+2025-05-15 04:34:36,128 - File send for analysis
+2025-05-15 04:34:38,460 - File send for analysis
+2025-05-15 04:36:07,880 - New Photon energy value
+2025-05-15 04:36:07,881 - 348.0 eV
+2025-05-15 04:36:13,486 - New file loaded
+2025-05-15 04:36:13,486 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/174_3clusters.txt
+2025-05-15 04:36:14,828 - The following column loaded:
+2025-05-15 04:36:14,828 - Column Column 1
+2025-05-15 04:36:27,431 - New file loaded
+2025-05-15 04:36:27,431 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/174_3clusters.txt
+2025-05-15 04:36:30,565 - The following column loaded:
+2025-05-15 04:36:30,565 - Column Column 2
+2025-05-15 04:36:39,423 - Smoothing was applied by:
+2025-05-15 04:36:39,423 - Smoothed (σ=1.0)
+2025-05-15 04:36:46,659 - SClicking for bgnd was done
+2025-05-15 04:36:46,659 - X =290.27839633556675)
+2025-05-15 04:36:46,659 - Y =0.987142669592224)
+2025-05-15 04:36:47,656 - SClicking for bgnd was done
+2025-05-15 04:36:47,657 - X =282.5661631380811)
+2025-05-15 04:36:47,657 - Y =0.9820974921598703)
+2025-05-15 04:36:49,063 - Background was removed.
+2025-05-15 04:36:51,122 - Cropping was done.
+2025-05-15 04:37:26,250 - Saved 174_no2_bgndremoved.csv written.
+2025-05-15 04:37:36,483 - New file loaded
+2025-05-15 04:37:36,484 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/174/174_no2_bgndremoved.csv
+2025-05-15 04:37:38,640 - File send for analysis
+2025-05-15 04:38:43,514 - New file loaded
+2025-05-15 04:38:43,514 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/217_3clusters.txt
+2025-05-15 04:38:46,236 - The following column loaded:
+2025-05-15 04:38:46,236 - Column Column 1
+2025-05-15 04:38:52,734 - Smoothing was applied by:
+2025-05-15 04:38:52,735 - Smoothed (σ=1.0)
+2025-05-15 04:38:57,670 - SClicking for bgnd was done
+2025-05-15 04:38:57,670 - X =241.06872970919392)
+2025-05-15 04:38:57,670 - Y =1.0128122192971096)
+2025-05-15 04:38:58,941 - SClicking for bgnd was done
+2025-05-15 04:38:58,942 - X =234.37383219935072)
+2025-05-15 04:38:58,942 - Y =0.9990390532899902)
+2025-05-15 04:39:00,247 - Background was removed.
+2025-05-15 04:40:18,528 - New Photon energy value
+2025-05-15 04:40:18,530 - 300.0 eV

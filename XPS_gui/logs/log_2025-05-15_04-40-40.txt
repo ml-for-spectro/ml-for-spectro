@@ -1,0 +1,20 @@
+2025-05-15 04:40:47,369 - New Photon energy value
+2025-05-15 04:40:47,370 - 350.0 eV
+2025-05-15 04:40:54,733 - New file loaded
+2025-05-15 04:40:54,733 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/217_3clusters.txt
+2025-05-15 04:40:56,262 - The following column loaded:
+2025-05-15 04:40:56,262 - Column Column 1
+2025-05-15 04:41:03,537 - Smoothing was applied by:
+2025-05-15 04:41:03,537 - Smoothed (σ=1.0)
+2025-05-15 04:41:45,431 - New file loaded
+2025-05-15 04:41:45,431 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/225_3clusters.txt
+2025-05-15 04:41:47,853 - The following column loaded:
+2025-05-15 04:41:47,853 - Column Column 1
+2025-05-15 04:42:08,403 - New file loaded
+2025-05-15 04:42:08,403 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187_3clusters.txt
+2025-05-15 04:42:09,800 - The following column loaded:
+2025-05-15 04:42:09,801 - Column Column 1
+2025-05-15 04:42:33,385 - New file loaded
+2025-05-15 04:42:33,385 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/197_3clusters.txt
+2025-05-15 04:42:35,123 - The following column loaded:
+2025-05-15 04:42:35,124 - Column Column 1

@@ -19,7 +19,7 @@ import logging
 from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, be_to_ke, ke_to_be
 from scipy.ndimage import gaussian_filter1d
 import numpy as np
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QCheckBox
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtCore import Qt, QLocale, QLibraryInfo, QSettings
 
@@ -42,6 +42,9 @@ class LoadTab(QWidget):
         self.energy_le.editingFinished.connect(self._update_energy)
         energy_form.addRow("Photon E (eV):", self.energy_le)
         controls_layout.addLayout(energy_form)
+        # Checkbox for x-axis type
+        self.be_checkbox = QCheckBox("X-axis is in Binding Energy (BE)")
+        controls_layout.addWidget(self.be_checkbox)
         # ───────────────────────────────────────────────────────
 
         self.load_button = QPushButton("Load Spectrum")
@@ -116,7 +119,12 @@ class LoadTab(QWidget):
         if path:
             try:
                 data = np.genfromtxt(path, delimiter=",", skip_header=1)
-                x = ke_to_be(data[:, 0])
+                if self.be_checkbox.isChecked():
+                    x = data[:, 0]  # Already in BE
+                    logging.info("Loaded spectrum with BE x-axis")
+                else:
+                    x = ke_to_be(data[:, 0])  # Convert from KE to BE
+                    logging.info("Converted KE to BE")
                 # print(type(x))
                 y_all = data[:, 1:]  # could be 1 or more columns
                 logging.info("New file loaded")

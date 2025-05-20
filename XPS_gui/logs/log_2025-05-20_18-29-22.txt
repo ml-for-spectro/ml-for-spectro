@@ -1,0 +1,8 @@
+2025-05-20 18:29:40,675 - Loaded spectrum with BE x-axis
+2025-05-20 18:29:40,675 - New file loaded
+2025-05-20 18:29:40,675 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/237/237_no1_bgd_removed.csv
+2025-05-20 18:30:00,435 - Loaded parameters from 237_no1_5fit_param.csv.
+2025-05-20 18:35:22,776 - Loaded spectrum with BE x-axis
+2025-05-20 18:35:22,777 - New file loaded
+2025-05-20 18:35:22,777 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/253/253_no1_bgd_rem.csv
+2025-05-20 18:35:40,710 - Loaded parameters from 253_no1_5fit_param.csv.

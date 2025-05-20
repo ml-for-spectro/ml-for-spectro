@@ -1,0 +1,28 @@
+2025-05-19 14:10:05,216 - The following column loaded:
+2025-05-19 14:10:05,216 - Column  Clustered_Spectra_1
+2025-05-19 14:10:10,572 - File send for analysis
+2025-05-19 14:13:08,551 - New file loaded
+2025-05-19 14:13:08,552 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/153/153_mean_VB.txt
+2025-05-19 14:13:11,165 - File send for analysis
+2025-05-19 14:13:16,294 - File send for analysis
+2025-05-19 14:13:16,733 - File send for analysis
+2025-05-19 14:19:56,041 - The following column loaded:
+2025-05-19 14:19:56,041 - Column  Clustered_Spectra_1
+2025-05-19 14:19:58,982 - File send for analysis
+2025-05-19 14:20:03,945 - File send for analysis
+2025-05-19 14:20:04,446 - File send for analysis
+2025-05-19 14:20:38,509 - The following column loaded:
+2025-05-19 14:20:38,509 - Column  Cluster_1
+2025-05-19 14:20:39,639 - File send for analysis
+2025-05-19 14:20:44,424 - File send for analysis
+2025-05-19 14:20:44,939 - File send for analysis
+2025-05-19 14:22:21,465 - The following column loaded:
+2025-05-19 14:22:21,466 - Column  Clustered_Spectra_1
+2025-05-19 14:22:23,127 - File send for analysis
+2025-05-19 14:22:27,814 - File send for analysis
+2025-05-19 14:22:28,303 - File send for analysis
+2025-05-19 14:22:56,900 - New file loaded
+2025-05-19 14:22:56,901 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/188/188_mean_VB.txt
+2025-05-19 14:23:03,328 - File send for analysis
+2025-05-19 14:23:07,387 - File send for analysis
+2025-05-19 14:23:07,928 - File send for analysis

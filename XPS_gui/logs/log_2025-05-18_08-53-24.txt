@@ -1,0 +1,19 @@
+2025-05-18 08:53:30,489 - New file loaded
+2025-05-18 08:53:30,490 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/240_meanspectrum_VB.txt
+2025-05-18 08:53:44,520 - Failed to load file.
+2025-05-18 08:54:10,520 - New Photon energy value
+2025-05-18 08:54:10,520 - 0.0 eV
+2025-05-18 08:54:15,332 - New file loaded
+2025-05-18 08:54:15,332 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_3clusters.txt
+2025-05-18 08:54:16,633 - The following column loaded:
+2025-05-18 08:54:16,634 - Column Column 1
+2025-05-18 08:54:38,029 - New file loaded
+2025-05-18 08:54:38,029 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/240_meanspectrum_VB.txt
+2025-05-18 08:54:40,552 - Failed to load file.
+2025-05-18 08:55:02,470 - New file loaded
+2025-05-18 08:55:02,470 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/243_3clusters.txt
+2025-05-18 08:55:03,720 - The following column loaded:
+2025-05-18 08:55:03,720 - Column Column 1
+2025-05-18 08:55:21,390 - New file loaded
+2025-05-18 08:55:21,391 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/245_meanspectrum_VB.txt
+2025-05-18 08:55:22,577 - Failed to load file.

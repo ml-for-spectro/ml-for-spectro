@@ -1,0 +1,35 @@
+2025-05-19 14:35:59,963 - The following column loaded:
+2025-05-19 14:35:59,963 - Column  Clustered_Spectra_1
+2025-05-19 14:36:35,274 - The following column loaded:
+2025-05-19 14:36:35,274 - Column  Clustered_Spectra_1
+2025-05-19 14:36:53,178 - The following column loaded:
+2025-05-19 14:36:53,178 - Column  Clustered_Spectra_1
+2025-05-19 14:38:13,157 - The following column loaded:
+2025-05-19 14:38:13,158 - Column  Clustered_Spectra_1
+2025-05-19 14:38:31,711 - The following column loaded:
+2025-05-19 14:38:31,711 - Column  Clustered_Spectra_1
+2025-05-19 14:38:47,149 - The following column loaded:
+2025-05-19 14:38:47,149 - Column  Clustered_Spectra_1
+2025-05-19 14:38:53,439 - File send for analysis
+2025-05-19 14:38:54,285 - File send for analysis
+2025-05-19 14:38:55,047 - File send for analysis
+2025-05-19 14:38:56,142 - File send for analysis
+2025-05-19 14:38:56,953 - File send for analysis
+2025-05-19 14:38:58,193 - File send for analysis
+2025-05-19 14:39:19,339 - File send for analysis
+2025-05-19 14:39:20,564 - File send for analysis
+2025-05-19 14:39:21,359 - File send for analysis
+2025-05-19 14:39:22,397 - File send for analysis
+2025-05-19 14:39:23,039 - File send for analysis
+2025-05-19 14:39:23,672 - File send for analysis
+2025-05-19 14:39:27,516 - File send for analysis
+2025-05-19 14:39:28,815 - File send for analysis
+2025-05-19 14:40:05,794 - File send for analysis
+2025-05-19 14:40:59,515 - New Photon energy value
+2025-05-19 14:40:59,515 - 350.0 eV
+2025-05-19 14:41:07,410 - New file loaded
+2025-05-19 14:41:07,410 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/153/153_mean_VB.txt
+2025-05-19 14:41:09,117 - Failed to load file.
+2025-05-19 14:41:18,689 - New file loaded
+2025-05-19 14:41:18,689 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187/187_mean_C.txt
+2025-05-19 14:41:23,639 - Failed to load file.

@@ -1,0 +1,17 @@
+2025-05-19 14:25:19,801 - New file loaded
+2025-05-19 14:25:19,801 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/153/153_mean_VB.txt
+2025-05-19 14:25:23,880 - File send for analysis
+2025-05-19 14:26:28,478 - The following column loaded:
+2025-05-19 14:26:28,478 - Column  Clustered_Spectra_2
+2025-05-19 14:26:30,187 - File send for analysis
+2025-05-19 14:26:35,261 - File send for analysis
+2025-05-19 14:26:35,718 - File send for analysis
+2025-05-19 14:27:21,200 - The following column loaded:
+2025-05-19 14:27:21,201 - Column  Clustered_Spectra_1
+2025-05-19 14:27:28,966 - The following column loaded:
+2025-05-19 14:27:28,966 - Column  ...
+2025-05-19 14:27:30,415 - File send for analysis
+2025-05-19 14:27:32,204 - File send for analysis
+2025-05-19 14:27:33,029 - File send for analysis
+2025-05-19 14:28:03,468 - File send for analysis
+2025-05-19 14:28:05,997 - File send for analysis

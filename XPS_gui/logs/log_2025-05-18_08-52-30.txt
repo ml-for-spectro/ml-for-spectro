@@ -1,0 +1,7 @@
+2025-05-18 08:52:39,895 - New file loaded
+2025-05-18 08:52:39,895 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_3clusters.txt
+2025-05-18 08:52:41,319 - The following column loaded:
+2025-05-18 08:52:41,319 - Column Column 1
+2025-05-18 08:53:07,174 - New file loaded
+2025-05-18 08:53:07,174 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/240_meanspectrum_VB.txt
+2025-05-18 08:53:09,139 - Failed to load file.

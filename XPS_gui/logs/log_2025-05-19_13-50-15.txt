@@ -1,0 +1,48 @@
+2025-05-19 13:50:24,837 - New Photon energy value
+2025-05-19 13:50:24,838 - 350.0 eV
+2025-05-19 13:50:28,353 - New file loaded
+2025-05-19 13:50:28,353 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171_3clusters.txt
+2025-05-19 13:50:29,427 - The following column loaded:
+2025-05-19 13:50:29,427 - Column Column 1
+2025-05-19 13:50:54,355 - The following column loaded:
+2025-05-19 13:50:54,355 - Column  Clustered_Spectra_1
+2025-05-19 13:51:00,477 - File send for analysis
+2025-05-19 13:51:23,306 - The following column loaded:
+2025-05-19 13:51:23,307 - Column  Cluster_1
+2025-05-19 13:51:27,570 - File send for analysis
+2025-05-19 13:54:42,982 - File send for analysis
+2025-05-19 13:54:43,524 - File send for analysis
+2025-05-19 13:54:46,498 - File send for analysis
+2025-05-19 13:54:47,866 - File send for analysis
+2025-05-19 13:54:49,393 - File send for analysis
+2025-05-19 13:55:45,580 - File send for analysis
+2025-05-19 13:55:47,026 - File send for analysis
+2025-05-19 13:56:15,091 - The following column loaded:
+2025-05-19 13:56:15,091 - Column  Clustered_Spectra_1
+2025-05-19 13:56:23,993 - File send for analysis
+2025-05-19 13:56:24,919 - File send for analysis
+2025-05-19 13:56:26,389 - File send for analysis
+2025-05-19 13:56:27,766 - File send for analysis
+2025-05-19 13:56:28,828 - File send for analysis
+2025-05-19 13:56:29,406 - File send for analysis
+2025-05-19 13:56:42,325 - File send for analysis
+2025-05-19 13:57:10,137 - File send for analysis
+2025-05-19 13:57:10,826 - File send for analysis
+2025-05-19 13:57:55,966 - The following column loaded:
+2025-05-19 13:57:55,966 - Column  Cluster_1
+2025-05-19 13:58:03,575 - File send for analysis
+2025-05-19 13:59:33,314 - File send for analysis
+2025-05-19 14:04:30,099 - File send for analysis
+2025-05-19 14:04:31,381 - File send for analysis
+2025-05-19 14:07:27,420 - File send for analysis
+2025-05-19 14:07:28,091 - File send for analysis
+2025-05-19 14:07:39,997 - The following column loaded:
+2025-05-19 14:07:39,998 - Column  Clustered_Spectra_1
+2025-05-19 14:07:46,244 - File send for analysis
+2025-05-19 14:07:47,320 - File send for analysis
+2025-05-19 14:07:49,249 - File send for analysis
+2025-05-19 14:08:40,706 - The following column loaded:
+2025-05-19 14:08:40,706 - Column  Cluster_1
+2025-05-19 14:08:45,372 - File send for analysis
+2025-05-19 14:09:41,269 - File send for analysis
+2025-05-19 14:09:42,362 - File send for analysis

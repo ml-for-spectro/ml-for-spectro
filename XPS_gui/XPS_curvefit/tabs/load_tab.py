@@ -124,6 +124,7 @@ class LoadTab(QWidget):
                 if y_all.shape[1] == 1:
                     # Only one Y column
                     y_raw = y_all[:, 0]
+                    item = "Column 1"
                 else:
                     # Multiple Y columns -> ask user which one to pick
                     options = [f"Column {i+1}" for i in range(y_all.shape[1])]

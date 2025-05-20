@@ -1,0 +1,63 @@
+2025-05-19 14:44:30,941 - New file loaded
+2025-05-19 14:44:30,941 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/153/153_mean_VB.txt
+2025-05-19 14:44:56,254 - New file loaded
+2025-05-19 14:44:56,255 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/237/237_no1_bgd_removed.csv
+2025-05-19 14:45:14,292 - New file loaded
+2025-05-19 14:45:14,292 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/237/237_no1_bgd_removed.csv
+2025-05-19 14:45:23,189 - File send for analysis
+2025-05-19 18:56:10,217 - New file loaded
+2025-05-19 18:56:10,218 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/253/253_no2_bgd_rem.csv
+2025-05-19 18:56:14,958 - File send for analysis
+2025-05-20 08:30:20,003 - New file loaded
+2025-05-20 08:30:20,004 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/175/175_no1_bgd_rem.csv
+2025-05-20 08:30:25,172 - File send for analysis
+2025-05-20 08:37:55,595 - New file loaded
+2025-05-20 08:37:55,596 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/171/171_no1_bgdremoved.csv
+2025-05-20 08:37:57,494 - File send for analysis
+2025-05-20 08:38:23,239 - File send for analysis
+2025-05-20 08:38:24,360 - File send for analysis
+2025-05-20 08:38:33,397 - File send for analysis
+2025-05-20 08:38:45,410 - File send for analysis
+2025-05-20 08:39:01,443 - File send for analysis
+2025-05-20 08:39:02,606 - File send for analysis
+2025-05-20 08:39:13,585 - File send for analysis
+2025-05-20 08:39:32,031 - File send for analysis
+2025-05-20 08:39:33,068 - File send for analysis
+2025-05-20 08:39:48,031 - File send for analysis
+2025-05-20 08:39:49,460 - File send for analysis
+2025-05-20 08:39:50,115 - File send for analysis
+2025-05-20 08:40:35,061 - New file loaded
+2025-05-20 08:40:35,061 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/217/217_no1_bgndremoved.csv
+2025-05-20 08:40:45,923 - New file loaded
+2025-05-20 08:40:45,923 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187/187_no1_bgnd_rem.csv
+2025-05-20 08:40:49,258 - File send for analysis
+2025-05-20 08:40:50,813 - File send for analysis
+2025-05-20 08:45:07,893 - File send for analysis
+2025-05-20 08:45:09,825 - File send for analysis
+2025-05-20 08:45:30,518 - File send for analysis
+2025-05-20 08:45:31,980 - File send for analysis
+2025-05-20 09:08:34,302 - File send for analysis
+2025-05-20 09:08:35,335 - File send for analysis
+2025-05-20 09:10:10,255 - File send for analysis
+2025-05-20 09:10:10,984 - File send for analysis
+2025-05-20 09:10:11,672 - File send for analysis
+2025-05-20 09:10:12,656 - File send for analysis
+2025-05-20 09:10:13,381 - File send for analysis
+2025-05-20 09:10:15,325 - File send for analysis
+2025-05-20 09:10:24,023 - New file loaded
+2025-05-20 09:10:24,023 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187/187_no2_bgnd_rem.csv
+2025-05-20 09:10:27,758 - File send for analysis
+2025-05-20 09:10:32,856 - File send for analysis
+2025-05-20 09:10:40,960 - File send for analysis
+2025-05-20 09:10:41,664 - File send for analysis
+2025-05-20 09:10:44,388 - File send for analysis
+2025-05-20 09:10:45,196 - File send for analysis
+2025-05-20 09:12:19,502 - File send for analysis
+2025-05-20 09:12:22,151 - File send for analysis
+2025-05-20 09:12:23,042 - File send for analysis
+2025-05-20 09:12:25,038 - File send for analysis
+2025-05-20 09:12:31,530 - New file loaded
+2025-05-20 09:12:31,531 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187/187_no1_bgnd_rem.csv
+2025-05-20 09:12:38,812 - File send for analysis
+2025-05-20 09:12:53,796 - New Photon energy value
+2025-05-20 09:12:53,796 - 350.0 eV

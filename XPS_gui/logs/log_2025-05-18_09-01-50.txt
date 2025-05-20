@@ -1,0 +1,31 @@
+2025-05-18 09:02:10,441 - New file loaded
+2025-05-18 09:02:10,441 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187_3clusters.txt
+2025-05-18 09:02:11,706 - The following column loaded:
+2025-05-18 09:02:11,707 - Column Column 1
+2025-05-18 09:02:33,722 - New file loaded
+2025-05-18 09:02:33,723 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/188/188_mean_VB.txt
+2025-05-18 09:02:35,124 - Failed to load file.
+2025-05-18 09:03:12,622 - New file loaded
+2025-05-18 09:03:12,622 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/209/209_mean_C.txt
+2025-05-18 09:03:14,766 - Failed to load file.
+2025-05-18 09:03:47,447 - New file loaded
+2025-05-18 09:03:47,447 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/212/212_mean_VB.txt
+2025-05-18 09:03:50,989 - Failed to load file.
+2025-05-18 09:04:36,646 - New file loaded
+2025-05-18 09:04:36,646 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/212/212_mean_VB.txt
+2025-05-18 09:04:45,174 - New file loaded
+2025-05-18 09:04:45,174 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/188/188_mean_VB.txt
+2025-05-18 09:04:47,092 - File send for analysis
+2025-05-18 09:04:48,346 - File send for analysis
+2025-05-18 12:45:24,078 - The following column loaded:
+2025-05-18 12:45:24,079 - Column  Clustered_Spectra_1
+2025-05-18 12:45:33,557 - New file loaded
+2025-05-18 12:45:33,557 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/209/209_mean_C.txt
+2025-05-18 12:45:35,930 - File send for analysis
+2025-05-18 12:45:37,046 - File send for analysis
+2025-05-18 12:45:37,881 - File send for analysis
+2025-05-18 12:45:39,217 - File send for analysis
+2025-05-18 12:48:23,482 - File send for analysis
+2025-05-18 12:48:25,177 - File send for analysis
+2025-05-18 12:48:30,555 - New file loaded
+2025-05-18 12:48:30,555 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/2025-04-19/187/187_mean_C.txt

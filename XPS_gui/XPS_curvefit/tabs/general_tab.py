@@ -16,7 +16,8 @@ from PySide6.QtWidgets import (
     QInputDialog,
 )
 from XPS_curvefit.utils.plotting import PlotCanvas, photon_energy_eV, ke_to_be, be_to_ke
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QSettings, Qt
+from PySide6.QtGui import QFont, QColor
 import pandas as pd
 
 
@@ -45,7 +46,22 @@ class GeneralUtilityTab(QWidget):
         self.main_layout.addLayout(button_layout)
 
         # Plot area
-        self.canvas = PlotCanvas(self)
+        # Coordinate label (must come before canvas)
+        self.coord_label = QLabel("X: ---, Y: ---")
+        font = QFont()
+        font.setPointSize(12)
+        self.coord_label.setFont(font)
+        self.coord_label.setAlignment(Qt.AlignRight)
+        self.canvas = PlotCanvas(self, coord_label=self.coord_label)
+        """self.coord_label = QLabel("X: ---, Y: ---")
+        self.canvas.coord_label = self.coord_label  # Attach it to the canvas
+
+        font = QFont()
+        font.setPointSize(12)
+        self.coord_label.setFont(font)
+        self.coord_label.setAlignment(Qt.AlignRight)"""
+
+        self.main_layout.addWidget(self.coord_label)
         self.main_layout.addWidget(self.canvas)
 
         # Spectra list (as a group box with grid layout)
@@ -62,7 +78,12 @@ class GeneralUtilityTab(QWidget):
 
         self.remove_button.clicked.connect(self.remove_selected)
 
+    @staticmethod
+    def ke_to_be_local(ke, photon_energy):
+        return photon_energy - ke
+
     def load_spectrum(self):
+
         if len(self.spectra) >= 6:
             QMessageBox.warning(
                 self, "Limit Reached", "Maximum of 6 spectra supported."
@@ -80,8 +101,8 @@ class GeneralUtilityTab(QWidget):
 
         try:
             df = pd.read_csv(path)  # <-- use pandas to load
-
-            x = df.iloc[:, 0].values
+            # plotting.photon_energy_eV = energy
+            x_ke = df.iloc[:, 0].values  # Always assume file x-axis is KE
             y_all = df.iloc[:, 1:]
 
             if y_all.shape[1] == 1:
@@ -123,7 +144,11 @@ class GeneralUtilityTab(QWidget):
         name_label = QLabel(spectrum_name)
         energy_input = QDoubleSpinBox()
         energy_input.setRange(0, 2000)
-        energy_input.setValue(photon_energy_eV)
+        default_energy = (
+            300  # or use self.settings.value("default_photon_energy", 1486.6)
+        )
+        x_be = self.ke_to_be_local(x_ke, default_energy)
+        energy_input.setValue(default_energy)
         energy_input.setSuffix(" eV")
         energy_input.setDecimals(1)
         energy_input.setFixedWidth(100)
@@ -139,7 +164,7 @@ class GeneralUtilityTab(QWidget):
         self.spectra.append(
             {
                 "name": spectrum_name,
-                "x": x,
+                "x_ke": x_ke,
                 "y": y,
                 "photon_energy": energy_input,
                 "checkbox": checkbox,
@@ -148,7 +173,7 @@ class GeneralUtilityTab(QWidget):
         )
 
         checkbox.stateChanged.connect(
-            lambda _: self.plot_selected(x, y, energy_input.value())
+            lambda _: self.plot_selected(x_ke, y, energy_input.value())
         )
 
     # def ke_to_be_local(ke, photon_energy):
@@ -160,14 +185,22 @@ class GeneralUtilityTab(QWidget):
         self.remove_button.setEnabled(len(selected) > 0)
         logging.info("File send for analysis")
 
-    def plot_selected(self, x, y, energy):
+    def plot_selected(self, x_ke, y, energy):
         from XPS_curvefit.utils import plotting
 
+        x_be = self.ke_to_be_local(x_ke, energy)
         plotting.photon_energy_eV = energy
+
         filename = next(
-            (s["name"] for s in self.spectra if np.array_equal(s["x"], x)), "Spectrum"
+            (
+                s["name"]
+                for s in self.spectra
+                if np.array_equal(s["x_ke"], x_ke)
+                and np.isclose(s["photon_energy"].value(), energy)
+            ),
+            "Spectrum",
         )
-        self.canvas.plot_data(x, y, label=filename)
+        self.canvas.plot_data(x_be, y, label=filename)
 
     def compare_selected(self):
         selected = [s for s in self.spectra if s["checkbox"].isChecked()]
@@ -192,8 +225,10 @@ class GeneralUtilityTab(QWidget):
         # self.canvas.ax2 = self.canvas.ax1.secondary_xaxis("top", functions=(be_to_ke, ke_to_be))
 
         for s in selected:
-            x = s["x"]
+            x_ke = s["x_ke"]
             y = s["y"]
+            energy = s["photon_energy"].value()
+            x_be = self.ke_to_be_local(x_ke, energy)
             if normalize:
                 max_y = np.max(y)
                 y = y / max_y if max_y != 0 else y
@@ -201,7 +236,7 @@ class GeneralUtilityTab(QWidget):
             from XPS_curvefit.utils import plotting
 
             plotting.photon_energy_eV = s["photon_energy"].value()
-            self.canvas.ax1.plot(x, y, label=label)
+            self.canvas.ax1.plot(x_be, y, label=label)
 
         self.canvas.ax1.set_xlabel("Binding Energy (eV)")
         self.canvas.ax1.set_ylabel("Intensity (a.u.)")
@@ -211,15 +246,13 @@ class GeneralUtilityTab(QWidget):
         self.canvas.draw()
 
     def send_selected_to_analysis(self):
-        def ke_to_be_local(ke, photon_energy):
-            return photon_energy - ke
 
         selected = [s for s in self.spectra if s["checkbox"].isChecked()]
         if len(selected) != 1:
             return
 
         s = selected[0]
-        x_be = ke_to_be_local(s["x"], s["photon_energy"].value())
+        x_be = self.ke_to_be_local(s["x_ke"], s["photon_energy"].value())
         self.parent.x = x_be
         # self.parent.x = s["x"]
         self.parent.y_raw = s["y"]

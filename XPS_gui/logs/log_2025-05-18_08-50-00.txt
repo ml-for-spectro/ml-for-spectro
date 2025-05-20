@@ -1,0 +1,19 @@
+2025-05-18 08:50:15,813 - The following column loaded:
+2025-05-18 08:50:15,813 - Column  Clustered_Spectra_1
+2025-05-18 08:50:25,633 - New file loaded
+2025-05-18 08:50:25,633 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/240_meanspectrum_VB.txt
+2025-05-18 08:50:36,305 - The following column loaded:
+2025-05-18 08:50:36,305 - Column  Clustered_Spectra_1
+2025-05-18 08:50:41,920 - New file loaded
+2025-05-18 08:50:41,920 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/ITIC-4F/245_meanspectrum_VB.txt
+2025-05-18 08:50:44,985 - File send for analysis
+2025-05-18 08:50:46,196 - File send for analysis
+2025-05-18 08:50:48,857 - File send for analysis
+2025-05-18 08:50:49,735 - File send for analysis
+2025-05-18 08:51:09,903 - File send for analysis
+2025-05-18 08:51:11,095 - File send for analysis
+2025-05-18 08:51:39,439 - File send for analysis
+2025-05-18 08:52:02,919 - New file loaded
+2025-05-18 08:52:02,919 - /Users/swaraj/Documents/SwarajTopFolder/AAAAAprojects/Beamtimes/XPEEM_April2025/99250050/PTQ10/237_3clusters.txt
+2025-05-18 08:52:04,087 - The following column loaded:
+2025-05-18 08:52:04,087 - Column Column 1

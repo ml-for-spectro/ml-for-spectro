@@ -45,14 +45,6 @@ Followed by:
 
 ---
 
-## 📅 Timeline
-- **Daily** progress from April 23
-- 6–8 hours/week
-- 1st version of GUI: by mid-May
-- 1st ML application (e.g., auto-segmentation): by mid-June
-
----
-
 ## 🧑‍💻 Author
 Dr. Sufal Swaraj  
 Beamline Scientist, Synchrotron SOLEIL  

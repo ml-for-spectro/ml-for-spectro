@@ -17,6 +17,7 @@ dependencies:
   - pyqt  # for GUI support with PySide6 tools
   - seaborn
   - tqdm
+  - lmfit
   - pip
   - pip:
       - tensorflow-macos

@@ -46,9 +46,7 @@ Followed by:
 ---
 
 ## 🧑‍💻 Author
-Dr. Sufal Swaraj  
-Beamline Scientist, Synchrotron SOLEIL  
-[LinkedIn](https://www.linkedin.com/) | GitHub: [ml-for-spectro]
+
 
 ---
 
